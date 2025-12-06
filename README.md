@@ -103,7 +103,15 @@ brew install ripgrep
 
 ## Plugins
 
-Managed via [vim-plug](https://github.com/junegunn/vim-plug). Install with `:PlugInstall`.
+Managed via [vim-plug](https://github.com/junegunn/vim-plug).
+
+```bash
+# Install from command line
+vim +PlugInstall +qall
+
+# Or from within vim
+:PlugInstall
+```
 
 | Plugin | Purpose |
 |--------|---------|
