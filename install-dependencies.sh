@@ -196,6 +196,28 @@ check_status() {
     check_cmd fzf && echo "  ✓ fzf" || echo "  ✗ fzf"
     check_cmd rg && echo "  ✓ ripgrep" || echo "  ✗ ripgrep"
     echo ""
+
+    echo "coc.nvim requirements:"
+    check_cmd node && echo "  ✓ node $(node --version)" || echo "  ✗ node (required for coc.nvim)"
+    echo ""
+}
+
+# Check Node.js for coc.nvim
+check_node_for_coc() {
+    if ! check_cmd node; then
+        warn "Node.js is required for coc.nvim (LSP client)"
+        warn "Install Node.js (v14.14+) from https://nodejs.org or via nvm"
+        return 1
+    fi
+
+    local node_version=$(node --version | sed 's/v//' | cut -d. -f1)
+    if [[ "$node_version" -lt 14 ]]; then
+        warn "Node.js v14.14+ is required for coc.nvim. Found: $(node --version)"
+        return 1
+    fi
+
+    info "Node.js $(node --version) found (required for coc.nvim)"
+    return 0
 }
 
 # Main
@@ -203,6 +225,10 @@ main() {
     echo "========================================"
     echo "Vim Development Environment Dependencies"
     echo "========================================"
+    echo ""
+
+    # Check Node.js first (required for coc.nvim)
+    check_node_for_coc || warn "Some features may not work without Node.js"
     echo ""
 
     case "${1:-all}" in

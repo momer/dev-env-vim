@@ -90,6 +90,20 @@ install_ftplugin() {
     done
 }
 
+# Install coc-settings.json for coc.nvim
+install_coc_settings() {
+    info "Installing coc-settings.json..."
+    backup_if_exists ~/.vim/coc-settings.json
+
+    if [[ "$1" == "--symlink" ]]; then
+        ln -sf "$SCRIPT_DIR/coc-settings.json" ~/.vim/coc-settings.json
+        info "Created symlink: ~/.vim/coc-settings.json -> $SCRIPT_DIR/coc-settings.json"
+    else
+        cp "$SCRIPT_DIR/coc-settings.json" ~/.vim/coc-settings.json
+        info "Copied coc-settings.json to ~/.vim/coc-settings.json"
+    fi
+}
+
 # Install vim plugins
 install_plugins() {
     info "Installing vim plugins..."
@@ -111,7 +125,8 @@ usage() {
     echo "  2. Install vim-plug plugin manager"
     echo "  3. Install vimrc configuration"
     echo "  4. Install language-specific ftplugin files"
-    echo "  5. Install vim plugins via :PlugInstall"
+    echo "  5. Install coc-settings.json for coc.nvim"
+    echo "  6. Install vim plugins via :PlugInstall"
 }
 
 # Main
@@ -153,9 +168,11 @@ main() {
     if $use_symlink; then
         install_vimrc --symlink
         install_ftplugin --symlink
+        install_coc_settings --symlink
     else
         install_vimrc
         install_ftplugin
+        install_coc_settings
     fi
 
     if ! $skip_plugins; then

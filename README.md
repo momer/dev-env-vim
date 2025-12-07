@@ -1,6 +1,6 @@
 # Vim Development Environment
 
-Vim configuration with vim-plug, ALE (LSP/linting/formatting), and fzf for Go, Ruby, JavaScript/TypeScript, and Rust development.
+Vim configuration with vim-plug, coc.nvim (LSP/completion), ALE (linting/formatting), and fzf for Go, Ruby, JavaScript/TypeScript, and Rust development.
 
 ## Quick Start
 
@@ -20,6 +20,7 @@ Vim configuration with vim-plug, ALE (LSP/linting/formatting), and fzf for Go, R
 ├── setup.sh                 # Install vim configuration
 ├── install-dependencies.sh  # Install language servers and tools
 ├── vimrc                    # Main vim configuration
+├── coc-settings.json        # coc.nvim LSP configuration
 └── ftplugin/
     ├── go.vim               # Go-specific settings
     ├── javascript.vim       # JavaScript settings
@@ -48,6 +49,7 @@ Vim configuration with vim-plug, ALE (LSP/linting/formatting), and fzf for Go, R
 
 | Tool | Purpose | Install |
 |------|---------|---------|
+| Node.js | Required for coc.nvim | `brew install node` or [nvm](https://github.com/nvm-sh/nvm) |
 | vim-plug | Plugin manager | Auto-installed by setup.sh |
 | fzf | Fuzzy finder | `brew install fzf` |
 | ripgrep | Fast grep | `brew install ripgrep` |
@@ -115,7 +117,8 @@ vim +PlugInstall +qall
 
 | Plugin | Purpose |
 |--------|---------|
-| dense-analysis/ale | LSP, linting, formatting |
+| neoclide/coc.nvim | LSP client, completion, code actions |
+| dense-analysis/ale | Linting, formatting (no LSP) |
 | vim-airline/vim-airline | Status line |
 | edkolev/tmuxline.vim | Tmux status line integration |
 | junegunn/fzf + fzf.vim | Fuzzy finding |
@@ -176,17 +179,34 @@ LocalLeader: `,,`
 | `,:` | Command history |
 | `,/` | Search history |
 
-### ALE (LSP)
+### coc.nvim (LSP)
 
 | Mapping | Action |
 |---------|--------|
 | `,gd` | Go to definition |
 | `,gt` | Go to type definition |
+| `,gi` | Go to implementation |
 | `,gr` | Find references |
-| `,K` | Hover info |
+| `K` | Hover documentation |
 | `,rn` | Rename symbol |
+| `,ca` | Code actions |
+| `,qf` | Quick fix |
+| `,cf` | Format code |
+| `,re` | Refactor |
+| `,cl` | Code lens action |
+| `,co` | Show outline |
+| `,cs` | Search symbols |
+| `[g` / `]g` | Previous/next diagnostic |
+| `<Tab>` | Trigger/navigate completion |
+| `<CR>` | Confirm completion |
+| `<C-Space>` | Trigger completion |
+
+### ALE (Linting)
+
+| Mapping | Action |
+|---------|--------|
+| `[e` / `]e` | Previous/next lint error |
 | `,d` | Show error detail |
-| `[e` / `]e` | Previous/next error |
 
 ### Language-Specific (LocalLeader: `,,`)
 
@@ -209,17 +229,27 @@ LocalLeader: `,,`
 
 ## Troubleshooting
 
-### Check ALE status
+### Check coc.nvim status
+```vim
+:CocInfo
+```
+
+### Check coc.nvim extensions
+```vim
+:CocList extensions
+```
+
+### Restart coc.nvim language server
+```vim
+:CocRestart
+```
+
+### Check ALE linting status
 ```vim
 :ALEInfo
 ```
 
-### Check if LSP is running
-```vim
-:ALELspDetail
-```
-
-### Manually trigger format
+### Manually trigger ALE fix
 ```vim
 :ALEFix
 ```
@@ -233,4 +263,9 @@ LocalLeader: `,,`
 ```vim
 :PlugClean
 :PlugInstall
+```
+
+### Install coc.nvim extensions manually
+```vim
+:CocInstall coc-tsserver coc-go coc-rust-analyzer coc-solargraph
 ```
