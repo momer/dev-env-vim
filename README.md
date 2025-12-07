@@ -131,6 +131,7 @@ vim +PlugInstall +qall
 | tpope/vim-surround | Surround text objects |
 | tpope/vim-fugitive | Git integration |
 | airblade/vim-gitgutter | Git diff in sign column |
+| cohama/lexima.vim | Auto-close brackets/quotes |
 
 ### Plugin Commands
 
