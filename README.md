@@ -5,11 +5,12 @@ Vim configuration with vim-plug, coc.nvim (LSP/completion), ALE (linting/formatt
 ## Quick Start
 
 ```bash
-# Install vim config
-./setup.sh
+# Full installation (vim config + all dependencies)
+make install
 
-# Install language servers and tools
-./install-dependencies.sh
+# Or step by step
+make setup      # Install vim config
+make deps       # Install language servers and tools
 ```
 
 ## Repository Structure
@@ -17,6 +18,7 @@ Vim configuration with vim-plug, coc.nvim (LSP/completion), ALE (linting/formatt
 ```
 .
 ├── README.md
+├── Makefile                 # Main entry point (run make help)
 ├── setup.sh                 # Install vim configuration
 ├── install-dependencies.sh  # Install language servers and tools
 ├── vimrc                    # Main vim configuration
@@ -34,13 +36,13 @@ Vim configuration with vim-plug, coc.nvim (LSP/completion), ALE (linting/formatt
 
 ```bash
 # Copy files to ~/.vim and ~/.vimrc
-./setup.sh
+make setup
 
 # Use symlinks instead (changes to repo reflect immediately)
-./setup.sh --symlink
+make setup-symlink
 
 # Skip plugin installation
-./setup.sh --no-plugins
+make setup-minimal
 ```
 
 ## Dependencies
@@ -67,16 +69,16 @@ Vim configuration with vim-plug, coc.nvim (LSP/completion), ALE (linting/formatt
 
 ```bash
 # Install all
-./install-dependencies.sh
+make deps
 
 # Install specific language tools
-./install-dependencies.sh go
-./install-dependencies.sh ruby
-./install-dependencies.sh node
-./install-dependencies.sh rust
+make deps-go
+make deps-ruby
+make deps-node
+make deps-rust
 
 # Check status
-./install-dependencies.sh status
+make status
 ```
 
 ### Manual Installation
@@ -108,8 +110,8 @@ brew install ripgrep
 Managed via [vim-plug](https://github.com/junegunn/vim-plug).
 
 ```bash
-# Install from command line
-vim +PlugInstall +qall
+# Install/update from command line
+make plugins
 
 # Or from within vim
 :PlugInstall
