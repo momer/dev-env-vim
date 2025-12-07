@@ -39,6 +39,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'cohama/lexima.vim'
+Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
@@ -395,3 +396,76 @@ nnoremap <silent><nowait> <Leader>cs :<C-u>CocList -I symbols<CR>
 
 " coc-prettier: format on save for supported filetypes
 command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument
+
+" -----------------------------------------------------------------------------
+" vim-which-key Configuration
+" -----------------------------------------------------------------------------
+
+" Set timeout for which-key popup
+set timeoutlen=500
+
+" Define prefix dictionary
+let g:which_key_map = {}
+
+" Register the leader key with which-key
+nnoremap <silent> <Leader> :<c-u>WhichKey ','<CR>
+vnoremap <silent> <Leader> :<c-u>WhichKeyVisual ','<CR>
+
+" Top-level mappings
+let g:which_key_map[' '] = 'clear search highlight'
+let g:which_key_map['w'] = 'save file'
+let g:which_key_map['q'] = 'quit'
+let g:which_key_map['n'] = 'next buffer'
+let g:which_key_map['p'] = 'previous buffer'
+let g:which_key_map['e'] = 'file explorer'
+let g:which_key_map['*'] = 'grep word under cursor'
+let g:which_key_map[':'] = 'command history'
+let g:which_key_map['/'] = 'search history'
+
+" Buffer mappings
+let g:which_key_map['b'] = {
+\   'name': '+buffer',
+\   'd': 'delete buffer',
+\}
+" Add standalone buffer mapping
+let g:which_key_map['b'] = 'list buffers'
+let g:which_key_map['bd'] = 'delete buffer'
+
+" fzf mappings
+let g:which_key_map['f'] = 'find files'
+let g:which_key_map['g'] = 'grep (ripgrep)'
+let g:which_key_map['l'] = 'search lines'
+let g:which_key_map['h'] = 'file history'
+let g:which_key_map['c'] = 'commands'
+
+" Git mappings (fzf)
+let g:which_key_map['gf'] = 'git files'
+let g:which_key_map['gs'] = 'git status files'
+
+" coc.nvim mappings
+let g:which_key_map['gd'] = 'go to definition'
+let g:which_key_map['gt'] = 'go to type definition'
+let g:which_key_map['gi'] = 'go to implementation'
+let g:which_key_map['gr'] = 'find references'
+let g:which_key_map['rn'] = 'rename symbol'
+let g:which_key_map['ca'] = 'code actions'
+let g:which_key_map['qf'] = 'quick fix'
+let g:which_key_map['cf'] = 'format code'
+let g:which_key_map['re'] = 'refactor'
+let g:which_key_map['cl'] = 'code lens action'
+let g:which_key_map['co'] = 'show outline'
+let g:which_key_map['cs'] = 'search symbols'
+
+" ALE mappings
+let g:which_key_map['d'] = 'show lint error detail'
+
+" Register the dictionary
+call which_key#register(',', "g:which_key_map")
+
+" Styling
+let g:which_key_use_floating_win = 1
+let g:which_key_floating_opts = { 'row': '-2', 'col': '-2', 'width': '+2' }
+highlight default link WhichKey          Function
+highlight default link WhichKeySeperator DiffAdded
+highlight default link WhichKeyGroup     Keyword
+highlight default link WhichKeyDesc      Identifier

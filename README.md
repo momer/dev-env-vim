@@ -137,6 +137,7 @@ make plugins
 | tpope/vim-fugitive | Git integration |
 | airblade/vim-gitgutter | Git diff in sign column |
 | cohama/lexima.vim | Auto-close brackets/quotes |
+| liuchengxu/vim-which-key | Show available keybindings popup |
 
 ### Plugin Commands
 
@@ -151,6 +152,10 @@ make plugins
 
 Leader: `,`
 LocalLeader: `,,`
+
+### Discovering Keys (vim-which-key)
+
+Press `,` and wait ~500ms to see a popup of all available leader mappings with descriptions. This is helpful for learning and remembering keybindings for coc.nvim, ALE, fzf, and other plugins.
 
 ### General
 
