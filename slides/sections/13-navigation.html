@@ -1,0 +1,94 @@
+<section>
+  <h2>Window Navigation</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">Ctrl-h</span> / <span class="key">j</span> / <span class="key">k</span> / <span class="key">l</span></td>
+        <td>Move between windows</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-d</span> / <span class="key">Ctrl-u</span></td>
+        <td>Half-page scroll (centered)</td>
+      </tr>
+      <tr>
+        <td><span class="key">n</span> / <span class="key">N</span></td>
+        <td>Search results (centered)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>Centered scrolling:</strong> The cursor stays in the middle of the screen when jumping
+  </div>
+  <aside class="notes">
+    Ctrl-hjkl replaces the longer Ctrl-w hjkl for window navigation.
+    Centering after scrolls and searches reduces disorientation.
+    These small improvements add up to a smoother experience.
+  </aside>
+</section>
+
+<section>
+  <h2>Buffer Management</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,n</span> / <span class="key">,p</span></td>
+        <td>Next/previous buffer</td>
+      </tr>
+      <tr>
+        <td><span class="key">,bd</span></td>
+        <td>Delete buffer</td>
+      </tr>
+      <tr>
+        <td><span class="key">,b</span></td>
+        <td>List buffers (fzf)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 2rem; font-size: 0.9em;">
+    <strong>Quick shortcuts:</strong><br>
+    <span class="key">,w</span> write &nbsp;&nbsp;
+    <span class="key">,q</span> quit
+  </div>
+  <aside class="notes">
+    Buffers are like tabs - they hold open files.
+    ,n and ,p cycle through open buffers quickly.
+    ,b opens fzf to fuzzy-search through buffers.
+    ,bd closes the current buffer without closing the window.
+  </aside>
+</section>
+
+<section>
+  <h2>Window Splits</h2>
+  <p class="appendix-note">Appendix</p>
+  <table style="font-size: 0.9em;">
+    <tbody>
+      <tr>
+        <td><code>:sp</code> or <span class="key">Ctrl-w</span><span class="key">s</span></td>
+        <td>Horizontal split</td>
+      </tr>
+      <tr>
+        <td><code>:vsp</code> or <span class="key">Ctrl-w</span><span class="key">v</span></td>
+        <td>Vertical split</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-w</span><span class="key">=</span></td>
+        <td>Equal size splits</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-w</span><span class="key">o</span></td>
+        <td>Close other windows</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Standard vim split commands still work.
+    Ctrl-w prefix is for window operations.
+    Use splits when comparing files or working on related code.
+  </aside>
+</section>

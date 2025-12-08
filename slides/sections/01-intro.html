@@ -1,0 +1,100 @@
+<section>
+  <h1>Neovim Configuration</h1>
+  <h2>Tutorial</h2>
+  <p style="margin-top: 2rem; font-size: 0.9em; color: #888;">A comprehensive guide to your development environment</p>
+  <aside class="notes">
+    Welcome slide. This tutorial covers all the installed plugins and their use cases.
+    Audience should already be familiar with basic vim concepts (hjkl, modes, basic editing).
+  </aside>
+</section>
+
+<section>
+  <h2>What This Config Provides</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+    <div>
+      <h3 style="color: #7aa2f7;">Code Intelligence</h3>
+      <ul style="font-size: 0.85em;">
+        <li>LSP (completion, go-to-def)</li>
+        <li>Linting & auto-formatting</li>
+        <li>Diagnostics & quick fixes</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color: #9ece6a;">Navigation</h3>
+      <ul style="font-size: 0.85em;">
+        <li>Fuzzy file finding</li>
+        <li>Project-wide grep</li>
+        <li>File tree explorer</li>
+      </ul>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+    <div>
+      <h3 style="color: #bb9af7;">Git Integration</h3>
+      <ul style="font-size: 0.85em;">
+        <li>In-editor diffs & blame</li>
+        <li>Hunk navigation</li>
+        <li>GitHub integration</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color: #f7768e;">Languages</h3>
+      <ul style="font-size: 0.85em;">
+        <li>Go, Ruby, JS/TS</li>
+        <li>Rust, Python</li>
+        <li>JSON, Markdown</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+    This config is designed for multi-language development.
+    Each quadrant represents a major feature category we'll cover.
+  </aside>
+</section>
+
+<section>
+  <h2>Quick Start</h2>
+  <pre><code class="language-bash">git clone [repo] ~/.config/dev-env
+cd ~/.config/dev-env/vim
+make install</code></pre>
+  <h3 style="margin-top: 2rem;">Prerequisites</h3>
+  <ul style="font-size: 0.9em;">
+    <li><strong>neovim</strong> (0.9+)</li>
+    <li><strong>node.js</strong> (for coc.nvim extensions)</li>
+    <li><strong>ripgrep</strong> (for fast grep search)</li>
+    <li><strong>Nerd Font</strong> (optional, for icons)</li>
+  </ul>
+  <aside class="notes">
+    The Makefile handles symlinking configs and installing plugins.
+    Node.js is required because coc.nvim extensions are npm packages.
+    Ripgrep is used by fzf for blazing fast project searches.
+  </aside>
+</section>
+
+<section>
+  <h2>Architecture</h2>
+  <div style="font-size: 0.85em; text-align: left; max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #7aa2f7;">vim-plug</strong>
+      <span>Plugin manager</span>
+    </div>
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #9ece6a;">coc.nvim</strong>
+      <span>LSP client (completion, navigation, refactoring)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #bb9af7;">ALE</strong>
+      <span>Linting &amp; formatting (eslint, prettier, gofmt)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #f7768e;">Lua plugins</strong>
+      <span>Modern UI (lualine, nvim-tree, gitsigns)</span>
+    </div>
+  </div>
+  <aside class="notes">
+    This config uses a mix of VimScript and Lua plugins.
+    coc.nvim handles LSP - this is where IDE features come from.
+    ALE handles linting separately to avoid conflicts with coc.
+    Lua plugins provide modern UI elements with better performance.
+  </aside>
+</section>

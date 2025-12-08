@@ -1,0 +1,120 @@
+<section>
+  <h2>vim-commentary</h2>
+  <h3>Commenting Code</h3>
+  <table style="margin-top: 2rem;">
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">gcc</span></td>
+        <td>Toggle comment on line</td>
+      </tr>
+      <tr>
+        <td><span class="key">gc</span> + motion</td>
+        <td>Comment selection/motion</td>
+      </tr>
+      <tr>
+        <td><span class="key">gcap</span></td>
+        <td>Comment paragraph</td>
+      </tr>
+      <tr>
+        <td><span class="key">gc</span> (visual)</td>
+        <td>Comment selection</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1.5rem; font-size: 0.9em; color: #888;">
+    Automatically uses correct comment syntax for each language
+  </div>
+  <aside class="notes">
+    vim-commentary is incredibly useful for quick commenting.
+    gc works like any vim operator - combine with motions.
+    gcap comments the current paragraph (blank-line delimited).
+    Works in visual mode for arbitrary selections.
+  </aside>
+</section>
+
+<section>
+  <h2>vim-surround</h2>
+  <h3>Surround Text</h3>
+  <table style="font-size: 0.9em;">
+    <thead>
+      <tr><th>Key</th><th>Action</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">cs"'</span></td>
+        <td>Change " to '</td>
+        <td><code>"hello"</code> &rarr; <code>'hello'</code></td>
+      </tr>
+      <tr>
+        <td><span class="key">ds"</span></td>
+        <td>Delete "</td>
+        <td><code>"hello"</code> &rarr; <code>hello</code></td>
+      </tr>
+      <tr>
+        <td><span class="key">ysiw"</span></td>
+        <td>Surround word</td>
+        <td><code>hello</code> &rarr; <code>"hello"</code></td>
+      </tr>
+      <tr>
+        <td><span class="key">S"</span></td>
+        <td>Surround selection</td>
+        <td>Visual + S"</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem; font-size: 0.85em;">
+    Works with: <code>" ' ` ( ) [ ] { } &lt; &gt; t</code> (tags)
+  </div>
+  <aside class="notes">
+    vim-surround is essential for editing quotes, brackets, tags.
+    cs = change surrounding, ds = delete surrounding, ys = you surround.
+    The 't' target works with HTML/XML tags.
+    S in visual mode wraps the selection.
+  </aside>
+</section>
+
+<section>
+  <h2>Other Utilities</h2>
+  <p class="appendix-note">Appendix</p>
+  <div style="text-align: left; max-width: 700px; margin: 1.5rem auto;">
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #7aa2f7;">lexima.vim</strong>
+      <p style="font-size: 0.85em; margin-top: 0.3rem;">Auto-closes brackets, quotes, and pairs as you type</p>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #9ece6a;">vim-repeat</strong>
+      <p style="font-size: 0.85em; margin-top: 0.3rem;">Makes <code>.</code> work with plugin commands (surround, commentary)</p>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="color: #bb9af7;">vim-endwise</strong>
+      <p style="font-size: 0.85em; margin-top: 0.3rem;">Auto-adds <code>end</code> in Ruby, Lua, shell scripts</p>
+    </div>
+  </div>
+  <aside class="notes">
+    These plugins work automatically in the background.
+    lexima saves keystrokes when typing code.
+    vim-repeat is essential for making . work properly.
+    vim-endwise helps with Ruby and other languages with end keywords.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 7: Editing</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Type a word: <code>hello</code></li>
+      <li>Surround with quotes: <span class="key">ysiw"</span></li>
+      <li>Change to backticks: <span class="key">cs"`</span></li>
+      <li>Delete the backticks: <span class="key">ds`</span></li>
+      <li>Comment a line: <span class="key">gcc</span></li>
+      <li>Select lines visually, comment: <span class="key">gc</span></li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise builds muscle memory for surround and comment operations.
+    These become incredibly natural after practice.
+  </aside>
+</section>

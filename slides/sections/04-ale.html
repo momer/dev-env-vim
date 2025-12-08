@@ -1,0 +1,103 @@
+<section>
+  <h2>ALE</h2>
+  <h3>Asynchronous Lint Engine</h3>
+  <ul style="margin-top: 2rem; font-size: 0.95em;">
+    <li>Runs linters in background without blocking</li>
+    <li>Auto-fixes code on save</li>
+    <li>Separate from coc.nvim (LSP disabled)</li>
+  </ul>
+  <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+    <strong>Division of Labor:</strong>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; font-size: 0.85em;">
+      <div><strong style="color: #9ece6a;">coc.nvim</strong> &rarr; LSP features</div>
+      <div><strong style="color: #bb9af7;">ALE</strong> &rarr; Linting &amp; formatting</div>
+    </div>
+  </div>
+  <aside class="notes">
+    ALE complements coc.nvim rather than competing with it.
+    We've explicitly disabled ALE's LSP features to avoid conflicts.
+    Fix-on-save is enabled globally.
+  </aside>
+</section>
+
+<section>
+  <h2>Primary Features</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">[e</span> / <span class="key">]e</span></td>
+        <td>Jump to prev/next lint error</td>
+      </tr>
+      <tr>
+        <td><span class="key">,d</span></td>
+        <td>Show error detail</td>
+      </tr>
+      <tr>
+        <td><em>(automatic)</em></td>
+        <td>Fix on save</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem;">
+    <strong>Key Difference:</strong><br>
+    <code>[e</code>/<code>]e</code> - ALE linting errors (eslint, rubocop)<br>
+    <code>[g</code>/<code>]g</code> - coc.nvim LSP diagnostics
+  </div>
+  <aside class="notes">
+    The [e/]e vs [g/]g distinction is important but subtle.
+    ALE errors come from dedicated linters.
+    coc diagnostics come from language servers.
+    On save, ALE runs all fixers automatically.
+  </aside>
+</section>
+
+<section>
+  <h2>Language Configuration</h2>
+  <p class="appendix-note">Appendix</p>
+  <table style="font-size: 0.8em;">
+    <thead>
+      <tr><th>Language</th><th>Linter</th><th>Fixer</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Go</td><td>golangci-lint</td><td>goimports, gofmt</td></tr>
+      <tr><td>Ruby</td><td>rubocop</td><td>rubocop</td></tr>
+      <tr><td>JS/TS</td><td>eslint</td><td>prettier, eslint</td></tr>
+      <tr><td>Rust</td><td>cargo/clippy</td><td>rustfmt</td></tr>
+      <tr><td>JSON/CSS/HTML</td><td>-</td><td>prettier</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1rem; font-size: 0.8em; color: #888;">
+    All files: <code>trim_whitespace</code>, <code>remove_trailing_lines</code>
+  </div>
+  <aside class="notes">
+    Every language has specific tools configured.
+    These tools need to be installed separately.
+    Prettier handles many file types.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 3: Linting</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Open a code file</li>
+      <li>Introduce a linting issue:
+        <ul style="font-size: 0.85em; margin-top: 0.3rem;">
+          <li>JS: add <code>var x = 1</code></li>
+          <li>Go: add unused variable</li>
+          <li>Ruby: add trailing whitespace</li>
+        </ul>
+      </li>
+      <li>Use <span class="key">]e</span> to jump to error</li>
+      <li>Press <span class="key">,d</span> to see details</li>
+      <li>Save with <span class="key">,w</span> - watch auto-fix</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise shows the automatic fixing power of ALE.
+    Some issues auto-fix (formatting), others need manual fixes.
+  </aside>
+</section>

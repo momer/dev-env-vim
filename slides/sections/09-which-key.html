@@ -1,0 +1,81 @@
+<section>
+  <h2>which-key.nvim</h2>
+  <h3>Keybinding Discovery</h3>
+  <div style="margin-top: 2rem;">
+    <ol style="font-size: 1.1em; text-align: left; max-width: 600px; margin: 0 auto;">
+      <li style="margin: 1.5rem 0;">
+        Press <span class="key">,</span> (leader)
+      </li>
+      <li style="margin: 1.5rem 0;">
+        Wait ~500ms
+      </li>
+      <li style="margin: 1.5rem 0;">
+        Popup shows all mappings with descriptions
+      </li>
+    </ol>
+  </div>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>This is your cheat sheet!</strong><br>
+    Use it constantly when learning - no need to memorize everything.
+  </div>
+  <aside class="notes">
+    which-key is the most important plugin for learning this config.
+    It groups related commands together (file, git, coc, etc).
+    The popup disappears when you press a key or escape.
+  </aside>
+</section>
+
+<section>
+  <h2>Common Mappings</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; font-size: 0.85em;">
+    <div>
+      <h4 style="color: #7aa2f7;">Files</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,f</span></td><td>Find files</td></tr>
+          <tr><td><span class="key">,g</span></td><td>Grep</td></tr>
+          <tr><td><span class="key">,b</span></td><td>Buffers</td></tr>
+          <tr><td><span class="key">,e</span></td><td>Explorer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4 style="color: #9ece6a;">Code</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,gd</span></td><td>Go to def</td></tr>
+          <tr><td><span class="key">,gr</span></td><td>References</td></tr>
+          <tr><td><span class="key">,ca</span></td><td>Code actions</td></tr>
+          <tr><td><span class="key">,rn</span></td><td>Rename</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; font-size: 0.85em; margin-top: 1rem;">
+    <div>
+      <h4 style="color: #bb9af7;">Git</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,gs</span></td><td>Git status</td></tr>
+          <tr><td><span class="key">,hp</span></td><td>Preview hunk</td></tr>
+          <tr><td><span class="key">,hb</span></td><td>Blame line</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4 style="color: #f7768e;">Other</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,w</span></td><td>Write file</td></tr>
+          <tr><td><span class="key">,q</span></td><td>Quit</td></tr>
+          <tr><td><span class="key">,n</span></td><td>Next buffer</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">
+    These are the most commonly used mappings grouped by category.
+    which-key shows all of these and more when you press leader.
+    The groups help you remember related commands.
+  </aside>
+</section>

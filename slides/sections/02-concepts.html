@@ -1,0 +1,66 @@
+<section>
+  <h2>Essential Concepts</h2>
+  <h3>Leader Keys</h3>
+  <div style="margin-top: 2rem;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin: 1.5rem 0;">
+      <div style="text-align: center;">
+        <span class="key" style="font-size: 2em;">,</span>
+        <p style="margin-top: 0.5rem; font-size: 0.9em;">Leader</p>
+      </div>
+      <div style="font-size: 1.5em; color: #888;">+</div>
+      <div style="text-align: center;">
+        <span class="key" style="font-size: 1.5em;">key</span>
+        <p style="margin-top: 0.5rem; font-size: 0.9em;">Action</p>
+      </div>
+    </div>
+    <p style="font-size: 0.9em; color: #888;">All custom mappings start with comma</p>
+  </div>
+  <div style="margin-top: 2rem;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+      <span class="key">,</span><span class="key">,</span>
+      <span style="margin-left: 1rem;">LocalLeader - language-specific commands</span>
+    </div>
+  </div>
+  <aside class="notes">
+    The leader key is the starting point for all custom mappings.
+    We use comma because it's easy to reach and rarely used for editing.
+    LocalLeader (double comma) is for language-specific commands like running tests.
+  </aside>
+</section>
+
+<section>
+  <h2>Keybinding Discovery</h2>
+  <h3>which-key.nvim</h3>
+  <div style="margin-top: 2rem;">
+    <ol style="font-size: 1.1em; text-align: left; max-width: 500px; margin: 0 auto;">
+      <li style="margin: 1rem 0;">Press <span class="key">,</span> (leader)</li>
+      <li style="margin: 1rem 0;">Wait ~500ms</li>
+      <li style="margin: 1rem 0;">Popup shows all available mappings</li>
+    </ol>
+  </div>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>Pro Tip:</strong> Use this constantly when learning - no need to memorize everything!
+  </div>
+  <aside class="notes">
+    which-key is your built-in cheat sheet.
+    When you press leader and pause, it shows all available keybindings with descriptions.
+    This is extremely helpful when learning the config.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 1: Discovery</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.95em; text-align: left;">
+      <li>Open neovim</li>
+      <li>Press <span class="key">,</span> and wait</li>
+      <li>Explore the popup menu</li>
+      <li>Try <span class="key">,</span><span class="key">f</span> to find a file</li>
+      <li>Try <span class="key">,</span><span class="key">g</span> to grep the codebase</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise gets students comfortable with leader key and which-key.
+    After this, they should understand how to discover any keybinding on their own.
+  </aside>
+</section>

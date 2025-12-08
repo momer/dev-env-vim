@@ -1,0 +1,147 @@
+<section>
+  <h2>coc.nvim</h2>
+  <h3>Conquer of Completion</h3>
+  <p style="margin-top: 1.5rem;">Full LSP client providing IDE-like features</p>
+  <div style="margin-top: 2rem;">
+    <h4>Installed Extensions</h4>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.85em; margin-top: 1rem;">
+      <div>
+        <code>coc-tsserver</code> - TypeScript/JS<br>
+        <code>coc-go</code> - Go<br>
+        <code>coc-rust-analyzer</code> - Rust
+      </div>
+      <div>
+        <code>coc-solargraph</code> - Ruby<br>
+        <code>coc-json</code> - JSON<br>
+        <code>coc-eslint</code> - ESLint
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    coc.nvim is our main LSP client. It handles all smart code intelligence.
+    Each language has a specific extension that talks to its language server.
+    ALE is disabled for LSP features to avoid conflicts.
+  </aside>
+</section>
+
+<section>
+  <h2>Primary Features</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">Tab</span> / <span class="key">Shift-Tab</span></td>
+        <td>Navigate completion menu</td>
+      </tr>
+      <tr>
+        <td><span class="key">Enter</span></td>
+        <td>Confirm completion</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-Space</span></td>
+        <td>Trigger completion manually</td>
+      </tr>
+      <tr>
+        <td><span class="key">K</span></td>
+        <td>Hover documentation</td>
+      </tr>
+      <tr>
+        <td><span class="key">,gd</span></td>
+        <td>Go to definition</td>
+      </tr>
+      <tr>
+        <td><span class="key">,gr</span></td>
+        <td>Find references</td>
+      </tr>
+      <tr>
+        <td><span class="key">,rn</span></td>
+        <td>Rename symbol</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    These are the core keybindings you'll use every day.
+    K shows documentation in a floating window - super useful for API exploration.
+    ,gd is your main navigation tool. Use Ctrl-o to jump back.
+  </aside>
+</section>
+
+<section>
+  <h2>Code Actions & Diagnostics</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,ca</span></td>
+        <td>Code actions (auto-import, quick fixes)</td>
+      </tr>
+      <tr>
+        <td><span class="key">,qf</span></td>
+        <td>Quick fix current issue</td>
+      </tr>
+      <tr>
+        <td><span class="key">[g</span> / <span class="key">]g</span></td>
+        <td>Jump to prev/next diagnostic</td>
+      </tr>
+      <tr>
+        <td><span class="key">,cf</span></td>
+        <td>Format code</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem;">
+    Diagnostics show inline with virtual text
+  </div>
+  <aside class="notes">
+    Code actions are context-aware suggestions from the language server.
+    Common uses: adding missing imports, implementing interfaces, extracting functions.
+    [g and ]g navigate through errors from LSP (not ALE linter).
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 2: LSP Navigation</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Open a code file (Go, TypeScript, Rust, or Ruby)</li>
+      <li>Place cursor on a function call</li>
+      <li>Press <span class="key">,gd</span> to jump to definition</li>
+      <li>Press <span class="key">Ctrl-o</span> to jump back</li>
+      <li>Press <span class="key">K</span> to see documentation</li>
+      <li>Press <span class="key">,gr</span> to find all references</li>
+      <li>Try <span class="key">,rn</span> to rename a variable</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise gets students comfortable with core LSP features.
+    The rename feature is particularly impressive to demonstrate LSP power.
+  </aside>
+</section>
+
+<section>
+  <h2>Advanced Features</h2>
+  <p class="appendix-note">Appendix - for reference</p>
+  <table style="font-size: 0.8em;">
+    <tbody>
+      <tr><td><span class="key">,gt</span></td><td>Go to type definition</td></tr>
+      <tr><td><span class="key">,gi</span></td><td>Go to implementation</td></tr>
+      <tr><td><span class="key">,re</span></td><td>Refactor (extract, inline)</td></tr>
+      <tr><td><span class="key">,co</span></td><td>Show document outline</td></tr>
+      <tr><td><span class="key">,cs</span></td><td>Search workspace symbols</td></tr>
+    </tbody>
+  </table>
+  <h4 style="margin-top: 1.5rem;">Text Objects</h4>
+  <div style="font-size: 0.85em;">
+    <code>if</code> / <code>af</code> - inner/around function<br>
+    <code>ic</code> / <code>ac</code> - inner/around class<br>
+    <em style="color: #888;">Use with operators: <code>dif</code>, <code>vaf</code>, <code>yic</code></em>
+  </div>
+  <aside class="notes">
+    These are power-user features for later exploration.
+    Text objects work with standard Vim operators.
+  </aside>
+</section>

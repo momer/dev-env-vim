@@ -1,0 +1,63 @@
+<section>
+  <h2>indent-blankline.nvim</h2>
+  <h3>Indent Guides</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+    <div>
+      <h4 style="color: #888;">Without</h4>
+      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
+  if (condition) {
+    for (i = 0; i < n; i++) {
+      doSomething();
+    }
+  }
+}</code></pre>
+    </div>
+    <div>
+      <h4 style="color: #9ece6a;">With Guides</h4>
+      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
+<span style="color: #3b4261;">│</span> if (condition) {
+<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> for (i = 0; i < n; i++) {
+<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> doSomething();
+<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> }
+<span style="color: #3b4261;">│</span> }
+}</code></pre>
+    </div>
+  </div>
+  <ul style="margin-top: 1.5rem; font-size: 0.9em;">
+    <li>Shows vertical indent guides</li>
+    <li>Highlights current scope</li>
+    <li>Helps track nesting level</li>
+  </ul>
+  <aside class="notes">
+    indent-blankline makes code structure visible.
+    The current scope is highlighted more prominently.
+    Essential for deeply nested code in Python, YAML, etc.
+  </aside>
+</section>
+
+<section>
+  <h2>kanagawa.nvim</h2>
+  <h3>Color Scheme</h3>
+  <div style="margin-top: 2rem;">
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <div style="width: 60px; height: 60px; background: #1a1b26; border-radius: 4px;" title="bg"></div>
+      <div style="width: 60px; height: 60px; background: #c0caf5; border-radius: 4px;" title="fg"></div>
+      <div style="width: 60px; height: 60px; background: #7aa2f7; border-radius: 4px;" title="blue"></div>
+      <div style="width: 60px; height: 60px; background: #9ece6a; border-radius: 4px;" title="green"></div>
+      <div style="width: 60px; height: 60px; background: #bb9af7; border-radius: 4px;" title="purple"></div>
+      <div style="width: 60px; height: 60px; background: #f7768e; border-radius: 4px;" title="red"></div>
+      <div style="width: 60px; height: 60px; background: #e0af68; border-radius: 4px;" title="yellow"></div>
+      <div style="width: 60px; height: 60px; background: #7dcfff; border-radius: 4px;" title="cyan"></div>
+    </div>
+  </div>
+  <ul style="margin-top: 2rem; font-size: 0.9em;">
+    <li>Modern, warm color scheme</li>
+    <li>Good contrast for long coding sessions</li>
+    <li>Inspired by Japanese art</li>
+  </ul>
+  <aside class="notes">
+    kanagawa is a carefully designed color scheme.
+    The warm tones reduce eye strain.
+    It's designed to be pleasant during long coding sessions.
+  </aside>
+</section>

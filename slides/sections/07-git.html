@@ -1,0 +1,104 @@
+<section>
+  <h2>Git Integration</h2>
+  <h3>gitsigns.nvim</h3>
+  <table style="margin-top: 1.5rem;">
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">]c</span> / <span class="key">[c</span></td>
+        <td>Jump to next/prev hunk</td>
+      </tr>
+      <tr>
+        <td><span class="key">,hp</span></td>
+        <td>Preview hunk (see diff)</td>
+      </tr>
+      <tr>
+        <td><span class="key">,hb</span></td>
+        <td>Blame current line</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1.5rem; font-size: 0.9em;">
+    <strong>Sign Column:</strong>
+    <span style="color: #9ece6a;">│</span> add/change &nbsp;
+    <span style="color: #f7768e;">_</span> delete
+  </div>
+  <aside class="notes">
+    gitsigns shows git status in the sign column.
+    Hunks are chunks of changed code.
+    ,hp shows a floating window with the diff for that hunk.
+    ,hb shows who last modified the current line.
+  </aside>
+</section>
+
+<section>
+  <h2>vim-fugitive</h2>
+  <h3>Git Commands</h3>
+  <table style="font-size: 0.9em;">
+    <tbody>
+      <tr>
+        <td><code>:Git</code> / <code>:G</code></td>
+        <td>Open Git status</td>
+      </tr>
+      <tr>
+        <td><code>:Git blame</code></td>
+        <td>Full file blame</td>
+      </tr>
+      <tr>
+        <td><code>:Git diff</code></td>
+        <td>Diff view</td>
+      </tr>
+      <tr>
+        <td><code>:Gwrite</code></td>
+        <td>Stage current file</td>
+      </tr>
+      <tr>
+        <td><code>:Gread</code></td>
+        <td>Checkout current file</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Fugitive is the definitive Git plugin for Vim.
+    :G opens an interactive status view where you can stage with s.
+    :Git blame opens a side-by-side blame view.
+  </aside>
+</section>
+
+<section>
+  <h2>vim-rhubarb</h2>
+  <h3>GitHub Integration</h3>
+  <div style="margin-top: 2rem;">
+    <code style="font-size: 1.2em;">:GBrowse</code>
+    <p style="margin-top: 1rem; font-size: 0.9em;">Opens current file on GitHub</p>
+  </div>
+  <div class="tip" style="margin-top: 2rem;">
+    Works with visual selection for line ranges!<br>
+    Select lines, then <code>:GBrowse</code> to share a permalink.
+  </div>
+  <aside class="notes">
+    :GBrowse is incredibly useful for sharing code with teammates.
+    Select lines in visual mode and :GBrowse creates a permalink.
+    Also works for PRs, issues, and commits.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 6: Git Workflow</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Make a small change to a file</li>
+      <li>Use <span class="key">]c</span> to jump to the change</li>
+      <li>Press <span class="key">,hp</span> to preview the hunk</li>
+      <li>Press <span class="key">,hb</span> to see line blame</li>
+      <li>Run <code>:Git blame</code> for full file blame</li>
+      <li>Run <code>:G</code> to see git status</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise covers the most common git operations.
+    Students should feel comfortable navigating changes and viewing history.
+  </aside>
+</section>

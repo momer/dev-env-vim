@@ -1,0 +1,1498 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Neovim Configuration Tutorial</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+
+    <style>
+      :root {
+        --r-heading-font: 'JetBrains Mono', monospace;
+        --r-main-font: 'Inter', sans-serif;
+      }
+      .reveal h1, .reveal h2, .reveal h3 {
+        text-transform: none;
+      }
+      .reveal table {
+        margin: 0 auto;
+        border-collapse: collapse;
+      }
+      .reveal table th,
+      .reveal table td {
+        padding: 0.4em 0.8em;
+        border: 1px solid #555;
+        text-align: left;
+      }
+      .reveal table th {
+        background: #333;
+      }
+      .reveal code {
+        background: #2d2d2d;
+        padding: 0.1em 0.3em;
+        border-radius: 4px;
+      }
+      .reveal pre code {
+        padding: 1em;
+        max-height: 500px;
+      }
+      .key {
+        background: #444;
+        padding: 0.2em 0.5em;
+        border-radius: 4px;
+        font-family: monospace;
+        border: 1px solid #666;
+      }
+      .exercise {
+        background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 100%);
+        padding: 1em;
+        border-radius: 8px;
+        border-left: 4px solid #4caf50;
+      }
+      .tip {
+        background: linear-gradient(135deg, #1a3a4a 0%, #2d4a5d 100%);
+        padding: 0.8em;
+        border-radius: 8px;
+        border-left: 4px solid #2196f3;
+        font-size: 0.9em;
+      }
+      .appendix-note {
+        font-size: 0.7em;
+        color: #888;
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <!-- ==================== SECTION 01: INTRO ==================== -->
+<section>
+  <h1>Neovim Configuration</h1>
+  <h2>Tutorial</h2>
+  <p style="margin-top: 2rem; font-size: 0.9em; color: #888;">A comprehensive guide to your development environment</p>
+  <aside class="notes">
+    Welcome slide. This tutorial covers all the installed plugins and their use cases.
+    Audience should already be familiar with basic vim concepts (hjkl, modes, basic editing).
+  </aside>
+</section>
+
+<section>
+  <h2>What This Config Provides</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+    <div>
+      <h3 style="color: #7aa2f7;">Code Intelligence</h3>
+      <ul style="font-size: 0.85em;">
+        <li>LSP (completion, go-to-def)</li>
+        <li>Linting & auto-formatting</li>
+        <li>Diagnostics & quick fixes</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color: #9ece6a;">Navigation</h3>
+      <ul style="font-size: 0.85em;">
+        <li>Fuzzy file finding</li>
+        <li>Project-wide grep</li>
+        <li>File tree explorer</li>
+      </ul>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+    <div>
+      <h3 style="color: #bb9af7;">Git Integration</h3>
+      <ul style="font-size: 0.85em;">
+        <li>In-editor diffs & blame</li>
+        <li>Hunk navigation</li>
+        <li>GitHub integration</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color: #f7768e;">Languages</h3>
+      <ul style="font-size: 0.85em;">
+        <li>Go, Ruby, JS/TS</li>
+        <li>Rust, Python</li>
+        <li>JSON, Markdown</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+    This config is designed for multi-language development.
+    Each quadrant represents a major feature category we'll cover.
+  </aside>
+</section>
+
+<section>
+  <h2>Quick Start</h2>
+  <pre><code class="language-bash">git clone [repo] ~/.config/dev-env
+cd ~/.config/dev-env/vim
+make install</code></pre>
+  <h3 style="margin-top: 2rem;">Prerequisites</h3>
+  <ul style="font-size: 0.9em;">
+    <li><strong>neovim</strong> (0.9+)</li>
+    <li><strong>node.js</strong> (for coc.nvim extensions)</li>
+    <li><strong>ripgrep</strong> (for fast grep search)</li>
+    <li><strong>Nerd Font</strong> (optional, for icons)</li>
+  </ul>
+  <aside class="notes">
+    The Makefile handles symlinking configs and installing plugins.
+    Node.js is required because coc.nvim extensions are npm packages.
+    Ripgrep is used by fzf for blazing fast project searches.
+  </aside>
+</section>
+
+<section>
+  <h2>Architecture</h2>
+  <div style="font-size: 0.85em; text-align: left; max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #7aa2f7;">vim-plug</strong>
+      <span>Plugin manager</span>
+    </div>
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #9ece6a;">coc.nvim</strong>
+      <span>LSP client (completion, navigation, refactoring)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #bb9af7;">ALE</strong>
+      <span>Linting &amp; formatting (eslint, prettier, gofmt)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="width: 180px; color: #f7768e;">Lua plugins</strong>
+      <span>Modern UI (lualine, nvim-tree, gitsigns)</span>
+    </div>
+  </div>
+  <aside class="notes">
+    This config uses a mix of VimScript and Lua plugins.
+    coc.nvim handles LSP - this is where IDE features come from.
+    ALE handles linting separately to avoid conflicts with coc.
+    Lua plugins provide modern UI elements with better performance.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 02: CONCEPTS ==================== -->
+<section>
+  <h2>Essential Concepts</h2>
+  <h3>Leader Keys</h3>
+  <div style="margin-top: 2rem;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; margin: 1.5rem 0;">
+      <div style="text-align: center;">
+        <span class="key" style="font-size: 2em;">,</span>
+        <p style="margin-top: 0.5rem; font-size: 0.9em;">Leader</p>
+      </div>
+      <div style="font-size: 1.5em; color: #888;">+</div>
+      <div style="text-align: center;">
+        <span class="key" style="font-size: 1.5em;">key</span>
+        <p style="margin-top: 0.5rem; font-size: 0.9em;">Action</p>
+      </div>
+    </div>
+    <p style="font-size: 0.9em; color: #888;">All custom mappings start with comma</p>
+  </div>
+  <div style="margin-top: 2rem;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+      <span class="key">,</span><span class="key">,</span>
+      <span style="margin-left: 1rem;">LocalLeader - language-specific commands</span>
+    </div>
+  </div>
+  <aside class="notes">
+    The leader key is the starting point for all custom mappings.
+    We use comma because it's easy to reach and rarely used for editing.
+    LocalLeader (double comma) is for language-specific commands like running tests.
+  </aside>
+</section>
+
+<section>
+  <h2>Keybinding Discovery</h2>
+  <h3>which-key.nvim</h3>
+  <div style="margin-top: 2rem;">
+    <ol style="font-size: 1.1em; text-align: left; max-width: 500px; margin: 0 auto;">
+      <li style="margin: 1rem 0;">Press <span class="key">,</span> (leader)</li>
+      <li style="margin: 1rem 0;">Wait ~500ms</li>
+      <li style="margin: 1rem 0;">Popup shows all available mappings</li>
+    </ol>
+  </div>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>Pro Tip:</strong> Use this constantly when learning - no need to memorize everything!
+  </div>
+  <aside class="notes">
+    which-key is your built-in cheat sheet.
+    When you press leader and pause, it shows all available keybindings with descriptions.
+    This is extremely helpful when learning the config.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 1: Discovery</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.95em; text-align: left;">
+      <li>Open neovim</li>
+      <li>Press <span class="key">,</span> and wait</li>
+      <li>Explore the popup menu</li>
+      <li>Try <span class="key">,</span><span class="key">f</span> to find a file</li>
+      <li>Try <span class="key">,</span><span class="key">g</span> to grep the codebase</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise gets students comfortable with leader key and which-key.
+    After this, they should understand how to discover any keybinding on their own.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 03: COC.NVIM ==================== -->
+<section>
+  <h2>coc.nvim</h2>
+  <h3>Conquer of Completion</h3>
+  <p style="margin-top: 1.5rem;">Full LSP client providing IDE-like features</p>
+  <div style="margin-top: 2rem;">
+    <h4>Installed Extensions</h4>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.85em; margin-top: 1rem;">
+      <div>
+        <code>coc-tsserver</code> - TypeScript/JS<br>
+        <code>coc-go</code> - Go<br>
+        <code>coc-rust-analyzer</code> - Rust
+      </div>
+      <div>
+        <code>coc-solargraph</code> - Ruby<br>
+        <code>coc-json</code> - JSON<br>
+        <code>coc-eslint</code> - ESLint
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    coc.nvim is our main LSP client. It handles all smart code intelligence.
+    Each language has a specific extension that talks to its language server.
+    ALE is disabled for LSP features to avoid conflicts.
+  </aside>
+</section>
+
+<section>
+  <h2>Primary Features</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">Tab</span> / <span class="key">Shift-Tab</span></td>
+        <td>Navigate completion menu</td>
+      </tr>
+      <tr>
+        <td><span class="key">Enter</span></td>
+        <td>Confirm completion</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-Space</span></td>
+        <td>Trigger completion manually</td>
+      </tr>
+      <tr>
+        <td><span class="key">K</span></td>
+        <td>Hover documentation</td>
+      </tr>
+      <tr>
+        <td><span class="key">,gd</span></td>
+        <td>Go to definition</td>
+      </tr>
+      <tr>
+        <td><span class="key">,gr</span></td>
+        <td>Find references</td>
+      </tr>
+      <tr>
+        <td><span class="key">,rn</span></td>
+        <td>Rename symbol</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    These are the core keybindings you'll use every day.
+    K shows documentation in a floating window - super useful for API exploration.
+    ,gd is your main navigation tool. Use Ctrl-o to jump back.
+  </aside>
+</section>
+
+<section>
+  <h2>Code Actions & Diagnostics</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,ca</span></td>
+        <td>Code actions (auto-import, quick fixes)</td>
+      </tr>
+      <tr>
+        <td><span class="key">,qf</span></td>
+        <td>Quick fix current issue</td>
+      </tr>
+      <tr>
+        <td><span class="key">[g</span> / <span class="key">]g</span></td>
+        <td>Jump to prev/next diagnostic</td>
+      </tr>
+      <tr>
+        <td><span class="key">,cf</span></td>
+        <td>Format code</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem;">
+    Diagnostics show inline with virtual text
+  </div>
+  <aside class="notes">
+    Code actions are context-aware suggestions from the language server.
+    Common uses: adding missing imports, implementing interfaces, extracting functions.
+    [g and ]g navigate through errors from LSP (not ALE linter).
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 2: LSP Navigation</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Open a code file (Go, TypeScript, Rust, or Ruby)</li>
+      <li>Place cursor on a function call</li>
+      <li>Press <span class="key">,gd</span> to jump to definition</li>
+      <li>Press <span class="key">Ctrl-o</span> to jump back</li>
+      <li>Press <span class="key">K</span> to see documentation</li>
+      <li>Press <span class="key">,gr</span> to find all references</li>
+      <li>Try <span class="key">,rn</span> to rename a variable</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise gets students comfortable with core LSP features.
+    The rename feature is particularly impressive to demonstrate LSP power.
+  </aside>
+</section>
+
+<section>
+  <h2>Advanced Features</h2>
+  <p class="appendix-note">Appendix - for reference</p>
+  <table style="font-size: 0.8em;">
+    <tbody>
+      <tr><td><span class="key">,gt</span></td><td>Go to type definition</td></tr>
+      <tr><td><span class="key">,gi</span></td><td>Go to implementation</td></tr>
+      <tr><td><span class="key">,re</span></td><td>Refactor (extract, inline)</td></tr>
+      <tr><td><span class="key">,co</span></td><td>Show document outline</td></tr>
+      <tr><td><span class="key">,cs</span></td><td>Search workspace symbols</td></tr>
+    </tbody>
+  </table>
+  <h4 style="margin-top: 1.5rem;">Text Objects</h4>
+  <div style="font-size: 0.85em;">
+    <code>if</code> / <code>af</code> - inner/around function<br>
+    <code>ic</code> / <code>ac</code> - inner/around class<br>
+    <em style="color: #888;">Use with operators: <code>dif</code>, <code>vaf</code>, <code>yic</code></em>
+  </div>
+  <aside class="notes">
+    These are power-user features for later exploration.
+    Text objects work with standard Vim operators.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 04: ALE ==================== -->
+<section>
+  <h2>ALE</h2>
+  <h3>Asynchronous Lint Engine</h3>
+  <ul style="margin-top: 2rem; font-size: 0.95em;">
+    <li>Runs linters in background without blocking</li>
+    <li>Auto-fixes code on save</li>
+    <li>Separate from coc.nvim (LSP disabled)</li>
+  </ul>
+  <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+    <strong>Division of Labor:</strong>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; font-size: 0.85em;">
+      <div><strong style="color: #9ece6a;">coc.nvim</strong> &rarr; LSP features</div>
+      <div><strong style="color: #bb9af7;">ALE</strong> &rarr; Linting &amp; formatting</div>
+    </div>
+  </div>
+  <aside class="notes">
+    ALE complements coc.nvim rather than competing with it.
+    We've explicitly disabled ALE's LSP features to avoid conflicts.
+    Fix-on-save is enabled globally.
+  </aside>
+</section>
+
+<section>
+  <h2>Primary Features</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">[e</span> / <span class="key">]e</span></td>
+        <td>Jump to prev/next lint error</td>
+      </tr>
+      <tr>
+        <td><span class="key">,d</span></td>
+        <td>Show error detail</td>
+      </tr>
+      <tr>
+        <td><em>(automatic)</em></td>
+        <td>Fix on save</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem;">
+    <strong>Key Difference:</strong><br>
+    <code>[e</code>/<code>]e</code> - ALE linting errors (eslint, rubocop)<br>
+    <code>[g</code>/<code>]g</code> - coc.nvim LSP diagnostics
+  </div>
+  <aside class="notes">
+    The [e/]e vs [g/]g distinction is important but subtle.
+    ALE errors come from dedicated linters.
+    coc diagnostics come from language servers.
+    On save, ALE runs all fixers automatically.
+  </aside>
+</section>
+
+<section>
+  <h2>Language Configuration</h2>
+  <p class="appendix-note">Appendix</p>
+  <table style="font-size: 0.8em;">
+    <thead>
+      <tr><th>Language</th><th>Linter</th><th>Fixer</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Go</td><td>golangci-lint</td><td>goimports, gofmt</td></tr>
+      <tr><td>Ruby</td><td>rubocop</td><td>rubocop</td></tr>
+      <tr><td>JS/TS</td><td>eslint</td><td>prettier, eslint</td></tr>
+      <tr><td>Rust</td><td>cargo/clippy</td><td>rustfmt</td></tr>
+      <tr><td>JSON/CSS/HTML</td><td>-</td><td>prettier</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1rem; font-size: 0.8em; color: #888;">
+    All files: <code>trim_whitespace</code>, <code>remove_trailing_lines</code>
+  </div>
+  <aside class="notes">
+    Every language has specific tools configured.
+    These tools need to be installed separately.
+    Prettier handles many file types.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 3: Linting</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Open a code file</li>
+      <li>Introduce a linting issue:
+        <ul style="font-size: 0.85em; margin-top: 0.3rem;">
+          <li>JS: add <code>var x = 1</code></li>
+          <li>Go: add unused variable</li>
+          <li>Ruby: add trailing whitespace</li>
+        </ul>
+      </li>
+      <li>Use <span class="key">]e</span> to jump to error</li>
+      <li>Press <span class="key">,d</span> to see details</li>
+      <li>Save with <span class="key">,w</span> - watch auto-fix</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise shows the automatic fixing power of ALE.
+    Some issues auto-fix (formatting), others need manual fixes.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 05: FZF ==================== -->
+<section>
+  <h2>fzf.vim</h2>
+  <h3>Fuzzy Finder</h3>
+  <ul style="margin-top: 2rem; font-size: 0.95em;">
+    <li>Lightning-fast fuzzy file finding</li>
+    <li>Uses ripgrep for content search</li>
+    <li>Preview window on the right</li>
+    <li>Works with git to respect .gitignore</li>
+  </ul>
+  <aside class="notes">
+    fzf is probably the tool you'll use most often.
+    It's incredibly fast even on large codebases.
+    The preview window lets you see file contents before opening.
+  </aside>
+</section>
+
+<section>
+  <h2>Primary Features</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th><th>When to Use</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,f</span></td>
+        <td>Find files</td>
+        <td>Open any file by name</td>
+      </tr>
+      <tr>
+        <td><span class="key">,g</span></td>
+        <td>Grep (ripgrep)</td>
+        <td>Search text in codebase</td>
+      </tr>
+      <tr>
+        <td><span class="key">,b</span></td>
+        <td>List buffers</td>
+        <td>Switch open files</td>
+      </tr>
+      <tr>
+        <td><span class="key">,*</span></td>
+        <td>Grep word under cursor</td>
+        <td>Find usages</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    These four commands cover 90% of navigation needs.
+    ,f is for when you know the filename.
+    ,g is for when you know the content.
+    ,* is a quick way to find all usages of something.
+  </aside>
+</section>
+
+<section>
+  <h2>Git-Aware Search</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,gf</span></td>
+        <td>Git files (respects .gitignore)</td>
+      </tr>
+      <tr>
+        <td><span class="key">,gs</span></td>
+        <td>Git status files (modified only)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>Tip:</strong> Use <span class="key">,gs</span> to quickly jump between files you're currently editing
+  </div>
+  <aside class="notes">
+    Git-aware search is great for focusing on relevant files.
+    ,gf excludes node_modules, build folders, etc.
+    ,gs is perfect when working on a feature across multiple files.
+  </aside>
+</section>
+
+<section>
+  <h2>Other Features</h2>
+  <p class="appendix-note">Appendix</p>
+  <table style="font-size: 0.85em;">
+    <tbody>
+      <tr><td><span class="key">,l</span></td><td>Search lines in current buffer</td></tr>
+      <tr><td><span class="key">,h</span></td><td>File history (recently opened)</td></tr>
+      <tr><td><span class="key">,c</span></td><td>Commands</td></tr>
+      <tr><td><span class="key">,:</span></td><td>Command history</td></tr>
+      <tr><td><span class="key">,/</span></td><td>Search history</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1.5rem; font-size: 0.9em;">
+    <strong>Inside fzf:</strong> <span class="key">Ctrl-/</span> toggles preview
+  </div>
+  <aside class="notes">
+    These are less common but still useful.
+    ,h is great for reopening recently closed files.
+    ,c helps discover vim commands you don't remember.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 4: Fuzzy Finding</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Use <span class="key">,f</span> to find a file by partial name</li>
+      <li>Use <span class="key">,g</span> to search for a function name</li>
+      <li>Place cursor on a variable</li>
+      <li>Press <span class="key">,*</span> to find all usages</li>
+      <li>Use <span class="key">,gs</span> to see modified files</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise builds muscle memory for the most common fzf commands.
+    Students should feel comfortable navigating any codebase after this.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 06: NVIM-TREE ==================== -->
+<section>
+  <h2>nvim-tree</h2>
+  <h3>File Explorer</h3>
+  <table style="margin-top: 2rem;">
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,E</span></td>
+        <td>Toggle nvim-tree sidebar</td>
+      </tr>
+      <tr>
+        <td><span class="key">,ef</span></td>
+        <td>Find current file in tree</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 2rem;">
+    Use <span class="key">,ef</span> to quickly locate where you are in the project structure
+  </div>
+  <aside class="notes">
+    nvim-tree provides a visual file explorer on the left side.
+    It's useful for understanding project structure and file operations.
+    ,ef is particularly useful when you've navigated deep into the codebase.
+  </aside>
+</section>
+
+<section>
+  <h2>Tree Navigation</h2>
+  <p class="appendix-note">Appendix</p>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+    <div>
+      <h4>Navigation</h4>
+      <table style="font-size: 0.85em;">
+        <tbody>
+          <tr><td><span class="key">Enter</span></td><td>Open/expand</td></tr>
+          <tr><td><span class="key">o</span></td><td>Open</td></tr>
+          <tr><td><span class="key">P</span></td><td>Go to parent</td></tr>
+          <tr><td><span class="key">?</span></td><td>Help</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4>File Operations</h4>
+      <table style="font-size: 0.85em;">
+        <tbody>
+          <tr><td><span class="key">a</span></td><td>Create file</td></tr>
+          <tr><td><span class="key">d</span></td><td>Delete</td></tr>
+          <tr><td><span class="key">r</span></td><td>Rename</td></tr>
+          <tr><td><span class="key">c</span> / <span class="key">p</span></td><td>Copy/Paste</td></tr>
+          <tr><td><span class="key">I</span></td><td>Toggle hidden</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">
+    These commands work inside the nvim-tree buffer.
+    Press ? inside the tree for full help.
+    Creating files with 'a' supports creating directories too (end with /).
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 5: File Explorer</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Press <span class="key">,E</span> to open file tree</li>
+      <li>Navigate with <span class="key">j</span>/<span class="key">k</span></li>
+      <li>Press <span class="key">a</span> to create a test file</li>
+      <li>Press <span class="key">d</span> to delete it</li>
+      <li>Press <span class="key">,ef</span> to find current file</li>
+      <li>Press <span class="key">,E</span> to close</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise familiarizes students with basic tree operations.
+    Emphasize that fzf is often faster for opening files.
+    Tree is better for file operations and understanding structure.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 07: GIT ==================== -->
+<section>
+  <h2>Git Integration</h2>
+  <h3>gitsigns.nvim</h3>
+  <table style="margin-top: 1.5rem;">
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">]c</span> / <span class="key">[c</span></td>
+        <td>Jump to next/prev hunk</td>
+      </tr>
+      <tr>
+        <td><span class="key">,hp</span></td>
+        <td>Preview hunk (see diff)</td>
+      </tr>
+      <tr>
+        <td><span class="key">,hb</span></td>
+        <td>Blame current line</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1.5rem; font-size: 0.9em;">
+    <strong>Sign Column:</strong>
+    <span style="color: #9ece6a;">│</span> add/change &nbsp;
+    <span style="color: #f7768e;">_</span> delete
+  </div>
+  <aside class="notes">
+    gitsigns shows git status in the sign column.
+    Hunks are chunks of changed code.
+    ,hp shows a floating window with the diff for that hunk.
+    ,hb shows who last modified the current line.
+  </aside>
+</section>
+
+<section>
+  <h2>vim-fugitive</h2>
+  <h3>Git Commands</h3>
+  <table style="font-size: 0.9em;">
+    <tbody>
+      <tr>
+        <td><code>:Git</code> / <code>:G</code></td>
+        <td>Open Git status</td>
+      </tr>
+      <tr>
+        <td><code>:Git blame</code></td>
+        <td>Full file blame</td>
+      </tr>
+      <tr>
+        <td><code>:Git diff</code></td>
+        <td>Diff view</td>
+      </tr>
+      <tr>
+        <td><code>:Gwrite</code></td>
+        <td>Stage current file</td>
+      </tr>
+      <tr>
+        <td><code>:Gread</code></td>
+        <td>Checkout current file</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Fugitive is the definitive Git plugin for Vim.
+    :G opens an interactive status view where you can stage with s.
+    :Git blame opens a side-by-side blame view.
+  </aside>
+</section>
+
+<section>
+  <h2>vim-rhubarb</h2>
+  <h3>GitHub Integration</h3>
+  <div style="margin-top: 2rem;">
+    <code style="font-size: 1.2em;">:GBrowse</code>
+    <p style="margin-top: 1rem; font-size: 0.9em;">Opens current file on GitHub</p>
+  </div>
+  <div class="tip" style="margin-top: 2rem;">
+    Works with visual selection for line ranges!<br>
+    Select lines, then <code>:GBrowse</code> to share a permalink.
+  </div>
+  <aside class="notes">
+    :GBrowse is incredibly useful for sharing code with teammates.
+    Select lines in visual mode and :GBrowse creates a permalink.
+    Also works for PRs, issues, and commits.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 6: Git Workflow</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Make a small change to a file</li>
+      <li>Use <span class="key">]c</span> to jump to the change</li>
+      <li>Press <span class="key">,hp</span> to preview the hunk</li>
+      <li>Press <span class="key">,hb</span> to see line blame</li>
+      <li>Run <code>:Git blame</code> for full file blame</li>
+      <li>Run <code>:G</code> to see git status</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise covers the most common git operations.
+    Students should feel comfortable navigating changes and viewing history.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 08: LUALINE ==================== -->
+<section>
+  <h2>lualine.nvim</h2>
+  <h3>Status Line</h3>
+  <div style="margin-top: 2rem; padding: 1rem; background: #1a1b26; border-radius: 8px; font-family: monospace; font-size: 0.9em;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <span style="background: #7aa2f7; color: #1a1b26; padding: 0.2em 0.5em; border-radius: 3px;">NORMAL</span>
+        <span style="color: #9ece6a; margin-left: 0.5em;">main</span>
+        <span style="color: #9ece6a; margin-left: 0.5em;">+2</span>
+        <span style="color: #f7768e; margin-left: 0.3em;">~1</span>
+        <span style="color: #888; margin-left: 1em;">init.vim</span>
+      </div>
+      <div>
+        <span style="color: #f7768e;">E:2</span>
+        <span style="color: #e0af68; margin-left: 0.5em;">W:1</span>
+        <span style="color: #888; margin-left: 1em;">utf-8</span>
+        <span style="color: #888; margin-left: 0.5em;">unix</span>
+        <span style="color: #888; margin-left: 0.5em;">vim</span>
+        <span style="color: #888; margin-left: 1em;">42%</span>
+        <span style="color: #888; margin-left: 0.5em;">12:5</span>
+      </div>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; font-size: 0.85em;">
+    <div>
+      <h4>Left Side</h4>
+      <ul style="text-align: left;">
+        <li>Mode indicator (colored)</li>
+        <li>Git branch</li>
+        <li>Diff stats (+added, ~changed, -removed)</li>
+        <li>Filename</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Right Side</h4>
+      <ul style="text-align: left;">
+        <li>Diagnostics (errors/warnings)</li>
+        <li>Encoding &amp; format</li>
+        <li>Filetype</li>
+        <li>Position (% and line:col)</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+    lualine provides at-a-glance status information.
+    The mode indicator changes color based on current mode.
+    Git diff stats show how many lines are added/changed/removed.
+    Diagnostics show error and warning counts from LSP.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 09: WHICH-KEY ==================== -->
+<section>
+  <h2>which-key.nvim</h2>
+  <h3>Keybinding Discovery</h3>
+  <div style="margin-top: 2rem;">
+    <ol style="font-size: 1.1em; text-align: left; max-width: 600px; margin: 0 auto;">
+      <li style="margin: 1.5rem 0;">
+        Press <span class="key">,</span> (leader)
+      </li>
+      <li style="margin: 1.5rem 0;">
+        Wait ~500ms
+      </li>
+      <li style="margin: 1.5rem 0;">
+        Popup shows all mappings with descriptions
+      </li>
+    </ol>
+  </div>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>This is your cheat sheet!</strong><br>
+    Use it constantly when learning - no need to memorize everything.
+  </div>
+  <aside class="notes">
+    which-key is the most important plugin for learning this config.
+    It groups related commands together (file, git, coc, etc).
+    The popup disappears when you press a key or escape.
+  </aside>
+</section>
+
+<section>
+  <h2>Common Mappings</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; font-size: 0.85em;">
+    <div>
+      <h4 style="color: #7aa2f7;">Files</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,f</span></td><td>Find files</td></tr>
+          <tr><td><span class="key">,g</span></td><td>Grep</td></tr>
+          <tr><td><span class="key">,b</span></td><td>Buffers</td></tr>
+          <tr><td><span class="key">,e</span></td><td>Explorer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4 style="color: #9ece6a;">Code</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,gd</span></td><td>Go to def</td></tr>
+          <tr><td><span class="key">,gr</span></td><td>References</td></tr>
+          <tr><td><span class="key">,ca</span></td><td>Code actions</td></tr>
+          <tr><td><span class="key">,rn</span></td><td>Rename</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; font-size: 0.85em; margin-top: 1rem;">
+    <div>
+      <h4 style="color: #bb9af7;">Git</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,gs</span></td><td>Git status</td></tr>
+          <tr><td><span class="key">,hp</span></td><td>Preview hunk</td></tr>
+          <tr><td><span class="key">,hb</span></td><td>Blame line</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4 style="color: #f7768e;">Other</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,w</span></td><td>Write file</td></tr>
+          <tr><td><span class="key">,q</span></td><td>Quit</td></tr>
+          <tr><td><span class="key">,n</span></td><td>Next buffer</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">
+    These are the most commonly used mappings grouped by category.
+    which-key shows all of these and more when you press leader.
+    The groups help you remember related commands.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 10: EDITING ==================== -->
+<section>
+  <h2>vim-commentary</h2>
+  <h3>Commenting Code</h3>
+  <table style="margin-top: 2rem;">
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">gcc</span></td>
+        <td>Toggle comment on line</td>
+      </tr>
+      <tr>
+        <td><span class="key">gc</span> + motion</td>
+        <td>Comment selection/motion</td>
+      </tr>
+      <tr>
+        <td><span class="key">gcap</span></td>
+        <td>Comment paragraph</td>
+      </tr>
+      <tr>
+        <td><span class="key">gc</span> (visual)</td>
+        <td>Comment selection</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1.5rem; font-size: 0.9em; color: #888;">
+    Automatically uses correct comment syntax for each language
+  </div>
+  <aside class="notes">
+    vim-commentary is incredibly useful for quick commenting.
+    gc works like any vim operator - combine with motions.
+    gcap comments the current paragraph (blank-line delimited).
+    Works in visual mode for arbitrary selections.
+  </aside>
+</section>
+
+<section>
+  <h2>vim-surround</h2>
+  <h3>Surround Text</h3>
+  <table style="font-size: 0.9em;">
+    <thead>
+      <tr><th>Key</th><th>Action</th><th>Example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">cs"'</span></td>
+        <td>Change " to '</td>
+        <td><code>"hello"</code> &rarr; <code>'hello'</code></td>
+      </tr>
+      <tr>
+        <td><span class="key">ds"</span></td>
+        <td>Delete "</td>
+        <td><code>"hello"</code> &rarr; <code>hello</code></td>
+      </tr>
+      <tr>
+        <td><span class="key">ysiw"</span></td>
+        <td>Surround word</td>
+        <td><code>hello</code> &rarr; <code>"hello"</code></td>
+      </tr>
+      <tr>
+        <td><span class="key">S"</span></td>
+        <td>Surround selection</td>
+        <td>Visual + S"</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem; font-size: 0.85em;">
+    Works with: <code>" ' ` ( ) [ ] { } &lt; &gt; t</code> (tags)
+  </div>
+  <aside class="notes">
+    vim-surround is essential for editing quotes, brackets, tags.
+    cs = change surrounding, ds = delete surrounding, ys = you surround.
+    The 't' target works with HTML/XML tags.
+    S in visual mode wraps the selection.
+  </aside>
+</section>
+
+<section>
+  <h2>Other Utilities</h2>
+  <p class="appendix-note">Appendix</p>
+  <div style="text-align: left; max-width: 700px; margin: 1.5rem auto;">
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #7aa2f7;">lexima.vim</strong>
+      <p style="font-size: 0.85em; margin-top: 0.3rem;">Auto-closes brackets, quotes, and pairs as you type</p>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #9ece6a;">vim-repeat</strong>
+      <p style="font-size: 0.85em; margin-top: 0.3rem;">Makes <code>.</code> work with plugin commands (surround, commentary)</p>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="color: #bb9af7;">vim-endwise</strong>
+      <p style="font-size: 0.85em; margin-top: 0.3rem;">Auto-adds <code>end</code> in Ruby, Lua, shell scripts</p>
+    </div>
+  </div>
+  <aside class="notes">
+    These plugins work automatically in the background.
+    lexima saves keystrokes when typing code.
+    vim-repeat is essential for making . work properly.
+    vim-endwise helps with Ruby and other languages with end keywords.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 7: Editing</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Type a word: <code>hello</code></li>
+      <li>Surround with quotes: <span class="key">ysiw"</span></li>
+      <li>Change to backticks: <span class="key">cs"`</span></li>
+      <li>Delete the backticks: <span class="key">ds`</span></li>
+      <li>Comment a line: <span class="key">gcc</span></li>
+      <li>Select lines visually, comment: <span class="key">gc</span></li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise builds muscle memory for surround and comment operations.
+    These become incredibly natural after practice.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 11: VISUAL ==================== -->
+<section>
+  <h2>indent-blankline.nvim</h2>
+  <h3>Indent Guides</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+    <div>
+      <h4 style="color: #888;">Without</h4>
+      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
+  if (condition) {
+    for (i = 0; i < n; i++) {
+      doSomething();
+    }
+  }
+}</code></pre>
+    </div>
+    <div>
+      <h4 style="color: #9ece6a;">With Guides</h4>
+      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
+<span style="color: #3b4261;">│</span> if (condition) {
+<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> for (i = 0; i < n; i++) {
+<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> doSomething();
+<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> }
+<span style="color: #3b4261;">│</span> }
+}</code></pre>
+    </div>
+  </div>
+  <ul style="margin-top: 1.5rem; font-size: 0.9em;">
+    <li>Shows vertical indent guides</li>
+    <li>Highlights current scope</li>
+    <li>Helps track nesting level</li>
+  </ul>
+  <aside class="notes">
+    indent-blankline makes code structure visible.
+    The current scope is highlighted more prominently.
+    Essential for deeply nested code in Python, YAML, etc.
+  </aside>
+</section>
+
+<section>
+  <h2>kanagawa.nvim</h2>
+  <h3>Color Scheme</h3>
+  <div style="margin-top: 2rem;">
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <div style="width: 60px; height: 60px; background: #1a1b26; border-radius: 4px;" title="bg"></div>
+      <div style="width: 60px; height: 60px; background: #c0caf5; border-radius: 4px;" title="fg"></div>
+      <div style="width: 60px; height: 60px; background: #7aa2f7; border-radius: 4px;" title="blue"></div>
+      <div style="width: 60px; height: 60px; background: #9ece6a; border-radius: 4px;" title="green"></div>
+      <div style="width: 60px; height: 60px; background: #bb9af7; border-radius: 4px;" title="purple"></div>
+      <div style="width: 60px; height: 60px; background: #f7768e; border-radius: 4px;" title="red"></div>
+      <div style="width: 60px; height: 60px; background: #e0af68; border-radius: 4px;" title="yellow"></div>
+      <div style="width: 60px; height: 60px; background: #7dcfff; border-radius: 4px;" title="cyan"></div>
+    </div>
+  </div>
+  <ul style="margin-top: 2rem; font-size: 0.9em;">
+    <li>Modern, warm color scheme</li>
+    <li>Good contrast for long coding sessions</li>
+    <li>Inspired by Japanese art</li>
+  </ul>
+  <aside class="notes">
+    kanagawa is a carefully designed color scheme.
+    The warm tones reduce eye strain.
+    It's designed to be pleasant during long coding sessions.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 12: LANGUAGE ==================== -->
+<section>
+  <h2>Language-Specific Features</h2>
+  <h3>LocalLeader Commands</h3>
+  <p style="font-size: 0.9em; color: #888; margin-bottom: 1rem;">Press <span class="key">,</span><span class="key">,</span> for language actions</p>
+  <table style="font-size: 0.85em;">
+    <thead>
+      <tr><th>Language</th><th>Run</th><th>Test</th><th>Build</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Go</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td><code>,,b</code></td>
+      </tr>
+      <tr>
+        <td>Ruby</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>JavaScript</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>TypeScript</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Rust</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td><code>,,b</code> / <code>,,c</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Each language uses the same keybindings but different commands.
+    ,,r runs the current file, ,,t runs tests, ,,b builds.
+    For Rust, ,,c runs cargo check which is faster than build.
+  </aside>
+</section>
+
+<section>
+  <h2>Indentation Settings</h2>
+  <table>
+    <thead>
+      <tr><th>Language</th><th>Indent</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Go</td><td>4</td><td>tabs</td></tr>
+      <tr><td>Ruby</td><td>2</td><td>spaces</td></tr>
+      <tr><td>JavaScript</td><td>2</td><td>spaces</td></tr>
+      <tr><td>TypeScript</td><td>2</td><td>spaces</td></tr>
+      <tr><td>Rust</td><td>4</td><td>spaces</td></tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem;">
+    These are set automatically when you open a file
+  </div>
+  <aside class="notes">
+    Indentation is configured per-language in ftplugin files.
+    Go uses tabs as per its conventions.
+    You don't need to remember these - they're automatic.
+  </aside>
+</section>
+
+<section>
+  <h2>Markdown Preview</h2>
+  <div style="margin-top: 2rem; text-align: center;">
+    <span class="key" style="font-size: 1.5em;">,mp</span>
+    <p style="margin-top: 1rem;">Toggle live preview in browser</p>
+  </div>
+  <div style="margin-top: 2rem; font-size: 0.9em; color: #888;">
+    Opens a live-updating preview as you type
+  </div>
+  <aside class="notes">
+    markdown-preview.nvim opens a browser with live updates.
+    Great for writing documentation and READMEs.
+    Toggle off with ,mp when done.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 8: Language Features</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Open a file in your preferred language</li>
+      <li>Use <span class="key">,</span><span class="key">,</span><span class="key">r</span> to run it</li>
+      <li>Use <span class="key">,</span><span class="key">,</span><span class="key">t</span> to run tests</li>
+      <li>For Go/Rust: try <span class="key">,</span><span class="key">,</span><span class="key">b</span> to build</li>
+      <li>Open a Markdown file</li>
+      <li>Try <span class="key">,mp</span> for live preview</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise shows how the same keybindings work across languages.
+    Participants should test with their preferred language.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 13: NAVIGATION ==================== -->
+<section>
+  <h2>Window Navigation</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">Ctrl-h</span> / <span class="key">j</span> / <span class="key">k</span> / <span class="key">l</span></td>
+        <td>Move between windows</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-d</span> / <span class="key">Ctrl-u</span></td>
+        <td>Half-page scroll (centered)</td>
+      </tr>
+      <tr>
+        <td><span class="key">n</span> / <span class="key">N</span></td>
+        <td>Search results (centered)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>Centered scrolling:</strong> The cursor stays in the middle of the screen when jumping
+  </div>
+  <aside class="notes">
+    Ctrl-hjkl replaces the longer Ctrl-w hjkl for window navigation.
+    Centering after scrolls and searches reduces disorientation.
+    These small improvements add up to a smoother experience.
+  </aside>
+</section>
+
+<section>
+  <h2>Buffer Management</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,n</span> / <span class="key">,p</span></td>
+        <td>Next/previous buffer</td>
+      </tr>
+      <tr>
+        <td><span class="key">,bd</span></td>
+        <td>Delete buffer</td>
+      </tr>
+      <tr>
+        <td><span class="key">,b</span></td>
+        <td>List buffers (fzf)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 2rem; font-size: 0.9em;">
+    <strong>Quick shortcuts:</strong><br>
+    <span class="key">,w</span> write &nbsp;&nbsp;
+    <span class="key">,q</span> quit
+  </div>
+  <aside class="notes">
+    Buffers are like tabs - they hold open files.
+    ,n and ,p cycle through open buffers quickly.
+    ,b opens fzf to fuzzy-search through buffers.
+    ,bd closes the current buffer without closing the window.
+  </aside>
+</section>
+
+<section>
+  <h2>Window Splits</h2>
+  <p class="appendix-note">Appendix</p>
+  <table style="font-size: 0.9em;">
+    <tbody>
+      <tr>
+        <td><code>:sp</code> or <span class="key">Ctrl-w</span><span class="key">s</span></td>
+        <td>Horizontal split</td>
+      </tr>
+      <tr>
+        <td><code>:vsp</code> or <span class="key">Ctrl-w</span><span class="key">v</span></td>
+        <td>Vertical split</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-w</span><span class="key">=</span></td>
+        <td>Equal size splits</td>
+      </tr>
+      <tr>
+        <td><span class="key">Ctrl-w</span><span class="key">o</span></td>
+        <td>Close other windows</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Standard vim split commands still work.
+    Ctrl-w prefix is for window operations.
+    Use splits when comparing files or working on related code.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 14: TROUBLESHOOTING ==================== -->
+<section>
+  <h2>Troubleshooting</h2>
+  <h3>Common Commands</h3>
+  <table>
+    <thead>
+      <tr><th>Command</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>:CocInfo</code></td>
+        <td>Check LSP status</td>
+      </tr>
+      <tr>
+        <td><code>:CocRestart</code></td>
+        <td>Restart language server</td>
+      </tr>
+      <tr>
+        <td><code>:ALEInfo</code></td>
+        <td>Check linter status</td>
+      </tr>
+      <tr>
+        <td><code>:PlugStatus</code></td>
+        <td>Check plugin status</td>
+      </tr>
+      <tr>
+        <td><code>:checkhealth</code></td>
+        <td>Neovim health check</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    These are your first stop when something isn't working.
+    CocInfo shows which language servers are running.
+    CocRestart often fixes completion issues.
+    checkhealth reveals missing system dependencies.
+  </aside>
+</section>
+
+<section>
+  <h2>Common Issues</h2>
+  <div style="text-align: left; max-width: 700px; margin: 0 auto;">
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #f7768e;">Completions not working?</strong>
+      <pre style="margin-top: 0.5rem;"><code class="language-vim">:CocRestart</code></pre>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #e0af68;">Not auto-formatting on save?</strong>
+      <pre style="margin-top: 0.5rem;"><code class="language-vim">:ALEInfo</code></pre>
+      <p style="font-size: 0.8em; color: #888; margin-top: 0.3rem;">Check if fixers are configured for this filetype</p>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="color: #7aa2f7;">Plugin not loading?</strong>
+      <pre style="margin-top: 0.5rem;"><code class="language-vim">:PlugStatus
+:PlugInstall</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Most completion issues are resolved by restarting coc.
+    ALE handles formatting - check ALEInfo if files aren't being formatted.
+    PlugStatus shows red for failed plugins.
+  </aside>
+</section>
+
+        <!-- ==================== SECTION 15: CHEATSHEET ==================== -->
+<section>
+  <h2>Cheat Sheet</h2>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; font-size: 0.8em;">
+    <div>
+      <h4 style="color: #7aa2f7; margin-bottom: 0.5rem;">Navigation</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,f</span></td><td>Find files</td></tr>
+          <tr><td><span class="key">,g</span></td><td>Grep</td></tr>
+          <tr><td><span class="key">,b</span></td><td>Buffers</td></tr>
+          <tr><td><span class="key">,E</span></td><td>File tree</td></tr>
+          <tr><td><span class="key">,*</span></td><td>Grep word</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4 style="color: #9ece6a; margin-bottom: 0.5rem;">Code</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">,gd</span></td><td>Go to definition</td></tr>
+          <tr><td><span class="key">,gr</span></td><td>Find references</td></tr>
+          <tr><td><span class="key">K</span></td><td>Hover docs</td></tr>
+          <tr><td><span class="key">,ca</span></td><td>Code actions</td></tr>
+          <tr><td><span class="key">,rn</span></td><td>Rename</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; font-size: 0.8em; margin-top: 1rem;">
+    <div>
+      <h4 style="color: #bb9af7; margin-bottom: 0.5rem;">Editing</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">gcc</span></td><td>Toggle comment</td></tr>
+          <tr><td><span class="key">cs"'</span></td><td>Change surround</td></tr>
+          <tr><td><span class="key">[g</span> <span class="key">]g</span></td><td>Diagnostics</td></tr>
+          <tr><td><span class="key">[e</span> <span class="key">]e</span></td><td>Lint errors</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4 style="color: #f7768e; margin-bottom: 0.5rem;">Git</h4>
+      <table>
+        <tbody>
+          <tr><td><span class="key">]c</span> <span class="key">[c</span></td><td>Git hunks</td></tr>
+          <tr><td><span class="key">,hp</span></td><td>Preview hunk</td></tr>
+          <tr><td><span class="key">,hb</span></td><td>Blame line</td></tr>
+          <tr><td><span class="key">,gs</span></td><td>Git status files</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="margin-top: 1.5rem; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 4px; font-size: 0.9em;">
+    <strong>Remember:</strong> Press <span class="key">,</span> and wait to see all keybindings
+  </div>
+  <aside class="notes">
+    This is the essential quick reference for daily use.
+    Print this out or keep it handy until these become muscle memory.
+    The which-key popup is always available as a built-in cheat sheet.
+  </aside>
+</section>
+
+<section>
+  <h2>Thank You!</h2>
+  <div style="margin-top: 2rem;">
+    <p>Questions?</p>
+    <div style="margin-top: 2rem; font-size: 0.9em; color: #888;">
+      <p>Resources:</p>
+      <ul style="list-style: none; padding: 0;">
+        <li><code>:help</code> - Vim's built-in documentation</li>
+        <li><code>,</code> + wait - Discover all keybindings</li>
+        <li><code>:checkhealth</code> - Troubleshoot issues</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+    End of presentation.
+    Encourage questions and experimentation.
+    Remind them about which-key for self-discovery.
+  </aside>
+</section>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide',
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+      });
+    </script>
+  </body>
+</html>

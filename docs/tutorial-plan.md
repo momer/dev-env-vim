@@ -325,28 +325,136 @@ Quick reference card with the 10-15 most essential keybindings:
 ### Files to Create
 ```
 slides/
-├── index.html          # Main reveal.js presentation
-├── exercises/          # Exercise files for hands-on practice
-│   ├── exercise-1.md   # which-key exploration
-│   ├── exercise-2.go   # LSP navigation practice
-│   ├── exercise-3.js   # Linting/formatting
+├── index.html              # Main reveal.js presentation (assembled from sections)
+├── sections/               # Individual section files (written by subagents)
+│   ├── 01-intro.html
+│   ├── 02-concepts.html
+│   ├── 03-coc-nvim.html
+│   ├── 04-ale.html
+│   ├── 05-fzf.html
+│   ├── 06-nvim-tree.html
+│   ├── 07-git.html
+│   ├── 08-lualine.html
+│   ├── 09-which-key.html
+│   ├── 10-editing.html
+│   ├── 11-visual.html
+│   ├── 12-language.html
+│   ├── 13-navigation.html
+│   ├── 14-troubleshooting.html
+│   └── 15-cheatsheet.html
+├── exercises/              # Exercise files for hands-on practice
 │   └── ...
-└── assets/             # (optional) Screenshots/diagrams
+└── assets/                 # (optional) Screenshots/diagrams
 ```
 
-### Slide Design Guidelines
-- Dark theme to match code editor aesthetic
-- Code examples with syntax highlighting
-- Tables for keybinding reference
-- Minimal text, heavy on examples
-- Progressive disclosure (basic → advanced)
-- Each plugin section follows structure:
-  1. What is it? (concept)
-  2. Primary features (must-know)
-  3. Exercise (hands-on)
-  4. Advanced features (appendix/reference)
+---
 
-### Estimated Slide Count
+## Parallelization Strategy
+
+### Phase 1: Setup (Synchronous - Main Agent)
+1. Create `slides/` directory structure
+2. Create `slides/index.html` boilerplate with reveal.js setup
+3. Create section template with consistent styling
+
+### Phase 2: Section Writing (Parallel - Subagents)
+Launch **5 subagents in parallel**, each responsible for a group of related sections:
+
+#### Subagent 1: Core IDE Features
+**Files to read:** `nvim/init.vim`, `nvim/coc-settings.json`
+**Sections to write:**
+- `03-coc-nvim.html` (LSP, completion, diagnostics)
+- `04-ale.html` (linting, formatting)
+
+#### Subagent 2: Navigation & Search
+**Files to read:** `nvim/init.vim`, `nvim/lua/plugins/nvim-tree.lua`
+**Sections to write:**
+- `05-fzf.html` (fuzzy finding)
+- `06-nvim-tree.html` (file explorer)
+- `13-navigation.html` (windows, buffers)
+
+#### Subagent 3: Git & Status
+**Files to read:** `nvim/init.vim`, `nvim/lua/plugins/gitsigns.lua`, `nvim/lua/plugins/lualine.lua`
+**Sections to write:**
+- `07-git.html` (gitsigns, fugitive, rhubarb)
+- `08-lualine.html` (status line)
+
+#### Subagent 4: Editing & Visual
+**Files to read:** `nvim/init.vim`, `nvim/lua/plugins/which-key.lua`, `nvim/lua/plugins/indent-blankline.lua`
+**Sections to write:**
+- `09-which-key.html` (keybinding discovery)
+- `10-editing.html` (commentary, surround, utilities)
+- `11-visual.html` (indent guides, colorscheme)
+
+#### Subagent 5: Language & Reference
+**Files to read:** `nvim/ftplugin/*.vim`, `nvim/init.vim`
+**Sections to write:**
+- `12-language.html` (language-specific features)
+- `14-troubleshooting.html` (common commands)
+- `15-cheatsheet.html` (quick reference)
+
+### Phase 3: Intro Sections (Synchronous - Main Agent)
+Write intro sections that require full context:
+- `01-intro.html` (overview, setup)
+- `02-concepts.html` (leader keys, philosophy)
+
+### Phase 4: Assembly (Synchronous - Main Agent)
+1. Read all section files from `slides/sections/`
+2. Assemble into `slides/index.html` in correct order
+3. Create exercise files
+
+---
+
+## Subagent Prompt Template
+
+Each subagent receives:
+```
+You are writing reveal.js slides for a neovim tutorial.
+
+## Your Sections
+[List of sections to write]
+
+## Source Files to Read
+[List of config files to reference]
+
+## Output Format
+Write each section as a standalone HTML file with reveal.js `<section>` tags.
+Use this structure for each slide:
+
+<section>
+  <h2>Slide Title</h2>
+  <!-- content -->
+</section>
+
+## Slide Guidelines
+- Dark theme assumed (light text on dark background)
+- Use <pre><code> for code blocks with class="language-vim" or "language-bash"
+- Use <table> for keybinding references
+- Keep text minimal, focus on examples
+- Include presenter notes: <aside class="notes">...</aside>
+
+## Section Structure
+For each plugin section:
+1. "What is X?" slide - brief description
+2. "Primary Features" slide - must-know keybindings in table
+3. "Exercise" slide - hands-on task
+4. "Advanced Features" slide (appendix) - additional features
+
+## Exercise Format
+<section>
+  <h2>Exercise N: [Title]</h2>
+  <ol>
+    <li>Step one</li>
+    <li>Step two</li>
+    ...
+  </ol>
+</section>
+
+Write your sections to: slides/sections/[filename].html
+```
+
+---
+
+## Estimated Slide Count
 - Introduction: 3 slides
 - Essential Concepts: 2 slides
 - coc.nvim (LSP): 5 slides
@@ -373,4 +481,16 @@ slides/
 
 ## Summary
 
-This plan creates a comprehensive reveal.js presentation covering all 25+ plugins in the neovim configuration. Engineers will learn through a combination of conceptual slides, keybinding tables, and 8 hands-on exercises. The presentation follows a logical progression from essential concepts through LSP, linting, navigation, Git, and editing utilities.
+This plan creates a comprehensive reveal.js presentation covering all 25+ plugins in the neovim configuration.
+
+**Parallelization benefits:**
+- 5 subagents work concurrently on 13 section files
+- Main agent handles setup + 2 intro sections + final assembly
+- Each subagent reads only the config files relevant to its sections
+- Section files are independent and can be assembled in any order
+
+**Execution flow:**
+1. Main: Create directory structure + boilerplate (sync)
+2. Subagents 1-5: Write sections in parallel
+3. Main: Write intro sections (sync)
+4. Main: Assemble final presentation (sync)

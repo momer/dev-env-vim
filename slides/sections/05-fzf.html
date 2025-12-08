@@ -1,0 +1,118 @@
+<section>
+  <h2>fzf.vim</h2>
+  <h3>Fuzzy Finder</h3>
+  <ul style="margin-top: 2rem; font-size: 0.95em;">
+    <li>Lightning-fast fuzzy file finding</li>
+    <li>Uses ripgrep for content search</li>
+    <li>Preview window on the right</li>
+    <li>Works with git to respect .gitignore</li>
+  </ul>
+  <aside class="notes">
+    fzf is probably the tool you'll use most often.
+    It's incredibly fast even on large codebases.
+    The preview window lets you see file contents before opening.
+  </aside>
+</section>
+
+<section>
+  <h2>Primary Features</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th><th>When to Use</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,f</span></td>
+        <td>Find files</td>
+        <td>Open any file by name</td>
+      </tr>
+      <tr>
+        <td><span class="key">,g</span></td>
+        <td>Grep (ripgrep)</td>
+        <td>Search text in codebase</td>
+      </tr>
+      <tr>
+        <td><span class="key">,b</span></td>
+        <td>List buffers</td>
+        <td>Switch open files</td>
+      </tr>
+      <tr>
+        <td><span class="key">,*</span></td>
+        <td>Grep word under cursor</td>
+        <td>Find usages</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    These four commands cover 90% of navigation needs.
+    ,f is for when you know the filename.
+    ,g is for when you know the content.
+    ,* is a quick way to find all usages of something.
+  </aside>
+</section>
+
+<section>
+  <h2>Git-Aware Search</h2>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,gf</span></td>
+        <td>Git files (respects .gitignore)</td>
+      </tr>
+      <tr>
+        <td><span class="key">,gs</span></td>
+        <td>Git status files (modified only)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 2rem;">
+    <strong>Tip:</strong> Use <span class="key">,gs</span> to quickly jump between files you're currently editing
+  </div>
+  <aside class="notes">
+    Git-aware search is great for focusing on relevant files.
+    ,gf excludes node_modules, build folders, etc.
+    ,gs is perfect when working on a feature across multiple files.
+  </aside>
+</section>
+
+<section>
+  <h2>Other Features</h2>
+  <p class="appendix-note">Appendix</p>
+  <table style="font-size: 0.85em;">
+    <tbody>
+      <tr><td><span class="key">,l</span></td><td>Search lines in current buffer</td></tr>
+      <tr><td><span class="key">,h</span></td><td>File history (recently opened)</td></tr>
+      <tr><td><span class="key">,c</span></td><td>Commands</td></tr>
+      <tr><td><span class="key">,:</span></td><td>Command history</td></tr>
+      <tr><td><span class="key">,/</span></td><td>Search history</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 1.5rem; font-size: 0.9em;">
+    <strong>Inside fzf:</strong> <span class="key">Ctrl-/</span> toggles preview
+  </div>
+  <aside class="notes">
+    These are less common but still useful.
+    ,h is great for reopening recently closed files.
+    ,c helps discover vim commands you don't remember.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 4: Fuzzy Finding</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Use <span class="key">,f</span> to find a file by partial name</li>
+      <li>Use <span class="key">,g</span> to search for a function name</li>
+      <li>Place cursor on a variable</li>
+      <li>Press <span class="key">,*</span> to find all usages</li>
+      <li>Use <span class="key">,gs</span> to see modified files</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise builds muscle memory for the most common fzf commands.
+    Students should feel comfortable navigating any codebase after this.
+  </aside>
+</section>

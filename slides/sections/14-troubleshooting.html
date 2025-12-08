@@ -1,0 +1,62 @@
+<section>
+  <h2>Troubleshooting</h2>
+  <h3>Common Commands</h3>
+  <table>
+    <thead>
+      <tr><th>Command</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>:CocInfo</code></td>
+        <td>Check LSP status</td>
+      </tr>
+      <tr>
+        <td><code>:CocRestart</code></td>
+        <td>Restart language server</td>
+      </tr>
+      <tr>
+        <td><code>:ALEInfo</code></td>
+        <td>Check linter status</td>
+      </tr>
+      <tr>
+        <td><code>:PlugStatus</code></td>
+        <td>Check plugin status</td>
+      </tr>
+      <tr>
+        <td><code>:checkhealth</code></td>
+        <td>Neovim health check</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    These are your first stop when something isn't working.
+    CocInfo shows which language servers are running.
+    CocRestart often fixes completion issues.
+    checkhealth reveals missing system dependencies.
+  </aside>
+</section>
+
+<section>
+  <h2>Common Issues</h2>
+  <div style="text-align: left; max-width: 700px; margin: 0 auto;">
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #f7768e;">Completions not working?</strong>
+      <pre style="margin-top: 0.5rem;"><code class="language-vim">:CocRestart</code></pre>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px; margin-bottom: 1rem;">
+      <strong style="color: #e0af68;">Not auto-formatting on save?</strong>
+      <pre style="margin-top: 0.5rem;"><code class="language-vim">:ALEInfo</code></pre>
+      <p style="font-size: 0.8em; color: #888; margin-top: 0.3rem;">Check if fixers are configured for this filetype</p>
+    </div>
+    <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 4px;">
+      <strong style="color: #7aa2f7;">Plugin not loading?</strong>
+      <pre style="margin-top: 0.5rem;"><code class="language-vim">:PlugStatus
+:PlugInstall</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Most completion issues are resolved by restarting coc.
+    ALE handles formatting - check ALEInfo if files aren't being formatted.
+    PlugStatus shows red for failed plugins.
+  </aside>
+</section>

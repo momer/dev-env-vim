@@ -1,0 +1,81 @@
+<section>
+  <h2>nvim-tree</h2>
+  <h3>File Explorer</h3>
+  <table style="margin-top: 2rem;">
+    <thead>
+      <tr><th>Key</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="key">,E</span></td>
+        <td>Toggle nvim-tree sidebar</td>
+      </tr>
+      <tr>
+        <td><span class="key">,ef</span></td>
+        <td>Find current file in tree</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 2rem;">
+    Use <span class="key">,ef</span> to quickly locate where you are in the project structure
+  </div>
+  <aside class="notes">
+    nvim-tree provides a visual file explorer on the left side.
+    It's useful for understanding project structure and file operations.
+    ,ef is particularly useful when you've navigated deep into the codebase.
+  </aside>
+</section>
+
+<section>
+  <h2>Tree Navigation</h2>
+  <p class="appendix-note">Appendix</p>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem;">
+    <div>
+      <h4>Navigation</h4>
+      <table style="font-size: 0.85em;">
+        <tbody>
+          <tr><td><span class="key">Enter</span></td><td>Open/expand</td></tr>
+          <tr><td><span class="key">o</span></td><td>Open</td></tr>
+          <tr><td><span class="key">P</span></td><td>Go to parent</td></tr>
+          <tr><td><span class="key">?</span></td><td>Help</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h4>File Operations</h4>
+      <table style="font-size: 0.85em;">
+        <tbody>
+          <tr><td><span class="key">a</span></td><td>Create file</td></tr>
+          <tr><td><span class="key">d</span></td><td>Delete</td></tr>
+          <tr><td><span class="key">r</span></td><td>Rename</td></tr>
+          <tr><td><span class="key">c</span> / <span class="key">p</span></td><td>Copy/Paste</td></tr>
+          <tr><td><span class="key">I</span></td><td>Toggle hidden</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <aside class="notes">
+    These commands work inside the nvim-tree buffer.
+    Press ? inside the tree for full help.
+    Creating files with 'a' supports creating directories too (end with /).
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 5: File Explorer</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Press <span class="key">,E</span> to open file tree</li>
+      <li>Navigate with <span class="key">j</span>/<span class="key">k</span></li>
+      <li>Press <span class="key">a</span> to create a test file</li>
+      <li>Press <span class="key">d</span> to delete it</li>
+      <li>Press <span class="key">,ef</span> to find current file</li>
+      <li>Press <span class="key">,E</span> to close</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise familiarizes students with basic tree operations.
+    Emphasize that fzf is often faster for opening files.
+    Tree is better for file operations and understanding structure.
+  </aside>
+</section>

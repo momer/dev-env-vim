@@ -1,0 +1,105 @@
+<section>
+  <h2>Language-Specific Features</h2>
+  <h3>LocalLeader Commands</h3>
+  <p style="font-size: 0.9em; color: #888; margin-bottom: 1rem;">Press <span class="key">,</span><span class="key">,</span> for language actions</p>
+  <table style="font-size: 0.85em;">
+    <thead>
+      <tr><th>Language</th><th>Run</th><th>Test</th><th>Build</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Go</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td><code>,,b</code></td>
+      </tr>
+      <tr>
+        <td>Ruby</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>JavaScript</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>TypeScript</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Rust</td>
+        <td><code>,,r</code></td>
+        <td><code>,,t</code></td>
+        <td><code>,,b</code> / <code>,,c</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Each language uses the same keybindings but different commands.
+    ,,r runs the current file, ,,t runs tests, ,,b builds.
+    For Rust, ,,c runs cargo check which is faster than build.
+  </aside>
+</section>
+
+<section>
+  <h2>Indentation Settings</h2>
+  <table>
+    <thead>
+      <tr><th>Language</th><th>Indent</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Go</td><td>4</td><td>tabs</td></tr>
+      <tr><td>Ruby</td><td>2</td><td>spaces</td></tr>
+      <tr><td>JavaScript</td><td>2</td><td>spaces</td></tr>
+      <tr><td>TypeScript</td><td>2</td><td>spaces</td></tr>
+      <tr><td>Rust</td><td>4</td><td>spaces</td></tr>
+    </tbody>
+  </table>
+  <div class="tip" style="margin-top: 1.5rem;">
+    These are set automatically when you open a file
+  </div>
+  <aside class="notes">
+    Indentation is configured per-language in ftplugin files.
+    Go uses tabs as per its conventions.
+    You don't need to remember these - they're automatic.
+  </aside>
+</section>
+
+<section>
+  <h2>Markdown Preview</h2>
+  <div style="margin-top: 2rem; text-align: center;">
+    <span class="key" style="font-size: 1.5em;">,mp</span>
+    <p style="margin-top: 1rem;">Toggle live preview in browser</p>
+  </div>
+  <div style="margin-top: 2rem; font-size: 0.9em; color: #888;">
+    Opens a live-updating preview as you type
+  </div>
+  <aside class="notes">
+    markdown-preview.nvim opens a browser with live updates.
+    Great for writing documentation and READMEs.
+    Toggle off with ,mp when done.
+  </aside>
+</section>
+
+<section>
+  <h2>Exercise 8: Language Features</h2>
+  <div class="exercise">
+    <ol style="font-size: 0.9em; text-align: left;">
+      <li>Open a file in your preferred language</li>
+      <li>Use <span class="key">,</span><span class="key">,</span><span class="key">r</span> to run it</li>
+      <li>Use <span class="key">,</span><span class="key">,</span><span class="key">t</span> to run tests</li>
+      <li>For Go/Rust: try <span class="key">,</span><span class="key">,</span><span class="key">b</span> to build</li>
+      <li>Open a Markdown file</li>
+      <li>Try <span class="key">,mp</span> for live preview</li>
+    </ol>
+  </div>
+  <aside class="notes">
+    This exercise shows how the same keybindings work across languages.
+    Participants should test with their preferred language.
+  </aside>
+</section>
