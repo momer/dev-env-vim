@@ -1,4 +1,7 @@
-require('which-key').setup({
+local ok, wk = pcall(require, 'which-key')
+if not ok then return end
+
+wk.setup({
   plugins = {
     marks = true,
     registers = true,
@@ -10,7 +13,6 @@ require('which-key').setup({
   },
 })
 
-local wk = require('which-key')
 wk.add({
   { "<leader>w", desc = "Save file" },
   { "<leader>q", desc = "Quit" },

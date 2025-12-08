@@ -127,6 +127,23 @@ install_rust_tools() {
     info "Rust tools installed successfully."
 }
 
+# Install neovim
+install_nvim() {
+    info "Installing neovim..."
+
+    if check_cmd nvim; then
+        info "neovim is already installed."
+        return
+    fi
+
+    if check_cmd brew; then
+        brew install nvim
+    else
+        warn "Homebrew not found. Install neovim manually:"
+        warn "  https://github.com/neovim/neovim/wiki/Installing-Neovim"
+    fi
+}
+
 # Install fzf
 install_fzf() {
     info "Installing fzf..."
@@ -193,6 +210,7 @@ check_status() {
     echo ""
 
     echo "General tools:"
+    check_cmd nvim && echo "  ✓ neovim" || echo "  ✗ neovim"
     check_cmd fzf && echo "  ✓ fzf" || echo "  ✗ fzf"
     check_cmd rg && echo "  ✓ ripgrep" || echo "  ✗ ripgrep"
     echo ""
@@ -244,6 +262,9 @@ main() {
         rust)
             install_rust_tools
             ;;
+        nvim|neovim)
+            install_nvim
+            ;;
         fzf)
             install_fzf
             ;;
@@ -254,6 +275,8 @@ main() {
             check_status
             ;;
         all)
+            install_nvim
+            echo ""
             install_go_tools
             echo ""
             install_ruby_tools
@@ -269,9 +292,10 @@ main() {
             check_status
             ;;
         *)
-            echo "Usage: $0 [go|ruby|node|rust|fzf|ripgrep|status|all]"
+            echo "Usage: $0 [nvim|go|ruby|node|rust|fzf|ripgrep|status|all]"
             echo ""
             echo "Options:"
+            echo "  nvim     Install neovim"
             echo "  go       Install Go tools (gopls, golangci-lint)"
             echo "  ruby     Install Ruby tools (solargraph, rubocop)"
             echo "  node     Install Node.js tools (typescript, tsserver, eslint, prettier)"

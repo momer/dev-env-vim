@@ -6,7 +6,7 @@
 #   make deps             - Install all language dependencies
 #   make help             - Show all targets
 
-.PHONY: help install setup setup-symlink setup-minimal plugins update deps deps-go deps-ruby deps-node deps-rust deps-fzf deps-ripgrep status clean
+.PHONY: help install setup setup-symlink setup-minimal plugins update deps deps-nvim deps-go deps-ruby deps-node deps-rust deps-fzf deps-ripgrep status clean
 .PHONY: setup-vim setup-vim-symlink plugins-vim
 
 # Default target
@@ -27,7 +27,8 @@ help:
 	@echo "  make plugins-vim        Install/update vim plugins"
 	@echo ""
 	@echo "Dependency targets:"
-	@echo "  make deps           Install all language dependencies"
+	@echo "  make deps           Install all dependencies"
+	@echo "  make deps-nvim      Install neovim"
 	@echo "  make deps-go        Install Go tools (gopls, golangci-lint)"
 	@echo "  make deps-ruby      Install Ruby tools (solargraph, rubocop)"
 	@echo "  make deps-node      Install Node.js tools (typescript, eslint, prettier)"
@@ -79,6 +80,10 @@ plugins-vim:
 # Install all dependencies
 deps:
 	./install-dependencies.sh all
+
+# Neovim
+deps-nvim:
+	./install-dependencies.sh nvim
 
 # Language-specific dependencies
 deps-go:

@@ -1,4 +1,7 @@
-require('ibl').setup({
+local ok, ibl = pcall(require, 'ibl')
+if not ok then return end
+
+ibl.setup({
   indent = {
     char = '│',
   },
