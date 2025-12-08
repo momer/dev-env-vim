@@ -1,15 +1,15 @@
-# Vim Development Environment
+# Neovim Development Environment
 
-Vim configuration with vim-plug, coc.nvim (LSP/completion), ALE (linting/formatting), and fzf for Go, Ruby, JavaScript/TypeScript, and Rust development.
+Neovim configuration with vim-plug, coc.nvim (LSP/completion), ALE (linting/formatting), and native Lua plugins for Go, Ruby, JavaScript/TypeScript, and Rust development.
 
 ## Quick Start
 
 ```bash
-# Full installation (vim config + all dependencies)
+# Full installation (nvim config + all dependencies)
 make install
 
 # Or step by step
-make setup      # Install vim config
+make setup      # Install nvim config
 make deps       # Install language servers and tools
 ```
 
@@ -19,30 +19,44 @@ make deps       # Install language servers and tools
 .
 ├── README.md
 ├── Makefile                 # Main entry point (run make help)
-├── setup.sh                 # Install vim configuration
+├── setup.sh                 # Install nvim/vim configuration
 ├── install-dependencies.sh  # Install language servers and tools
-├── vimrc                    # Main vim configuration
-├── coc-settings.json        # coc.nvim LSP configuration
-└── ftplugin/
-    ├── go.vim               # Go-specific settings
-    ├── javascript.vim       # JavaScript settings
-    ├── ruby.vim             # Ruby settings
-    ├── rust.vim             # Rust settings
-    ├── typescript.vim       # TypeScript settings
-    └── typescriptreact.vim  # TSX settings
+│
+├── nvim/                    # Neovim configuration
+│   ├── init.vim             # Main nvim config
+│   ├── coc-settings.json    # coc.nvim LSP configuration
+│   ├── lua/
+│   │   └── plugins/         # Lua plugin configs
+│   │       ├── lualine.lua
+│   │       ├── gitsigns.lua
+│   │       ├── which-key.lua
+│   │       ├── indent-blankline.lua
+│   │       └── nvim-tree.lua
+│   └── ftplugin/
+│       ├── go.vim
+│       ├── javascript.vim
+│       ├── ruby.vim
+│       ├── rust.vim
+│       ├── typescript.vim
+│       └── typescriptreact.vim
+│
+├── vim/                     # Legacy vim configuration
+│   └── vimrc
+├── coc-settings.json        # Shared coc.nvim config
+└── ftplugin/                # Legacy ftplugin files
 ```
 
 ## Setup Options
 
 ```bash
-# Copy files to ~/.vim and ~/.vimrc
-make setup
+# Neovim (default)
+make setup            # Copy files to ~/.config/nvim
+make setup-symlink    # Use symlinks (changes reflect immediately)
+make setup-minimal    # Skip plugin installation
 
-# Use symlinks instead (changes to repo reflect immediately)
-make setup-symlink
-
-# Skip plugin installation
-make setup-minimal
+# Legacy Vim
+make setup-vim
+make setup-vim-symlink
 ```
 
 ## Dependencies
@@ -51,6 +65,7 @@ make setup-minimal
 
 | Tool | Purpose | Install |
 |------|---------|---------|
+| Neovim | Editor | `brew install neovim` |
 | Node.js | Required for coc.nvim | `brew install node` or [nvm](https://github.com/nvm-sh/nvm) |
 | vim-plug | Plugin manager | Auto-installed by setup.sh |
 | fzf | Fuzzy finder | `brew install fzf` |
@@ -113,17 +128,38 @@ Managed via [vim-plug](https://github.com/junegunn/vim-plug).
 # Install/update from command line
 make plugins
 
-# Or from within vim
+# Or from within nvim
 :PlugInstall
 ```
+
+### Core Plugins
 
 | Plugin | Purpose |
 |--------|---------|
 | neoclide/coc.nvim | LSP client, completion, code actions |
 | dense-analysis/ale | Linting, formatting (no LSP) |
-| vim-airline/vim-airline | Status line |
-| edkolev/tmuxline.vim | Tmux status line integration |
+
+### Nvim-Native Lua Plugins
+
+| Plugin | Purpose |
+|--------|---------|
+| nvim-lualine/lualine.nvim | Status line (replaces vim-airline) |
+| folke/which-key.nvim | Keybinding popup |
+| lewis6991/gitsigns.nvim | Git diff in sign column (replaces gitgutter) |
+| lukas-reineke/indent-blankline.nvim | Indent guides |
+| nvim-tree/nvim-tree.lua | File explorer |
+| nvim-tree/nvim-web-devicons | File icons |
+
+### Fuzzy Finding
+
+| Plugin | Purpose |
+|--------|---------|
 | junegunn/fzf + fzf.vim | Fuzzy finding |
+
+### Language Support
+
+| Plugin | Purpose |
+|--------|---------|
 | fatih/vim-go | Go syntax, commands |
 | vim-ruby/vim-ruby | Ruby syntax |
 | tpope/vim-rails | Rails support |
@@ -132,12 +168,19 @@ make plugins
 | leafgarland/typescript-vim | TS syntax |
 | maxmellon/vim-jsx-pretty | JSX/TSX syntax |
 | rust-lang/rust.vim | Rust syntax |
+| iamcco/markdown-preview.nvim | Live markdown preview |
+
+### Utilities
+
+| Plugin | Purpose |
+|--------|---------|
 | tpope/vim-commentary | Comment toggling (gcc) |
 | tpope/vim-surround | Surround text objects |
+| tpope/vim-repeat | Make `.` work with plugins |
 | tpope/vim-fugitive | Git integration |
-| airblade/vim-gitgutter | Git diff in sign column |
+| tpope/vim-rhubarb | GitHub integration for fugitive |
 | cohama/lexima.vim | Auto-close brackets/quotes |
-| liuchengxu/vim-which-key | Show available keybindings popup |
+| edkolev/tmuxline.vim | Tmux status line integration |
 
 ### Plugin Commands
 
@@ -153,9 +196,9 @@ make plugins
 Leader: `,`
 LocalLeader: `,,`
 
-### Discovering Keys (vim-which-key)
+### Discovering Keys (which-key.nvim)
 
-Press `,` and wait ~500ms to see a popup of all available leader mappings with descriptions. This is helpful for learning and remembering keybindings for coc.nvim, ALE, fzf, and other plugins.
+Press `,` and wait ~500ms to see a popup of all available leader mappings with descriptions.
 
 ### General
 
@@ -164,7 +207,9 @@ Press `,` and wait ~500ms to see a popup of all available leader mappings with d
 | `,w` | Save file |
 | `,q` | Quit |
 | `,<space>` | Clear search highlight |
-| `,e` | Open file explorer |
+| `,e` | Open netrw explorer |
+| `,E` | Toggle nvim-tree |
+| `,ef` | Find file in nvim-tree |
 | `,n` / `,p` | Next/previous buffer |
 | `,bd` | Delete buffer |
 | `Ctrl-h/j/k/l` | Window navigation |
@@ -214,6 +259,20 @@ Press `,` and wait ~500ms to see a popup of all available leader mappings with d
 |---------|--------|
 | `[e` / `]e` | Previous/next lint error |
 | `,d` | Show error detail |
+
+### gitsigns.nvim
+
+| Mapping | Action |
+|---------|--------|
+| `]c` / `[c` | Next/previous hunk |
+| `,hp` | Preview hunk |
+| `,hb` | Blame line |
+
+### Markdown
+
+| Mapping | Action |
+|---------|--------|
+| `,mp` | Toggle markdown preview |
 
 ### Language-Specific (LocalLeader: `,,`)
 
