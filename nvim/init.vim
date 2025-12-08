@@ -15,6 +15,9 @@ Plug 'dense-analysis/ale'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 
+" Colorscheme
+Plug 'rebelot/kanagawa.nvim'
+
 " UI (nvim-native)
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'folke/which-key.nvim'
@@ -90,8 +93,8 @@ set sidescrolloff=8           " Keep 8 columns visible left/right
 set signcolumn=yes            " Always show sign column (for ALE/git)
 
 " Colorscheme
-set background=dark
-colorscheme monokai
+set termguicolors
+silent! colorscheme kanagawa
 
 " Search
 set hlsearch                  " Highlight search results
