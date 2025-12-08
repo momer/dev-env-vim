@@ -6,7 +6,7 @@
 #   make deps             - Install all language dependencies
 #   make help             - Show all targets
 
-.PHONY: help install setup setup-symlink setup-minimal plugins update deps deps-nvim deps-go deps-ruby deps-node deps-rust deps-fzf deps-ripgrep status clean
+.PHONY: help install setup setup-symlink setup-minimal plugins update deps deps-nvim deps-go deps-ruby deps-node deps-rust deps-fzf deps-ripgrep deps-fonts status clean
 .PHONY: setup-vim setup-vim-symlink plugins-vim
 
 # Default target
@@ -35,6 +35,7 @@ help:
 	@echo "  make deps-rust      Install Rust tools (rust-analyzer, clippy, rustfmt)"
 	@echo "  make deps-fzf       Install fzf fuzzy finder"
 	@echo "  make deps-ripgrep   Install ripgrep"
+	@echo "  make deps-fonts     Install a Nerd Font (for icons)"
 	@echo ""
 	@echo "Other targets:"
 	@echo "  make status         Check installation status"
@@ -103,6 +104,9 @@ deps-fzf:
 
 deps-ripgrep:
 	./install-dependencies.sh ripgrep
+
+deps-fonts:
+	./install-dependencies.sh fonts
 
 # Check status
 status:

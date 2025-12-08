@@ -70,6 +70,7 @@ make setup-vim-symlink
 | vim-plug | Plugin manager | Auto-installed by setup.sh |
 | fzf | Fuzzy finder | `brew install fzf` |
 | ripgrep | Fast grep | `brew install ripgrep` |
+| Nerd Font | Icons for nvim-tree/lualine | `make deps-fonts` (interactive) |
 
 ### Language-Specific
 
@@ -91,6 +92,9 @@ make deps-go
 make deps-ruby
 make deps-node
 make deps-rust
+
+# Install Nerd Font (for icons)
+make deps-fonts
 
 # Check status
 make status
@@ -335,3 +339,22 @@ Press `,` and wait ~500ms to see a popup of all available leader mappings with d
 ```vim
 :CocInstall coc-tsserver coc-go coc-rust-analyzer coc-solargraph
 ```
+
+### Icons showing as boxes/question marks
+
+This happens when a Nerd Font is not installed or your terminal isn't configured to use it.
+
+```bash
+# Install a Nerd Font
+make deps-fonts
+
+# Check if a Nerd Font is installed
+make status
+```
+
+After installing, configure your terminal to use the Nerd Font:
+- **iTerm2**: Preferences > Profiles > Text > Font
+- **Terminal.app**: Preferences > Profiles > Font > Change
+- **Alacritty**: `~/.config/alacritty/alacritty.yml` (font.normal.family)
+- **Kitty**: `~/.config/kitty/kitty.conf` (font_family)
+- **VS Code**: Settings > Terminal > Font Family

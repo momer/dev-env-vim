@@ -180,6 +180,157 @@ install_ripgrep() {
     fi
 }
 
+# Check if a Nerd Font is installed
+check_nerd_font() {
+    local font_name="$1"
+    # Check in system and user font directories
+    if [[ -d "/Library/Fonts" ]]; then
+        find /Library/Fonts -iname "*${font_name}*Nerd*" 2>/dev/null | grep -q . && return 0
+    fi
+    if [[ -d "$HOME/Library/Fonts" ]]; then
+        find "$HOME/Library/Fonts" -iname "*${font_name}*Nerd*" 2>/dev/null | grep -q . && return 0
+    fi
+    # Check via brew cask
+    if check_cmd brew; then
+        brew list --cask 2>/dev/null | grep -qi "font-.*nerd-font" && return 0
+    fi
+    return 1
+}
+
+# List installed Nerd Fonts
+list_installed_nerd_fonts() {
+    local fonts=()
+
+    # Check brew casks
+    if check_cmd brew; then
+        while IFS= read -r font; do
+            fonts+=("$font (brew)")
+        done < <(brew list --cask 2>/dev/null | grep -i "font-.*nerd-font" || true)
+    fi
+
+    # Check font directories
+    if [[ -d "$HOME/Library/Fonts" ]]; then
+        while IFS= read -r font; do
+            [[ -n "$font" ]] && fonts+=("$(basename "$font")")
+        done < <(find "$HOME/Library/Fonts" -iname "*Nerd*" -type f 2>/dev/null | head -5 || true)
+    fi
+
+    if [[ ${#fonts[@]} -gt 0 ]]; then
+        printf '%s\n' "${fonts[@]}" | sort -u | head -5
+    fi
+}
+
+# Install Nerd Font (interactive prompt)
+install_nerd_font() {
+    info "Nerd Font Setup"
+    echo ""
+    echo "Nerd Fonts include icons used by nvim-tree and lualine."
+    echo "Without a Nerd Font, icons will display as boxes with question marks."
+    echo ""
+
+    # Check for existing Nerd Fonts
+    local existing_fonts
+    existing_fonts=$(list_installed_nerd_fonts)
+    if [[ -n "$existing_fonts" ]]; then
+        info "Found installed Nerd Font(s):"
+        echo "$existing_fonts" | sed 's/^/  /'
+        echo ""
+        read -p "Install another font? [y/N]: " install_another
+        if [[ ! "$install_another" =~ ^[Yy]$ ]]; then
+            info "Skipping font installation."
+            echo ""
+            echo "Remember to configure your terminal to use the Nerd Font!"
+            return
+        fi
+    fi
+
+    if ! check_cmd brew; then
+        warn "Homebrew not found. Install a Nerd Font manually from:"
+        warn "  https://www.nerdfonts.com/font-downloads"
+        echo ""
+        echo "After downloading, install by double-clicking the .ttf/.otf files"
+        echo "or copying them to ~/Library/Fonts/"
+        return
+    fi
+
+    # Tap the fonts cask if not already tapped
+    if ! brew tap | grep -q "homebrew/cask-fonts"; then
+        info "Tapping homebrew/cask-fonts..."
+        brew tap homebrew/cask-fonts
+    fi
+
+    echo ""
+    echo "Select a Nerd Font to install:"
+    echo "  1) Hack Nerd Font        - Clean, monospace (popular)"
+    echo "  2) JetBrains Mono        - Modern, readable (JetBrains IDEs)"
+    echo "  3) Fira Code Nerd Font   - Ligatures, popular with devs"
+    echo "  4) Meslo LG Nerd Font    - Apple-style, works well in terminals"
+    echo "  5) Source Code Pro       - Adobe's coding font"
+    echo "  6) Enter custom font name"
+    echo "  7) Skip"
+    echo ""
+    read -p "Select option [1-7]: " choice
+
+    local font_cask=""
+    local font_name=""
+    case "$choice" in
+        1)
+            font_cask="font-hack-nerd-font"
+            font_name="Hack Nerd Font"
+            ;;
+        2)
+            font_cask="font-jetbrains-mono-nerd-font"
+            font_name="JetBrains Mono Nerd Font"
+            ;;
+        3)
+            font_cask="font-fira-code-nerd-font"
+            font_name="Fira Code Nerd Font"
+            ;;
+        4)
+            font_cask="font-meslo-lg-nerd-font"
+            font_name="Meslo LG Nerd Font"
+            ;;
+        5)
+            font_cask="font-sauce-code-pro-nerd-font"
+            font_name="SauceCodePro Nerd Font"
+            ;;
+        6)
+            echo ""
+            echo "Enter the Homebrew cask name (e.g., font-ubuntu-nerd-font):"
+            echo "Browse available fonts: brew search nerd-font"
+            read -p "Font cask name: " font_cask
+            font_name="$font_cask"
+            ;;
+        7)
+            info "Skipping font installation."
+            return
+            ;;
+        *)
+            warn "Invalid choice. Skipping font installation."
+            return
+            ;;
+    esac
+
+    if [[ -n "$font_cask" ]]; then
+        info "Installing $font_name..."
+        if brew install --cask "$font_cask"; then
+            info "$font_name installed successfully!"
+            echo ""
+            echo "Next step: Configure your terminal to use '$font_name'"
+            echo ""
+            echo "Terminal configuration:"
+            echo "  iTerm2:       Preferences > Profiles > Text > Font"
+            echo "  Terminal.app: Preferences > Profiles > Font > Change"
+            echo "  Alacritty:    ~/.config/alacritty/alacritty.yml (font.normal.family)"
+            echo "  Kitty:        ~/.config/kitty/kitty.conf (font_family)"
+            echo "  VS Code:      Settings > Terminal > Font Family"
+            echo ""
+        else
+            error "Failed to install $font_name"
+        fi
+    fi
+}
+
 # Print status of all tools
 check_status() {
     echo ""
@@ -213,6 +364,19 @@ check_status() {
     check_cmd nvim && echo "  ✓ neovim" || echo "  ✗ neovim"
     check_cmd fzf && echo "  ✓ fzf" || echo "  ✗ fzf"
     check_cmd rg && echo "  ✓ ripgrep" || echo "  ✗ ripgrep"
+    echo ""
+
+    echo "Nerd Fonts (for icons):"
+    local nerd_fonts
+    nerd_fonts=$(list_installed_nerd_fonts)
+    if [[ -n "$nerd_fonts" ]]; then
+        echo "$nerd_fonts" | while read -r font; do
+            echo "  ✓ $font"
+        done
+    else
+        echo "  ✗ No Nerd Font found (icons will show as boxes)"
+        echo "    Run: ./install-dependencies.sh fonts"
+    fi
     echo ""
 
     echo "coc.nvim requirements:"
@@ -271,6 +435,9 @@ main() {
         ripgrep|rg)
             install_ripgrep
             ;;
+        fonts|font|nerd-font)
+            install_nerd_font
+            ;;
         status|check)
             check_status
             ;;
@@ -289,10 +456,12 @@ main() {
             echo ""
             install_ripgrep
             echo ""
+            install_nerd_font
+            echo ""
             check_status
             ;;
         *)
-            echo "Usage: $0 [nvim|go|ruby|node|rust|fzf|ripgrep|status|all]"
+            echo "Usage: $0 [nvim|go|ruby|node|rust|fzf|ripgrep|fonts|status|all]"
             echo ""
             echo "Options:"
             echo "  nvim     Install neovim"
@@ -302,6 +471,7 @@ main() {
             echo "  rust     Install Rust tools (rust-analyzer, clippy, rustfmt)"
             echo "  fzf      Install fzf fuzzy finder"
             echo "  ripgrep  Install ripgrep"
+            echo "  fonts    Install a Nerd Font (for icons in nvim-tree/lualine)"
             echo "  status   Check installation status of all tools"
             echo "  all      Install all tools (default)"
             exit 1
