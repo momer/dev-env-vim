@@ -253,12 +253,6 @@ install_nerd_font() {
         return
     fi
 
-    # Tap the fonts cask if not already tapped
-    if ! brew tap | grep -q "homebrew/cask-fonts"; then
-        info "Tapping homebrew/cask-fonts..."
-        brew tap homebrew/cask-fonts
-    fi
-
     echo ""
     echo "Select a Nerd Font to install:"
     echo "  1) Hack Nerd Font        - Clean, monospace (popular)"
