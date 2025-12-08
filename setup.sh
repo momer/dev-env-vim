@@ -187,6 +187,58 @@ install_nvim_plugins() {
     info "Plugins installed."
 }
 
+# Prompt to add shell aliases for nvim
+prompt_shell_aliases() {
+    echo ""
+    echo "Would you like to add shell aliases (vim -> nvim, vi -> nvim)?"
+    echo "  1) ~/.zshrc"
+    echo "  2) ~/.bashrc"
+    echo "  3) ~/.bash_profile"
+    echo "  4) Enter custom path"
+    echo "  5) Skip"
+    echo ""
+    read -p "Select option [1-5]: " choice
+
+    local shell_config=""
+    case "$choice" in
+        1) shell_config="$HOME/.zshrc" ;;
+        2) shell_config="$HOME/.bashrc" ;;
+        3) shell_config="$HOME/.bash_profile" ;;
+        4)
+            read -p "Enter path to shell config: " shell_config
+            shell_config="${shell_config/#\~/$HOME}"  # Expand ~
+            ;;
+        5)
+            info "Skipping shell aliases."
+            return
+            ;;
+        *)
+            warn "Invalid choice. Skipping shell aliases."
+            return
+            ;;
+    esac
+
+    if [[ ! -f "$shell_config" ]]; then
+        warn "File $shell_config does not exist. Creating it."
+        touch "$shell_config"
+    fi
+
+    # Check if aliases already exist
+    if grep -q 'alias vim="nvim"' "$shell_config" 2>/dev/null; then
+        info "Aliases already exist in $shell_config"
+        return
+    fi
+
+    # Add aliases
+    echo "" >> "$shell_config"
+    echo "# Neovim aliases" >> "$shell_config"
+    echo 'alias vim="nvim"' >> "$shell_config"
+    echo 'alias vi="nvim"' >> "$shell_config"
+
+    info "Added aliases to $shell_config"
+    info "Run 'source $shell_config' or restart your terminal to use them."
+}
+
 # Install vim plugins (legacy)
 install_vim_plugins() {
     info "Installing vim plugins..."
@@ -267,6 +319,8 @@ main() {
         else
             warn "Skipping plugin installation. Run 'nvim +PlugInstall +qall' manually."
         fi
+
+        prompt_shell_aliases
     else
         create_vim_directories
         install_vim_plug_vim
