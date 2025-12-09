@@ -1,44 +1,23 @@
 <section>
-  <h2>Language-Specific Features</h2>
-  <h3>LocalLeader Commands</h3>
-  <p style="font-size: 0.9em; color: #888; margin-bottom: 1rem;">Press <span class="key">,</span><span class="key">,</span> for language actions</p>
-  <table style="font-size: 0.85em;">
-    <thead>
-      <tr><th>Language</th><th>Run</th><th>Test</th><th>Build</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Go</td>
-        <td><code>,,r</code></td>
-        <td><code>,,t</code></td>
-        <td><code>,,b</code></td>
-      </tr>
-      <tr>
-        <td>Ruby</td>
-        <td><code>,,r</code></td>
-        <td><code>,,t</code></td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <td>JavaScript</td>
-        <td><code>,,r</code></td>
-        <td><code>,,t</code></td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <td>TypeScript</td>
-        <td><code>,,r</code></td>
-        <td><code>,,t</code></td>
-        <td>-</td>
-      </tr>
-      <tr>
-        <td>Rust</td>
-        <td><code>,,r</code></td>
-        <td><code>,,t</code></td>
-        <td><code>,,b</code> / <code>,,c</code></td>
-      </tr>
-    </tbody>
-  </table>
+  <h2>LocalLeader Commands</h2>
+  <p style="font-size: 0.85em; color: #888; margin-bottom: 1rem;">Press <span class="key">,</span><span class="key">,</span> + key for language actions</p>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; font-size: 0.85em; text-align: center;">
+    <div>
+      <h4 style="color: #9ece6a;"><code>,,r</code></h4>
+      <p>Run file</p>
+    </div>
+    <div>
+      <h4 style="color: #7aa2f7;"><code>,,t</code></h4>
+      <p>Run tests</p>
+    </div>
+    <div>
+      <h4 style="color: #bb9af7;"><code>,,b</code></h4>
+      <p>Build (Go/Rust)</p>
+    </div>
+  </div>
+  <div style="margin-top: 1.5rem; font-size: 0.8em; color: #888;">
+    Same keys work across Go, Ruby, JS/TS, Rust
+  </div>
   <aside class="notes">
     Each language uses the same keybindings but different commands.
     ,,r runs the current file, ,,t runs tests, ,,b builds.
@@ -48,20 +27,13 @@
 
 <section>
   <h2>Indentation Settings</h2>
-  <table>
-    <thead>
-      <tr><th>Language</th><th>Indent</th><th>Type</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Go</td><td>4</td><td>tabs</td></tr>
-      <tr><td>Ruby</td><td>2</td><td>spaces</td></tr>
-      <tr><td>JavaScript</td><td>2</td><td>spaces</td></tr>
-      <tr><td>TypeScript</td><td>2</td><td>spaces</td></tr>
-      <tr><td>Rust</td><td>4</td><td>spaces</td></tr>
-    </tbody>
-  </table>
+  <p class="appendix-note">Appendix</p>
+  <div style="font-size: 0.85em; margin-top: 1rem;">
+    <p><strong style="color: #9ece6a;">Go:</strong> 4 spaces (tabs) · <strong style="color: #f7768e;">Rust:</strong> 4 spaces</p>
+    <p style="margin-top: 0.5rem;"><strong style="color: #7aa2f7;">Ruby/JS/TS:</strong> 2 spaces</p>
+  </div>
   <div class="tip" style="margin-top: 1.5rem;">
-    These are set automatically when you open a file
+    Set automatically when you open a file
   </div>
   <aside class="notes">
     Indentation is configured per-language in ftplugin files.

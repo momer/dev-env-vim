@@ -1,7 +1,7 @@
 <section>
   <h2>lualine.nvim</h2>
   <h3>Status Line</h3>
-  <div style="margin-top: 2rem; padding: 1rem; background: #1a1b26; border-radius: 8px; font-family: monospace; font-size: 0.9em;">
+  <div style="margin-top: 1.5rem; padding: 0.8rem; background: #1a1b26; border-radius: 8px; font-family: monospace; font-size: 0.8em;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <div>
         <span style="background: #7aa2f7; color: #1a1b26; padding: 0.2em 0.5em; border-radius: 3px;">NORMAL</span>
@@ -13,32 +13,25 @@
       <div>
         <span style="color: #f7768e;">E:2</span>
         <span style="color: #e0af68; margin-left: 0.5em;">W:1</span>
-        <span style="color: #888; margin-left: 1em;">utf-8</span>
-        <span style="color: #888; margin-left: 0.5em;">unix</span>
-        <span style="color: #888; margin-left: 0.5em;">vim</span>
-        <span style="color: #888; margin-left: 1em;">42%</span>
+        <span style="color: #888; margin-left: 1em;">vim</span>
         <span style="color: #888; margin-left: 0.5em;">12:5</span>
       </div>
     </div>
   </div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; font-size: 0.85em;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; font-size: 0.75em;">
     <div>
-      <h4>Left Side</h4>
-      <ul style="text-align: left;">
-        <li>Mode indicator (colored)</li>
-        <li>Git branch</li>
-        <li>Diff stats (+added, ~changed, -removed)</li>
-        <li>Filename</li>
-      </ul>
+      <h4 style="font-size: 1.1em;">Left</h4>
+      <span style="color: #7aa2f7;">Mode</span> ·
+      <span style="color: #9ece6a;">Branch</span> ·
+      <span>Diff stats</span> ·
+      <span>Filename</span>
     </div>
     <div>
-      <h4>Right Side</h4>
-      <ul style="text-align: left;">
-        <li>Diagnostics (errors/warnings)</li>
-        <li>Encoding &amp; format</li>
-        <li>Filetype</li>
-        <li>Position (% and line:col)</li>
-      </ul>
+      <h4 style="font-size: 1.1em;">Right</h4>
+      <span style="color: #f7768e;">Errors</span> ·
+      <span style="color: #e0af68;">Warnings</span> ·
+      <span>Filetype</span> ·
+      <span>Position</span>
     </div>
   </div>
   <aside class="notes">
