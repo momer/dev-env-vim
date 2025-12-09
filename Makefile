@@ -27,7 +27,8 @@ help:
 	@echo "  make plugins-vim        Install/update vim plugins"
 	@echo ""
 	@echo "Dependency targets:"
-	@echo "  make deps           Install all dependencies"
+	@echo "  make deps                    Install all dependencies"
+	@echo "  make deps SKIP=\"ruby go\"     Skip specific languages"
 	@echo "  make deps-nvim      Install neovim"
 	@echo "  make deps-go        Install Go tools (gopls, golangci-lint)"
 	@echo "  make deps-ruby      Install Ruby tools (solargraph, rubocop)"
@@ -43,22 +44,27 @@ help:
 	@echo "  make clean-vim      Remove vim config (keeps backups)"
 
 # Full installation (nvim)
-install: setup deps
+# Use SKIP to exclude languages: make install SKIP="ruby go"
+install: setup
+	@$(MAKE) deps SKIP="$(SKIP)"
 	@echo ""
 	@echo "Installation complete!"
 	@echo "Run 'make status' to verify tool installation."
 
+# Build --skip arguments for setup.sh from SKIP variable
+SKIP_ARGS := $(foreach lang,$(SKIP),--skip=$(lang))
+
 # Setup nvim configuration (copy)
 setup:
-	./setup.sh --nvim
+	./setup.sh --nvim $(SKIP_ARGS)
 
 # Setup nvim configuration (symlink)
 setup-symlink:
-	./setup.sh --nvim --symlink
+	./setup.sh --nvim --symlink $(SKIP_ARGS)
 
 # Setup nvim configuration without plugins
 setup-minimal:
-	./setup.sh --nvim --no-plugins
+	./setup.sh --nvim --no-plugins $(SKIP_ARGS)
 
 # Install/update nvim plugins
 plugins:
@@ -79,8 +85,34 @@ plugins-vim:
 	vim +PlugInstall +PlugUpdate +qall
 
 # Install all dependencies
-deps:
-	./install-dependencies.sh all
+# Use SKIP to exclude languages: make deps SKIP="ruby go"
+deps: deps-nvim deps-fzf deps-ripgrep
+ifneq (,$(findstring go,$(SKIP)))
+	@echo "Skipping Go tools (SKIP contains 'go')"
+else
+	@$(MAKE) deps-go
+endif
+ifneq (,$(findstring ruby,$(SKIP)))
+	@echo "Skipping Ruby tools (SKIP contains 'ruby')"
+else
+	@$(MAKE) deps-ruby
+endif
+ifneq (,$(findstring node,$(SKIP)))
+	@echo "Skipping Node.js tools (SKIP contains 'node')"
+else
+	@$(MAKE) deps-node
+endif
+ifneq (,$(findstring rust,$(SKIP)))
+	@echo "Skipping Rust tools (SKIP contains 'rust')"
+else
+	@$(MAKE) deps-rust
+endif
+ifneq (,$(findstring fonts,$(SKIP)))
+	@echo "Skipping Nerd Font (SKIP contains 'fonts')"
+else
+	@$(MAKE) deps-fonts
+endif
+	@$(MAKE) status
 
 # Neovim
 deps-nvim:

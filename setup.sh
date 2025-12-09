@@ -8,6 +8,9 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Skip languages (populated via --skip=<lang>)
+SKIP_LANGUAGES=""
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -24,6 +27,42 @@ warn() {
 
 error() {
     echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# Check if a language should be skipped
+should_skip() {
+    local lang="$1"
+    [[ " $SKIP_LANGUAGES " == *" $lang "* ]]
+}
+
+# Generate init.vim from template, stripping skipped language blocks
+generate_init_vim() {
+    local template="$SCRIPT_DIR/nvim/init.vim.template"
+    local output="$1"
+
+    if [[ ! -f "$template" ]]; then
+        error "Template file not found: $template"
+        exit 1
+    fi
+
+    info "Generating init.vim from template..."
+
+    # Build sed script to remove skipped language blocks
+    local sed_script=""
+    for lang in go ruby node rust; do
+        if should_skip "$lang"; then
+            info "  Excluding $lang configuration"
+            # Delete lines between @BEGIN:lang and @END:lang (inclusive)
+            sed_script="${sed_script}/\" @BEGIN:${lang}/,/\" @END:${lang}/d;"
+        else
+            # Just remove the marker comments
+            sed_script="${sed_script}/\" @BEGIN:${lang}/d;/\" @END:${lang}/d;"
+        fi
+    done
+
+    # Apply sed and write output
+    sed "$sed_script" "$template" > "$output"
+    info "  Generated: $output"
 }
 
 # Backup existing file/directory
@@ -81,21 +120,26 @@ install_vim_plug_vim() {
     fi
 }
 
+# Map ftplugin filenames to language names
+ftplugin_to_lang() {
+    case "$1" in
+        go.vim) echo "go" ;;
+        ruby.vim) echo "ruby" ;;
+        javascript.vim|typescript.vim|typescriptreact.vim) echo "node" ;;
+        rust.vim) echo "rust" ;;
+        *) echo "" ;;
+    esac
+}
+
 # Install nvim config
 install_nvim_config() {
     local use_symlink="$1"
 
     info "Installing nvim configuration..."
 
-    # init.vim
+    # init.vim - always generated from template (even with symlink, we need to process it)
     backup_if_exists ~/.config/nvim/init.vim
-    if [[ "$use_symlink" == "true" ]]; then
-        ln -sf "$SCRIPT_DIR/nvim/init.vim" ~/.config/nvim/init.vim
-        info "  Linked: init.vim"
-    else
-        cp "$SCRIPT_DIR/nvim/init.vim" ~/.config/nvim/init.vim
-        info "  Copied: init.vim"
-    fi
+    generate_init_vim ~/.config/nvim/init.vim
 
     # coc-settings.json
     backup_if_exists ~/.config/nvim/coc-settings.json
@@ -127,6 +171,11 @@ install_nvim_config() {
     for f in "$SCRIPT_DIR/nvim/ftplugin/"*.vim; do
         if [[ -f "$f" ]]; then
             local filename=$(basename "$f")
+            local lang=$(ftplugin_to_lang "$filename")
+            if [[ -n "$lang" ]] && should_skip "$lang"; then
+                info "    Skipped: $filename (language skipped)"
+                continue
+            fi
             if [[ "$use_symlink" == "true" ]]; then
                 ln -sf "$f" ~/.config/nvim/ftplugin/"$filename"
                 info "    Linked: $filename"
@@ -251,16 +300,22 @@ usage() {
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "  --nvim        Install neovim configuration (default)"
-    echo "  --vim         Install legacy vim configuration"
-    echo "  --symlink     Use symlinks instead of copying files"
-    echo "  --no-plugins  Skip plugin installation"
-    echo "  --help        Show this help message"
+    echo "  --nvim             Install neovim configuration (default)"
+    echo "  --vim              Install legacy vim configuration"
+    echo "  --symlink          Use symlinks instead of copying files"
+    echo "  --no-plugins       Skip plugin installation"
+    echo "  --skip=<lang>      Skip language config (go, ruby, node, rust)"
+    echo "                     Can be specified multiple times"
+    echo "  --help             Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  $0 --nvim --skip=ruby --skip=rust"
+    echo "  $0 --nvim --symlink --skip=go"
     echo ""
     echo "This script will:"
     echo "  1. Create required directories"
     echo "  2. Install vim-plug plugin manager"
-    echo "  3. Install configuration files"
+    echo "  3. Generate configuration files (excluding skipped languages)"
     echo "  4. Install plugins via :PlugInstall"
 }
 
@@ -286,6 +341,11 @@ main() {
                 ;;
             --no-plugins)
                 skip_plugins=true
+                shift
+                ;;
+            --skip=*)
+                local lang="${1#--skip=}"
+                SKIP_LANGUAGES="$SKIP_LANGUAGES $lang"
                 shift
                 ;;
             --help|-h)

@@ -11,6 +11,10 @@ make install
 # Or step by step
 make setup      # Install nvim config
 make deps       # Install language servers and tools
+
+# Skip specific languages
+make install SKIP="ruby rust"
+make deps SKIP="ruby go"
 ```
 
 ## Repository Structure
@@ -23,7 +27,7 @@ make deps       # Install language servers and tools
 ├── install-dependencies.sh  # Install language servers and tools
 │
 ├── nvim/                    # Neovim configuration
-│   ├── init.vim             # Main nvim config
+│   ├── init.vim.template    # Main nvim config (generated at install)
 │   ├── coc-settings.json    # coc.nvim LSP configuration
 │   ├── lua/
 │   │   └── plugins/         # Lua plugin configs

@@ -29,21 +29,29 @@ Plug 'nvim-tree/nvim-tree.lua'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+" @BEGIN:go
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" @END:go
 
+" @BEGIN:ruby
 " Ruby
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-endwise'
+" @END:ruby
 
+" @BEGIN:node
 " JavaScript/TypeScript
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
+" @END:node
 
+" @BEGIN:rust
 " Rust
 Plug 'rust-lang/rust.vim'
+" @END:rust
 
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
@@ -209,20 +217,34 @@ nmap <Leader>d <Plug>(ale_detail)
 
 " Linters (no LSP servers - coc.nvim handles those)
 let g:ale_linters = {
+\   '*': [],
+" @BEGIN:go
 \   'go': ['golangci-lint'],
+" @END:go
+" @BEGIN:ruby
 \   'ruby': ['rubocop'],
+" @END:ruby
+" @BEGIN:node
 \   'javascript': ['eslint'],
 \   'typescript': ['eslint'],
 \   'typescriptreact': ['eslint'],
 \   'javascriptreact': ['eslint'],
+" @END:node
+" @BEGIN:rust
 \   'rust': ['cargo'],
+" @END:rust
 \}
 
 " Fixers
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+" @BEGIN:go
 \   'go': ['goimports', 'gofmt'],
+" @END:go
+" @BEGIN:ruby
 \   'ruby': ['rubocop'],
+" @END:ruby
+" @BEGIN:node
 \   'javascript': ['prettier', 'eslint'],
 \   'typescript': ['prettier', 'eslint'],
 \   'typescriptreact': ['prettier', 'eslint'],
@@ -230,18 +252,33 @@ let g:ale_fixers = {
 \   'json': ['prettier'],
 \   'css': ['prettier'],
 \   'html': ['prettier'],
-\   'markdown': ['prettier'],
 \   'yaml': ['prettier'],
+" @END:node
+\   'markdown': ['prettier'],
+" @BEGIN:rust
 \   'rust': ['rustfmt'],
+" @END:rust
 \}
 
-" Language-specific ALE settings
+" @BEGIN:go
+" Language-specific ALE settings - Go
 let g:ale_go_golangci_lint_package = 1
+" @END:go
+" @BEGIN:ruby
+" Language-specific ALE settings - Ruby
 let g:ale_ruby_rubocop_executable = 'bundle'
+" @END:ruby
+" @BEGIN:node
+" Language-specific ALE settings - JavaScript
 let g:ale_javascript_eslint_use_global = 0
 let g:ale_javascript_prettier_use_global = 0
+" @END:node
+" @BEGIN:rust
+" Language-specific ALE settings - Rust
 let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+" @END:rust
 
+" @BEGIN:go
 " -----------------------------------------------------------------------------
 " vim-go Configuration
 " -----------------------------------------------------------------------------
@@ -266,7 +303,9 @@ let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 0
 let g:go_imports_autosave = 0
 let g:go_mod_fmt_autosave = 0
+" @END:go
 
+" @BEGIN:rust
 " -----------------------------------------------------------------------------
 " rust.vim Configuration
 " -----------------------------------------------------------------------------
@@ -274,6 +313,7 @@ let g:go_mod_fmt_autosave = 0
 " Disable rust.vim formatting (use ALE)
 let g:rustfmt_autosave = 0
 let g:rust_clip_command = 'pbcopy'
+" @END:rust
 
 " -----------------------------------------------------------------------------
 " fzf Configuration
@@ -314,12 +354,20 @@ command! -bang -nargs=* Rg
 " coc extensions to install
 let g:coc_global_extensions = [
 \   'coc-json',
+" @BEGIN:node
 \   'coc-tsserver',
 \   'coc-eslint',
 \   'coc-prettier',
+" @END:node
+" @BEGIN:go
 \   'coc-go',
+" @END:go
+" @BEGIN:ruby
 \   'coc-solargraph',
+" @END:ruby
+" @BEGIN:rust
 \   'coc-rust-analyzer',
+" @END:rust
 \]
 
 " Use tab for trigger completion with characters ahead and navigate
