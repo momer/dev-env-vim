@@ -1,29 +1,14 @@
 <section>
   <h2>indent-blankline.nvim</h2>
   <h3>Indent Guides</h3>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
-    <div>
-      <h4 style="color: #888;">Without</h4>
-      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
-  if (condition) {
-    for (i = 0; i < n; i++) {
-      doSomething();
-    }
-  }
-}</code></pre>
-    </div>
-    <div>
-      <h4 style="color: #9ece6a;">With Guides</h4>
-      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
-<span style="color: #3b4261;">│</span> if (condition) {
-<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> for (i = 0; i < n; i++) {
-<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> doSomething();
-<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> }
-<span style="color: #3b4261;">│</span> }
-}</code></pre>
-    </div>
+  <div style="margin-top: 1rem;">
+    <pre style="text-align: left; font-size: 0.7em; background: #1a1b26; padding: 0.7rem; display: inline-block; font-family: monospace;">function example() {
+<span style="color: #565f89;">│</span> if (condition) {
+<span style="color: #565f89;">│</span> <span style="color: #565f89;">│</span> doSomething();
+<span style="color: #565f89;">│</span> }
+}</pre>
   </div>
-  <ul style="margin-top: 1.5rem; font-size: 0.9em;">
+  <ul style="margin-top: 1rem; font-size: 0.85em;">
     <li>Shows vertical indent guides</li>
     <li>Highlights current scope</li>
     <li>Helps track nesting level</li>

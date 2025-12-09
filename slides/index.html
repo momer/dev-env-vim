@@ -1089,32 +1089,27 @@ make install</code></pre>
 <section>
   <h2>indent-blankline.nvim</h2>
   <h3>Indent Guides</h3>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
     <div>
-      <h4 style="color: #888;">Without</h4>
-      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
-  if (condition) {
-    for (i = 0; i < n; i++) {
-      doSomething();
-    }
+      <h4 style="color: #888; font-size: 0.85em;">Without</h4>
+      <pre style="text-align: left; font-size: 0.6em; background: #1a1b26; padding: 0.6rem; font-family: monospace;">fn example() {
+  if (cond) {
+    doIt();
   }
-}</code></pre>
+}</pre>
     </div>
     <div>
-      <h4 style="color: #9ece6a;">With Guides</h4>
-      <pre style="text-align: left; font-size: 0.75em; background: #1a1b26; padding: 1rem;"><code>function example() {
-<span style="color: #3b4261;">│</span> if (condition) {
-<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> for (i = 0; i < n; i++) {
-<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> doSomething();
-<span style="color: #3b4261;">│</span> <span style="color: #3b4261;">│</span> }
-<span style="color: #3b4261;">│</span> }
-}</code></pre>
+      <h4 style="color: #9ece6a; font-size: 0.85em;">With Guides</h4>
+      <pre style="text-align: left; font-size: 0.6em; background: #1a1b26; padding: 0.6rem; font-family: monospace;">fn example() {
+<span style="color: #565f89;">│</span> if (cond) {
+<span style="color: #565f89;">│</span> <span style="color: #565f89;">│</span> doIt();
+<span style="color: #565f89;">│</span> }
+}</pre>
     </div>
   </div>
-  <ul style="margin-top: 1.5rem; font-size: 0.9em;">
+  <ul style="margin-top: 1rem; font-size: 0.8em;">
     <li>Shows vertical indent guides</li>
     <li>Highlights current scope</li>
-    <li>Helps track nesting level</li>
   </ul>
   <aside class="notes">
     indent-blankline makes code structure visible.
