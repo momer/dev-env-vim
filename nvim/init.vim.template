@@ -371,7 +371,11 @@ let g:go_mod_fmt_autosave = 0
 
 " Disable rust.vim formatting (use ALE)
 let g:rustfmt_autosave = 0
-let g:rust_clip_command = 'pbcopy'
+if has('mac')
+    let g:rust_clip_command = 'pbcopy'
+elseif has('unix')
+    let g:rust_clip_command = 'xclip -selection clipboard'
+endif
 " @END:rust
 
 " -----------------------------------------------------------------------------
