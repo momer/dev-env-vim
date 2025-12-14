@@ -2,6 +2,10 @@
 " Neovim Configuration - vim-plug + coc.nvim + ALE + Lua Plugins
 " =============================================================================
 
+" Leader key (must be set before plugins that use it)
+let mapleader = ","
+let maplocalleader = ",,"
+
 " -----------------------------------------------------------------------------
 " Plugin Block
 " -----------------------------------------------------------------------------
@@ -162,10 +166,6 @@ set autoindent                " Copy indent from current line
 " -----------------------------------------------------------------------------
 " Key Mappings
 " -----------------------------------------------------------------------------
-
-" Leader key
-let mapleader = ","
-let maplocalleader = ",,"
 
 " Clear search highlight
 nnoremap <Leader><space> :nohlsearch<CR>

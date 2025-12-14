@@ -48,93 +48,133 @@ check_cmd() {
 
 # Install Go tools
 install_go_tools() {
-    info "Installing Go tools..."
+    info "Checking Go tools..."
 
     if ! check_cmd go; then
         warn "Go is not installed. Skipping Go tools."
         return
     fi
 
-    info "  Installing gopls (Go language server)..."
-    go install golang.org/x/tools/gopls@latest
+    if check_cmd gopls; then
+        info "  gopls already installed."
+    else
+        info "  Installing gopls (Go language server)..."
+        go install golang.org/x/tools/gopls@latest
+    fi
 
-    info "  Installing golangci-lint..."
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+    if check_cmd golangci-lint; then
+        info "  golangci-lint already installed."
+    else
+        info "  Installing golangci-lint..."
+        go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+    fi
 
-    info "Go tools installed successfully."
+    info "Go tools ready."
 }
 
 # Install Ruby tools
 install_ruby_tools() {
-    info "Installing Ruby tools..."
+    info "Checking Ruby tools..."
 
     if ! check_cmd gem; then
         warn "Ruby/gem is not installed. Skipping Ruby tools."
         return
     fi
 
-    info "  Installing solargraph (Ruby language server)..."
-    gem install solargraph
-
-    # rubocop is typically installed per-project via Bundler
-    if ! check_cmd rubocop; then
-        info "  Installing rubocop (optional global install)..."
-        gem install rubocop
+    if check_cmd solargraph; then
+        info "  solargraph already installed."
     else
-        info "  rubocop already installed."
+        info "  Installing solargraph (Ruby language server)..."
+        gem install solargraph
     fi
 
-    info "Ruby tools installed successfully."
+    # rubocop is typically installed per-project via Bundler
+    if check_cmd rubocop; then
+        info "  rubocop already installed."
+    else
+        info "  Installing rubocop (optional global install)..."
+        gem install rubocop
+    fi
+
+    info "Ruby tools ready."
 }
 
 # Install Node.js tools
 install_node_tools() {
-    info "Installing Node.js tools..."
+    info "Checking Node.js tools..."
 
     if ! check_cmd npm; then
         warn "npm is not installed. Skipping Node.js tools."
         return
     fi
 
-    info "  Installing typescript..."
-    npm install -g typescript
+    if check_cmd tsc; then
+        info "  typescript already installed."
+    else
+        info "  Installing typescript..."
+        npm install -g typescript
+    fi
 
-    info "  Installing typescript-language-server..."
-    npm install -g typescript-language-server
+    if check_cmd typescript-language-server; then
+        info "  typescript-language-server already installed."
+    else
+        info "  Installing typescript-language-server..."
+        npm install -g typescript-language-server
+    fi
 
-    info "  Installing eslint..."
-    npm install -g eslint
+    if check_cmd eslint; then
+        info "  eslint already installed."
+    else
+        info "  Installing eslint..."
+        npm install -g eslint
+    fi
 
-    info "  Installing prettier..."
-    npm install -g prettier
+    if check_cmd prettier; then
+        info "  prettier already installed."
+    else
+        info "  Installing prettier..."
+        npm install -g prettier
+    fi
 
-    info "Node.js tools installed successfully."
+    info "Node.js tools ready."
 }
 
 # Install Rust tools
 install_rust_tools() {
-    info "Installing Rust tools..."
+    info "Checking Rust tools..."
 
     if ! check_cmd rustup; then
         warn "rustup is not installed. Skipping Rust tools."
         return
     fi
 
-    info "  Installing rust-analyzer..."
-    rustup component add rust-analyzer
+    if check_cmd rust-analyzer; then
+        info "  rust-analyzer already installed."
+    else
+        info "  Installing rust-analyzer..."
+        rustup component add rust-analyzer
+    fi
 
-    info "  Installing clippy..."
-    rustup component add clippy
+    if check_cmd cargo-clippy; then
+        info "  clippy already installed."
+    else
+        info "  Installing clippy..."
+        rustup component add clippy
+    fi
 
-    info "  Installing rustfmt..."
-    rustup component add rustfmt
+    if check_cmd rustfmt; then
+        info "  rustfmt already installed."
+    else
+        info "  Installing rustfmt..."
+        rustup component add rustfmt
+    fi
 
-    info "Rust tools installed successfully."
+    info "Rust tools ready."
 }
 
 # Install OCaml tools
 install_ocaml_tools() {
-    info "Installing OCaml tools..."
+    info "Checking OCaml tools..."
 
     if ! check_cmd opam; then
         warn "opam is not installed. Skipping OCaml tools."
@@ -147,22 +187,42 @@ install_ocaml_tools() {
     # Ensure opam environment is set up
     eval "$(opam env 2>/dev/null)" || true
 
-    info "  Installing ocaml-lsp-server (OCaml language server)..."
-    opam install -y ocaml-lsp-server
+    if check_cmd ocamllsp; then
+        info "  ocaml-lsp-server already installed."
+    else
+        info "  Installing ocaml-lsp-server (OCaml language server)..."
+        opam install -y ocaml-lsp-server
+    fi
 
-    info "  Installing ocamlformat (code formatter)..."
-    opam install -y ocamlformat
+    if check_cmd ocamlformat; then
+        info "  ocamlformat already installed."
+    else
+        info "  Installing ocamlformat (code formatter)..."
+        opam install -y ocamlformat
+    fi
 
-    info "  Installing merlin (IDE support)..."
-    opam install -y merlin
+    if check_cmd ocamlmerlin; then
+        info "  merlin already installed."
+    else
+        info "  Installing merlin (IDE support)..."
+        opam install -y merlin
+    fi
 
-    info "  Installing utop (improved REPL)..."
-    opam install -y utop
+    if check_cmd utop; then
+        info "  utop already installed."
+    else
+        info "  Installing utop (improved REPL)..."
+        opam install -y utop
+    fi
 
-    info "  Installing dune (build system)..."
-    opam install -y dune
+    if check_cmd dune; then
+        info "  dune already installed."
+    else
+        info "  Installing dune (build system)..."
+        opam install -y dune
+    fi
 
-    info "OCaml tools installed successfully."
+    info "OCaml tools ready."
     echo ""
     echo "Note: Make sure to add this to your shell profile:"
     echo '  eval "$(opam env)"'
@@ -170,7 +230,7 @@ install_ocaml_tools() {
 
 # Install Elixir tools
 install_elixir_tools() {
-    info "Installing Elixir tools..."
+    info "Checking Elixir tools..."
 
     if ! check_cmd mix; then
         warn "Elixir/mix is not installed. Skipping Elixir tools."
@@ -179,20 +239,23 @@ install_elixir_tools() {
         return
     fi
 
-    info "  Installing elixir-ls (Elixir language server)..."
-    # elixir-ls is typically installed from source or via package managers
-    if check_cmd brew; then
-        brew install elixir-ls
+    if check_cmd elixir-ls; then
+        info "  elixir-ls already installed."
     else
-        warn "  Homebrew not found. Install elixir-ls manually:"
-        warn "    https://github.com/elixir-lsp/elixir-ls#building-and-running"
+        info "  Installing elixir-ls (Elixir language server)..."
+        # elixir-ls is typically installed from source or via package managers
+        if check_cmd brew; then
+            brew install elixir-ls
+        else
+            warn "  Homebrew not found. Install elixir-ls manually:"
+            warn "    https://github.com/elixir-lsp/elixir-ls#building-and-running"
+        fi
     fi
 
-    info "  Installing credo (linter)..."
-    # credo is typically added to mix.exs per-project, but we can install globally
-    mix archive.install hex credo --force 2>/dev/null || warn "  credo is typically installed per-project in mix.exs"
+    # credo is typically added to mix.exs per-project
+    info "  Note: credo is typically installed per-project in mix.exs"
 
-    info "Elixir tools installed successfully."
+    info "Elixir tools ready."
     echo ""
     echo "Note: For project-specific credo, add to mix.exs:"
     echo '  {:credo, "~> 1.7", only: [:dev, :test], runtime: false}'
