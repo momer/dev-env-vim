@@ -24,6 +24,25 @@ error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# Detect operating system
+detect_os() {
+    case "$(uname -s)" in
+        Darwin) echo "macos" ;;
+        Linux)  echo "linux" ;;
+        *)      echo "unknown" ;;
+    esac
+}
+
+OS="$(detect_os)"
+
+is_macos() {
+    [[ "$OS" == "macos" ]]
+}
+
+is_linux() {
+    [[ "$OS" == "linux" ]]
+}
+
 # Check if a command exists (includes common tool-specific paths)
 check_cmd() {
     command -v "$1" >/dev/null 2>&1 && return 0
