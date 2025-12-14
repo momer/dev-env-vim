@@ -69,6 +69,11 @@
       "command": "ocamllsp",
       "filetypes": ["ocaml", "reason"],
       "rootPatterns": ["dune-project", "dune-workspace", ".merlin", "*.opam"]
+    },
+    "elixir-ls": {
+      "command": "elixir-ls",
+      "filetypes": ["elixir", "eelixir"],
+      "rootPatterns": ["mix.exs"]
     }
   }
 }

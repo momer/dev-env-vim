@@ -168,6 +168,36 @@ install_ocaml_tools() {
     echo '  eval "$(opam env)"'
 }
 
+# Install Elixir tools
+install_elixir_tools() {
+    info "Installing Elixir tools..."
+
+    if ! check_cmd mix; then
+        warn "Elixir/mix is not installed. Skipping Elixir tools."
+        warn "Install Elixir from: https://elixir-lang.org/install.html"
+        warn "  brew install elixir  # macOS"
+        return
+    fi
+
+    info "  Installing elixir-ls (Elixir language server)..."
+    # elixir-ls is typically installed from source or via package managers
+    if check_cmd brew; then
+        brew install elixir-ls
+    else
+        warn "  Homebrew not found. Install elixir-ls manually:"
+        warn "    https://github.com/elixir-lsp/elixir-ls#building-and-running"
+    fi
+
+    info "  Installing credo (linter)..."
+    # credo is typically added to mix.exs per-project, but we can install globally
+    mix archive.install hex credo --force 2>/dev/null || warn "  credo is typically installed per-project in mix.exs"
+
+    info "Elixir tools installed successfully."
+    echo ""
+    echo "Note: For project-specific credo, add to mix.exs:"
+    echo '  {:credo, "~> 1.7", only: [:dev, :test], runtime: false}'
+}
+
 # Install neovim
 install_nvim() {
     info "Installing neovim..."
@@ -403,6 +433,11 @@ check_status() {
     check_cmd dune && echo "  ✓ dune" || echo "  ✗ dune"
     echo ""
 
+    echo "Elixir tools:"
+    check_cmd elixir-ls && echo "  ✓ elixir-ls" || echo "  ✗ elixir-ls"
+    check_cmd mix && echo "  ✓ mix (elixir)" || echo "  ✗ mix (elixir)"
+    echo ""
+
     echo "General tools:"
     check_cmd nvim && echo "  ✓ neovim" || echo "  ✗ neovim"
     check_cmd fzf && echo "  ✓ fzf" || echo "  ✗ fzf"
@@ -472,6 +507,9 @@ main() {
         ocaml)
             install_ocaml_tools
             ;;
+        elixir)
+            install_elixir_tools
+            ;;
         nvim|neovim)
             install_nvim
             ;;
@@ -500,6 +538,8 @@ main() {
             echo ""
             install_ocaml_tools
             echo ""
+            install_elixir_tools
+            echo ""
             install_fzf
             echo ""
             install_ripgrep
@@ -509,7 +549,7 @@ main() {
             check_status
             ;;
         *)
-            echo "Usage: $0 [nvim|go|ruby|node|rust|ocaml|fzf|ripgrep|fonts|status|all]"
+            echo "Usage: $0 [nvim|go|ruby|node|rust|ocaml|elixir|fzf|ripgrep|fonts|status|all]"
             echo ""
             echo "Options:"
             echo "  nvim     Install neovim"
@@ -518,6 +558,7 @@ main() {
             echo "  node     Install Node.js tools (typescript, tsserver, eslint, prettier)"
             echo "  rust     Install Rust tools (rust-analyzer, clippy, rustfmt)"
             echo "  ocaml    Install OCaml tools (ocaml-lsp-server, ocamlformat, merlin, utop, dune)"
+            echo "  elixir   Install Elixir tools (elixir-ls, credo)"
             echo "  fzf      Install fzf fuzzy finder"
             echo "  ripgrep  Install ripgrep"
             echo "  fonts    Install a Nerd Font (for icons in nvim-tree/lualine)"

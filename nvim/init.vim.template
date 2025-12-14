@@ -58,6 +58,11 @@ Plug 'rust-lang/rust.vim'
 Plug 'ocaml/vim-ocaml'
 " @END:ocaml
 
+" @BEGIN:elixir
+" Elixir
+Plug 'elixir-editors/vim-elixir'
+" @END:elixir
+
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 
@@ -241,6 +246,9 @@ let g:ale_linters = {
 " @BEGIN:ocaml
 \   'ocaml': ['merlin'],
 " @END:ocaml
+" @BEGIN:elixir
+\   'elixir': ['credo'],
+" @END:elixir
 \}
 
 " Fixers
@@ -269,6 +277,9 @@ let g:ale_fixers = {
 " @BEGIN:ocaml
 \   'ocaml': ['ocamlformat'],
 " @END:ocaml
+" @BEGIN:elixir
+\   'elixir': ['mix_format'],
+" @END:elixir
 \}
 
 " @BEGIN:go
