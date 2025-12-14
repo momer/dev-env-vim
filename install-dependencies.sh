@@ -342,14 +342,21 @@ install_ripgrep() {
 # Check if a Nerd Font is installed
 check_nerd_font() {
     local font_name="$1"
-    # Check in system and user font directories
+    # Check in system and user font directories (macOS)
     if [[ -d "/Library/Fonts" ]]; then
         find /Library/Fonts -iname "*${font_name}*Nerd*" 2>/dev/null | grep -q . && return 0
     fi
     if [[ -d "$HOME/Library/Fonts" ]]; then
         find "$HOME/Library/Fonts" -iname "*${font_name}*Nerd*" 2>/dev/null | grep -q . && return 0
     fi
-    # Check via brew cask
+    # Check in font directories (Linux)
+    if [[ -d "$HOME/.local/share/fonts" ]]; then
+        find "$HOME/.local/share/fonts" -iname "*${font_name}*Nerd*" 2>/dev/null | grep -q . && return 0
+    fi
+    if [[ -d "/usr/share/fonts" ]]; then
+        find /usr/share/fonts -iname "*${font_name}*Nerd*" 2>/dev/null | grep -q . && return 0
+    fi
+    # Check via brew cask (macOS)
     if check_cmd brew; then
         brew list --cask 2>/dev/null | grep -qi "font-.*nerd-font" && return 0
     fi
@@ -360,18 +367,30 @@ check_nerd_font() {
 list_installed_nerd_fonts() {
     local fonts=()
 
-    # Check brew casks
+    # Check brew casks (macOS)
     if check_cmd brew; then
         while IFS= read -r font; do
             fonts+=("$font (brew)")
         done < <(brew list --cask 2>/dev/null | grep -i "font-.*nerd-font" || true)
     fi
 
-    # Check font directories
+    # Check font directories (macOS)
     if [[ -d "$HOME/Library/Fonts" ]]; then
         while IFS= read -r font; do
             [[ -n "$font" ]] && fonts+=("$(basename "$font")")
         done < <(find "$HOME/Library/Fonts" -iname "*Nerd*" -type f 2>/dev/null | head -5 || true)
+    fi
+
+    # Check font directories (Linux)
+    if [[ -d "$HOME/.local/share/fonts" ]]; then
+        while IFS= read -r font; do
+            [[ -n "$font" ]] && fonts+=("$(basename "$font")")
+        done < <(find "$HOME/.local/share/fonts" -iname "*Nerd*" -type f 2>/dev/null | head -5 || true)
+    fi
+    if [[ -d "/usr/share/fonts" ]]; then
+        while IFS= read -r font; do
+            [[ -n "$font" ]] && fonts+=("$(basename "$font")")
+        done < <(find /usr/share/fonts -iname "*Nerd*" -type f 2>/dev/null | head -5 || true)
     fi
 
     if [[ ${#fonts[@]} -gt 0 ]]; then
