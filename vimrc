@@ -267,11 +267,11 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 " Key mappings
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>g :Rg<CR>
+nnoremap <Leader>/ :Rg<CR>
 nnoremap <Leader>l :Lines<CR>
 nnoremap <Leader>h :History<CR>
 nnoremap <Leader>: :History:<CR>
-nnoremap <Leader>/ :History/<CR>
+nnoremap <Leader>? :History/<CR>
 nnoremap <Leader>c :Commands<CR>
 nnoremap <Leader>* :Rg <C-R><C-W><CR>
 nnoremap <Leader>gf :GFiles<CR>
@@ -420,7 +420,7 @@ let g:which_key_map['p'] = 'previous buffer'
 let g:which_key_map['e'] = 'file explorer'
 let g:which_key_map['*'] = 'grep word under cursor'
 let g:which_key_map[':'] = 'command history'
-let g:which_key_map['/'] = 'search history'
+let g:which_key_map['?'] = 'search history'
 
 " Buffer mappings
 let g:which_key_map['b'] = {
@@ -433,7 +433,7 @@ let g:which_key_map['bd'] = 'delete buffer'
 
 " fzf mappings
 let g:which_key_map['f'] = 'find files'
-let g:which_key_map['g'] = 'grep (ripgrep)'
+let g:which_key_map['/'] = 'grep (ripgrep)'
 let g:which_key_map['l'] = 'search lines'
 let g:which_key_map['h'] = 'file history'
 let g:which_key_map['c'] = 'commands'

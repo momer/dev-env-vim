@@ -53,6 +53,11 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'rust-lang/rust.vim'
 " @END:rust
 
+" @BEGIN:ocaml
+" OCaml
+Plug 'ocaml/vim-ocaml'
+" @END:ocaml
+
 " Markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
 
@@ -233,6 +238,9 @@ let g:ale_linters = {
 " @BEGIN:rust
 \   'rust': ['cargo'],
 " @END:rust
+" @BEGIN:ocaml
+\   'ocaml': ['merlin'],
+" @END:ocaml
 \}
 
 " Fixers
@@ -258,6 +266,9 @@ let g:ale_fixers = {
 " @BEGIN:rust
 \   'rust': ['rustfmt'],
 " @END:rust
+" @BEGIN:ocaml
+\   'ocaml': ['ocamlformat'],
+" @END:ocaml
 \}
 
 " @BEGIN:go
@@ -331,11 +342,11 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 " Key mappings
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>g :Rg<CR>
+nnoremap <Leader>/ :Rg<CR>
 nnoremap <Leader>l :Lines<CR>
 nnoremap <Leader>h :History<CR>
 nnoremap <Leader>: :History:<CR>
-nnoremap <Leader>/ :History/<CR>
+nnoremap <Leader>? :History/<CR>
 nnoremap <Leader>c :Commands<CR>
 nnoremap <Leader>* :Rg <C-R><C-W><CR>
 nnoremap <Leader>gf :GFiles<CR>

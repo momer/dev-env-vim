@@ -6,7 +6,7 @@
 #   make deps             - Install all language dependencies
 #   make help             - Show all targets
 
-.PHONY: help install setup setup-symlink setup-minimal plugins update deps deps-nvim deps-go deps-ruby deps-node deps-rust deps-fzf deps-ripgrep deps-fonts status clean
+.PHONY: help install setup setup-symlink setup-minimal plugins update deps deps-nvim deps-go deps-ruby deps-node deps-rust deps-ocaml deps-fzf deps-ripgrep deps-fonts status clean
 .PHONY: setup-vim setup-vim-symlink plugins-vim
 
 # Default target
@@ -34,6 +34,7 @@ help:
 	@echo "  make deps-ruby      Install Ruby tools (solargraph, rubocop)"
 	@echo "  make deps-node      Install Node.js tools (typescript, eslint, prettier)"
 	@echo "  make deps-rust      Install Rust tools (rust-analyzer, clippy, rustfmt)"
+	@echo "  make deps-ocaml     Install OCaml tools (ocaml-lsp-server, ocamlformat, merlin)"
 	@echo "  make deps-fzf       Install fzf fuzzy finder"
 	@echo "  make deps-ripgrep   Install ripgrep"
 	@echo "  make deps-fonts     Install a Nerd Font (for icons)"
@@ -107,6 +108,11 @@ ifneq (,$(findstring rust,$(SKIP)))
 else
 	@$(MAKE) deps-rust
 endif
+ifneq (,$(findstring ocaml,$(SKIP)))
+	@echo "Skipping OCaml tools (SKIP contains 'ocaml')"
+else
+	@$(MAKE) deps-ocaml
+endif
 ifneq (,$(findstring fonts,$(SKIP)))
 	@echo "Skipping Nerd Font (SKIP contains 'fonts')"
 else
@@ -130,6 +136,9 @@ deps-node:
 
 deps-rust:
 	./install-dependencies.sh rust
+
+deps-ocaml:
+	./install-dependencies.sh ocaml
 
 deps-fzf:
 	./install-dependencies.sh fzf

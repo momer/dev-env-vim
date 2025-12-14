@@ -64,5 +64,11 @@
 
   "coc.preferences.formatOnSave": false,
 
-  "languageserver": {}
+  "languageserver": {
+    "ocaml-lsp": {
+      "command": "ocamllsp",
+      "filetypes": ["ocaml", "reason"],
+      "rootPatterns": ["dune-project", "dune-workspace", ".merlin", "*.opam"]
+    }
+  }
 }

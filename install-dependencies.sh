@@ -38,6 +38,11 @@ check_cmd() {
     # Check rbenv shims
     [[ -x "$HOME/.rbenv/shims/$1" ]] && return 0
 
+    # Check opam bin directory
+    local opam_switch
+    opam_switch="$(opam var bin 2>/dev/null)" || opam_switch="$HOME/.opam/default/bin"
+    [[ -x "$opam_switch/$1" ]] && return 0
+
     return 1
 }
 
@@ -125,6 +130,42 @@ install_rust_tools() {
     rustup component add rustfmt
 
     info "Rust tools installed successfully."
+}
+
+# Install OCaml tools
+install_ocaml_tools() {
+    info "Installing OCaml tools..."
+
+    if ! check_cmd opam; then
+        warn "opam is not installed. Skipping OCaml tools."
+        warn "Install opam from: https://opam.ocaml.org/doc/Install.html"
+        warn "  brew install opam  # macOS"
+        warn "  Then run: opam init"
+        return
+    fi
+
+    # Ensure opam environment is set up
+    eval "$(opam env 2>/dev/null)" || true
+
+    info "  Installing ocaml-lsp-server (OCaml language server)..."
+    opam install -y ocaml-lsp-server
+
+    info "  Installing ocamlformat (code formatter)..."
+    opam install -y ocamlformat
+
+    info "  Installing merlin (IDE support)..."
+    opam install -y merlin
+
+    info "  Installing utop (improved REPL)..."
+    opam install -y utop
+
+    info "  Installing dune (build system)..."
+    opam install -y dune
+
+    info "OCaml tools installed successfully."
+    echo ""
+    echo "Note: Make sure to add this to your shell profile:"
+    echo '  eval "$(opam env)"'
 }
 
 # Install neovim
@@ -354,6 +395,14 @@ check_status() {
     check_cmd rustfmt && echo "  ✓ rustfmt" || echo "  ✗ rustfmt"
     echo ""
 
+    echo "OCaml tools:"
+    check_cmd ocamllsp && echo "  ✓ ocaml-lsp-server" || echo "  ✗ ocaml-lsp-server"
+    check_cmd ocamlformat && echo "  ✓ ocamlformat" || echo "  ✗ ocamlformat"
+    check_cmd ocamlmerlin && echo "  ✓ merlin" || echo "  ✗ merlin"
+    check_cmd utop && echo "  ✓ utop" || echo "  ✗ utop"
+    check_cmd dune && echo "  ✓ dune" || echo "  ✗ dune"
+    echo ""
+
     echo "General tools:"
     check_cmd nvim && echo "  ✓ neovim" || echo "  ✗ neovim"
     check_cmd fzf && echo "  ✓ fzf" || echo "  ✗ fzf"
@@ -420,6 +469,9 @@ main() {
         rust)
             install_rust_tools
             ;;
+        ocaml)
+            install_ocaml_tools
+            ;;
         nvim|neovim)
             install_nvim
             ;;
@@ -446,6 +498,8 @@ main() {
             echo ""
             install_rust_tools
             echo ""
+            install_ocaml_tools
+            echo ""
             install_fzf
             echo ""
             install_ripgrep
@@ -455,7 +509,7 @@ main() {
             check_status
             ;;
         *)
-            echo "Usage: $0 [nvim|go|ruby|node|rust|fzf|ripgrep|fonts|status|all]"
+            echo "Usage: $0 [nvim|go|ruby|node|rust|ocaml|fzf|ripgrep|fonts|status|all]"
             echo ""
             echo "Options:"
             echo "  nvim     Install neovim"
@@ -463,6 +517,7 @@ main() {
             echo "  ruby     Install Ruby tools (solargraph, rubocop)"
             echo "  node     Install Node.js tools (typescript, tsserver, eslint, prettier)"
             echo "  rust     Install Rust tools (rust-analyzer, clippy, rustfmt)"
+            echo "  ocaml    Install OCaml tools (ocaml-lsp-server, ocamlformat, merlin, utop, dune)"
             echo "  fzf      Install fzf fuzzy finder"
             echo "  ripgrep  Install ripgrep"
             echo "  fonts    Install a Nerd Font (for icons in nvim-tree/lualine)"

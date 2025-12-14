@@ -23,14 +23,14 @@ wk.add({
   { "<leader>bd", desc = "Delete buffer" },
   -- fzf
   { "<leader>f", desc = "Find files" },
-  { "<leader>g", desc = "Grep (ripgrep)" },
+  { "<leader>/", desc = "Grep (ripgrep)" },
   { "<leader>b", desc = "List buffers" },
   { "<leader>l", desc = "Search lines" },
   { "<leader>h", desc = "File history" },
   { "<leader>c", desc = "Commands" },
   { "<leader>*", desc = "Grep word under cursor" },
   { "<leader>:", desc = "Command history" },
-  { "<leader>/", desc = "Search history" },
+  { "<leader>?", desc = "Search history" },
   -- git (fzf)
   { "<leader>gf", desc = "Git files" },
   { "<leader>gs", desc = "Git status files" },
