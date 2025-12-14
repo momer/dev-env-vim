@@ -289,10 +289,12 @@ install_nvim() {
         return
     fi
 
-    if check_cmd brew; then
+    if is_macos && check_cmd brew; then
         brew install nvim
+    elif is_linux && check_cmd apt; then
+        sudo apt update && sudo apt install -y neovim
     else
-        warn "Homebrew not found. Install neovim manually:"
+        warn "No supported package manager found. Install neovim manually:"
         warn "  https://github.com/neovim/neovim/wiki/Installing-Neovim"
     fi
 }
@@ -306,11 +308,13 @@ install_fzf() {
         return
     fi
 
-    if check_cmd brew; then
+    if is_macos && check_cmd brew; then
         brew install fzf
         "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-zsh --no-fish
+    elif is_linux && check_cmd apt; then
+        sudo apt update && sudo apt install -y fzf
     else
-        warn "Homebrew not found. Install fzf manually:"
+        warn "No supported package manager found. Install fzf manually:"
         warn "  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf"
         warn "  ~/.fzf/install"
     fi
@@ -325,10 +329,12 @@ install_ripgrep() {
         return
     fi
 
-    if check_cmd brew; then
+    if is_macos && check_cmd brew; then
         brew install ripgrep
+    elif is_linux && check_cmd apt; then
+        sudo apt update && sudo apt install -y ripgrep
     else
-        warn "Homebrew not found. Install ripgrep manually from:"
+        warn "No supported package manager found. Install ripgrep manually from:"
         warn "  https://github.com/BurntSushi/ripgrep/releases"
     fi
 }
