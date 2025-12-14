@@ -398,6 +398,49 @@ list_installed_nerd_fonts() {
     fi
 }
 
+# Download and install Nerd Font on Linux
+download_nerd_font_linux() {
+    local font_name="$1"
+    local font_zip="$2"
+    local font_dir="$HOME/.local/share/fonts"
+    local tmp_dir="/tmp/nerd-font-$$"
+
+    # Ensure font directory exists
+    mkdir -p "$font_dir"
+
+    info "Downloading $font_name from GitHub..."
+    local url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font_zip}.zip"
+
+    if ! check_cmd curl && ! check_cmd wget; then
+        error "curl or wget required to download fonts"
+        return 1
+    fi
+
+    mkdir -p "$tmp_dir"
+    if check_cmd curl; then
+        curl -fsSL "$url" -o "$tmp_dir/font.zip" || { error "Download failed"; rm -rf "$tmp_dir"; return 1; }
+    else
+        wget -q "$url" -O "$tmp_dir/font.zip" || { error "Download failed"; rm -rf "$tmp_dir"; return 1; }
+    fi
+
+    info "Installing to $font_dir..."
+    unzip -q "$tmp_dir/font.zip" -d "$tmp_dir/extracted" 2>/dev/null || { error "Unzip failed"; rm -rf "$tmp_dir"; return 1; }
+
+    # Copy font files
+    find "$tmp_dir/extracted" -type f \( -name "*.ttf" -o -name "*.otf" \) -exec cp {} "$font_dir/" \;
+
+    rm -rf "$tmp_dir"
+
+    # Update font cache
+    if check_cmd fc-cache; then
+        info "Updating font cache..."
+        fc-cache -fv >/dev/null 2>&1
+    fi
+
+    info "$font_name installed successfully!"
+    return 0
+}
+
 # Install Nerd Font (interactive prompt)
 install_nerd_font() {
     info "Nerd Font Setup"
@@ -422,15 +465,6 @@ install_nerd_font() {
         fi
     fi
 
-    if ! check_cmd brew; then
-        warn "Homebrew not found. Install a Nerd Font manually from:"
-        warn "  https://www.nerdfonts.com/font-downloads"
-        echo ""
-        echo "After downloading, install by double-clicking the .ttf/.otf files"
-        echo "or copying them to ~/Library/Fonts/"
-        return
-    fi
-
     echo ""
     echo "Select a Nerd Font to install:"
     echo "  1) Hack Nerd Font        - Clean, monospace (popular)"
@@ -438,42 +472,40 @@ install_nerd_font() {
     echo "  3) Fira Code Nerd Font   - Ligatures, popular with devs"
     echo "  4) Meslo LG Nerd Font    - Apple-style, works well in terminals"
     echo "  5) Source Code Pro       - Adobe's coding font"
-    echo "  6) Enter custom font name"
-    echo "  7) Skip"
+    echo "  6) Skip"
     echo ""
-    read -p "Select option [1-7]: " choice
+    read -p "Select option [1-6]: " choice
 
     local font_cask=""
+    local font_zip=""
     local font_name=""
     case "$choice" in
         1)
             font_cask="font-hack-nerd-font"
+            font_zip="Hack"
             font_name="Hack Nerd Font"
             ;;
         2)
             font_cask="font-jetbrains-mono-nerd-font"
+            font_zip="JetBrainsMono"
             font_name="JetBrains Mono Nerd Font"
             ;;
         3)
             font_cask="font-fira-code-nerd-font"
+            font_zip="FiraCode"
             font_name="Fira Code Nerd Font"
             ;;
         4)
             font_cask="font-meslo-lg-nerd-font"
+            font_zip="Meslo"
             font_name="Meslo LG Nerd Font"
             ;;
         5)
             font_cask="font-sauce-code-pro-nerd-font"
+            font_zip="SourceCodePro"
             font_name="SauceCodePro Nerd Font"
             ;;
         6)
-            echo ""
-            echo "Enter the Homebrew cask name (e.g., font-ubuntu-nerd-font):"
-            echo "Browse available fonts: brew search nerd-font"
-            read -p "Font cask name: " font_cask
-            font_name="$font_cask"
-            ;;
-        7)
             info "Skipping font installation."
             return
             ;;
@@ -483,23 +515,35 @@ install_nerd_font() {
             ;;
     esac
 
-    if [[ -n "$font_cask" ]]; then
-        info "Installing $font_name..."
-        if brew install --cask "$font_cask"; then
-            info "$font_name installed successfully!"
-            echo ""
-            echo "Next step: Configure your terminal to use '$font_name'"
-            echo ""
-            echo "Terminal configuration:"
+    if [[ -n "$font_name" ]]; then
+        if is_macos && check_cmd brew; then
+            info "Installing $font_name via Homebrew..."
+            if brew install --cask "$font_cask"; then
+                info "$font_name installed successfully!"
+            else
+                error "Failed to install $font_name"
+                return
+            fi
+        elif is_linux; then
+            download_nerd_font_linux "$font_name" "$font_zip" || return
+        else
+            warn "No supported installation method found."
+            warn "Download manually from: https://www.nerdfonts.com/font-downloads"
+            return
+        fi
+
+        echo ""
+        echo "Next step: Configure your terminal to use '$font_name'"
+        echo ""
+        echo "Terminal configuration:"
+        if is_macos; then
             echo "  iTerm2:       Preferences > Profiles > Text > Font"
             echo "  Terminal.app: Preferences > Profiles > Font > Change"
-            echo "  Alacritty:    ~/.config/alacritty/alacritty.yml (font.normal.family)"
-            echo "  Kitty:        ~/.config/kitty/kitty.conf (font_family)"
-            echo "  VS Code:      Settings > Terminal > Font Family"
-            echo ""
-        else
-            error "Failed to install $font_name"
         fi
+        echo "  Alacritty:    ~/.config/alacritty/alacritty.yml (font.normal.family)"
+        echo "  Kitty:        ~/.config/kitty/kitty.conf (font_family)"
+        echo "  VS Code:      Settings > Terminal > Font Family"
+        echo ""
     fi
 }
 
