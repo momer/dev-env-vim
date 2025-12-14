@@ -67,14 +67,15 @@ make setup-vim-symlink
 
 ### Required
 
-| Tool | Purpose | Install |
-|------|---------|---------|
-| Neovim | Editor | `brew install neovim` |
-| Node.js | Required for coc.nvim | `brew install node` or [nvm](https://github.com/nvm-sh/nvm) |
-| vim-plug | Plugin manager | Auto-installed by setup.sh |
-| fzf | Fuzzy finder | `brew install fzf` |
-| ripgrep | Fast grep | `brew install ripgrep` |
-| Nerd Font | Icons for nvim-tree/lualine | `make deps-fonts` (interactive) |
+| Tool | Purpose | macOS | Ubuntu |
+|------|---------|-------|--------|
+| Neovim | Editor | `brew install neovim` | `sudo apt install neovim` |
+| Node.js | Required for coc.nvim | `brew install node` | `sudo apt install nodejs npm` |
+| vim-plug | Plugin manager | Auto-installed | Auto-installed |
+| fzf | Fuzzy finder | `brew install fzf` | `sudo apt install fzf` |
+| ripgrep | Fast grep | `brew install ripgrep` | `sudo apt install ripgrep` |
+| Nerd Font | Icons | `make deps-fonts` | `make deps-fonts` |
+| xclip | Clipboard (Linux) | - | `sudo apt install xclip` |
 
 ### Language-Specific
 
@@ -120,12 +121,21 @@ npm install -g typescript typescript-language-server eslint prettier
 # Rust
 rustup component add rust-analyzer clippy rustfmt
 
-# fzf
+# fzf (macOS)
 brew install fzf
 $(brew --prefix)/opt/fzf/install
 
-# ripgrep
+# fzf (Ubuntu)
+sudo apt install fzf
+
+# ripgrep (macOS)
 brew install ripgrep
+
+# ripgrep (Ubuntu)
+sudo apt install ripgrep
+
+# xclip (Ubuntu - for clipboard support)
+sudo apt install xclip
 ```
 
 ## Plugins
