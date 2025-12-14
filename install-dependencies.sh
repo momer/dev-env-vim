@@ -262,11 +262,34 @@ install_elixir_tools() {
         info "  elixir-ls already installed."
     else
         info "  Installing elixir-ls (Elixir language server)..."
-        # elixir-ls is typically installed from source or via package managers
         if check_cmd brew; then
             brew install elixir-ls
+        elif check_cmd apt-get; then
+            # Build from source on Linux (no apt package available)
+            local elixir_ls_dir="$HOME/.elixir-ls"
+            if [ -d "$elixir_ls_dir" ]; then
+                info "  Updating existing elixir-ls installation..."
+                cd "$elixir_ls_dir" && git pull
+            else
+                info "  Cloning elixir-ls repository..."
+                git clone https://github.com/elixir-lsp/elixir-ls.git "$elixir_ls_dir"
+                cd "$elixir_ls_dir"
+            fi
+            info "  Building elixir-ls (this may take a moment)..."
+            mix deps.get && mix compile && mix elixir_ls.release2
+            cd - > /dev/null
+
+            # Create wrapper script
+            mkdir -p "$HOME/.local/bin"
+            cat > "$HOME/.local/bin/elixir-ls" << 'WRAPPER'
+#!/bin/bash
+exec "$HOME/.elixir-ls/release/language_server.sh" "$@"
+WRAPPER
+            chmod +x "$HOME/.local/bin/elixir-ls"
+            info "  elixir-ls installed to ~/.local/bin/elixir-ls"
+            info "  Ensure ~/.local/bin is in your PATH"
         else
-            warn "  Homebrew not found. Install elixir-ls manually:"
+            warn "  No supported package manager found. Install elixir-ls manually:"
             warn "    https://github.com/elixir-lsp/elixir-ls#building-and-running"
         fi
     fi
