@@ -306,6 +306,7 @@ usage() {
     echo "  --vim              Install legacy vim configuration"
     echo "  --symlink          Use symlinks instead of copying files"
     echo "  --no-plugins       Skip plugin installation"
+    echo "  --no-prompt        Skip shell alias prompt"
     echo "  --skip=<lang>      Skip language config (go, ruby, node, rust, ocaml, elixir)"
     echo "                     Can be specified multiple times"
     echo "  --help             Show this help message"
@@ -325,6 +326,7 @@ usage() {
 main() {
     local use_symlink=false
     local skip_plugins=false
+    local skip_prompt=false
     local target="nvim"  # default to nvim
 
     while [[ $# -gt 0 ]]; do
@@ -343,6 +345,10 @@ main() {
                 ;;
             --no-plugins)
                 skip_plugins=true
+                shift
+                ;;
+            --no-prompt)
+                skip_prompt=true
                 shift
                 ;;
             --skip=*)
@@ -382,7 +388,9 @@ main() {
             warn "Skipping plugin installation. Run 'nvim +PlugInstall +qall' manually."
         fi
 
-        prompt_shell_aliases
+        if ! $skip_prompt; then
+            prompt_shell_aliases
+        fi
     else
         create_vim_directories
         install_vim_plug_vim

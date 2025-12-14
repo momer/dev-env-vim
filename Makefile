@@ -6,7 +6,7 @@
 #   make deps             - Install all language dependencies
 #   make help             - Show all targets
 
-.PHONY: help install setup setup-symlink setup-minimal plugins update deps deps-nvim deps-go deps-ruby deps-node deps-rust deps-ocaml deps-elixir deps-fzf deps-ripgrep deps-fonts status clean
+.PHONY: help install setup setup-symlink setup-minimal plugins update update-config deps deps-nvim deps-go deps-ruby deps-node deps-rust deps-ocaml deps-elixir deps-fzf deps-ripgrep deps-fonts status clean
 .PHONY: setup-vim setup-vim-symlink plugins-vim
 
 # Default target
@@ -20,6 +20,7 @@ help:
 	@echo "  make setup-minimal  Install nvim config without plugins"
 	@echo "  make plugins        Install/update nvim plugins"
 	@echo "  make update         Update nvim plugins"
+	@echo "  make update-config  Update config + plugins (skip deps/prompts)"
 	@echo ""
 	@echo "Legacy Vim targets:"
 	@echo "  make setup-vim          Install vim config (copy files)"
@@ -75,6 +76,11 @@ plugins:
 # Update nvim plugins
 update:
 	nvim --headless +PlugUpdate +qall
+
+# Update config and plugins (skip deps, prompts, fonts)
+update-config:
+	./setup.sh --nvim --no-prompt $(SKIP_ARGS)
+	nvim --headless +PlugInstall +PlugUpdate +qall
 
 # Legacy vim targets
 setup-vim:
