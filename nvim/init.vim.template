@@ -220,10 +220,47 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_delay = 200
 
+" Show ALE details in floating window
+let g:ale_floating_preview = 1
+let g:ale_detail_to_floating_preview = 1
+
+" Signs
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+
+" Virtual text (inline errors at cursor)
+let g:ale_virtualtext_cursor = 'current'
+let g:ale_virtualtext_prefix = '▸ '
+
+" Echo format
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
 " Navigate between ALE diagnostics (linting errors)
 nmap <silent> [e <Plug>(ale_previous_wrap)
 nmap <silent> ]e <Plug>(ale_next_wrap)
-nmap <Leader>d <Plug>(ale_detail)
+
+" Lint menu (<leader>L)
+nmap <silent> <Leader>Ld :call CocAction('diagnosticInfo')<CR>
+nmap <silent> <Leader>LD <Plug>(ale_detail)
+nnoremap <silent> <Leader>LL :ALEPopulateLocList<CR>:lopen<CR>
+nnoremap <silent> <Leader>Lt :call ToggleALEVirtualText()<CR>
+nmap <silent> <Leader>Ln <Plug>(coc-diagnostic-next)
+nmap <silent> <Leader>Lp <Plug>(coc-diagnostic-prev)
+nmap <silent> <Leader>Lf <Plug>(coc-fix-current)
+nmap <silent> <Leader>La <Plug>(coc-codeaction-cursor)
+nnoremap <silent> <Leader>Ll :CocDiagnostics<CR>
+
+" Toggle ALE inline virtual text
+function! ToggleALEVirtualText()
+  if get(g:, 'ale_virtualtext_cursor', 'current') !=# 'disabled'
+    let g:ale_virtualtext_cursor = 'disabled'
+    echo "ALE inline errors disabled"
+  else
+    let g:ale_virtualtext_cursor = 'current'
+    echo "ALE inline errors enabled"
+  endif
+  ALELint
+endfunction
 
 " Linters (no LSP servers - coc.nvim handles those)
 let g:ale_linters = {

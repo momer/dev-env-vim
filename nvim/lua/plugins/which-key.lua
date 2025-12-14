@@ -47,8 +47,17 @@ wk.add({
   { "<leader>cl", desc = "Code lens action" },
   { "<leader>co", desc = "Show outline" },
   { "<leader>cs", desc = "Search symbols" },
-  -- ALE
-  { "<leader>d", desc = "Show lint error detail" },
+  -- Lint/Diagnostics
+  { "<leader>L", group = "Lint" },
+  { "<leader>Ld", desc = "Show error detail (CoC)" },
+  { "<leader>LD", desc = "Show error detail (ALE)" },
+  { "<leader>Ll", desc = "List diagnostics (CoC)" },
+  { "<leader>LL", desc = "List diagnostics (ALE)" },
+  { "<leader>Lt", desc = "Toggle inline errors" },
+  { "<leader>Ln", desc = "Next diagnostic" },
+  { "<leader>Lp", desc = "Previous diagnostic" },
+  { "<leader>Lf", desc = "Quick fix" },
+  { "<leader>La", desc = "Code actions" },
   -- gitsigns
   { "<leader>hp", desc = "Preview hunk" },
   { "<leader>hb", desc = "Blame line" },
