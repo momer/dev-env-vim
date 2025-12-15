@@ -248,7 +248,7 @@ nmap <silent> <Leader>Ln <Plug>(coc-diagnostic-next)
 nmap <silent> <Leader>Lp <Plug>(coc-diagnostic-prev)
 nmap <silent> <Leader>Lf <Plug>(coc-fix-current)
 nmap <silent> <Leader>La <Plug>(coc-codeaction-cursor)
-nnoremap <silent> <Leader>Ll :CocDiagnostics<CR>
+nnoremap <silent> <Leader>Ll :if &buftype == 'quickfix' \| wincmd p \| endif \| CocDiagnostics<CR>
 
 " Toggle ALE inline virtual text
 function! ToggleALEVirtualText()
