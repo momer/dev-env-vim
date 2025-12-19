@@ -11,4 +11,4 @@ nnoremap <buffer> <LocalLeader>b :!mix compile<CR>
 nnoremap <buffer> <LocalLeader>t :!mix test<CR>
 nnoremap <buffer> <LocalLeader>r :!mix run %<CR>
 nnoremap <buffer> <LocalLeader>f :!mix format %<CR>
-nnoremap <buffer> <LocalLeader>i :!iex -S mix<CR>
+nnoremap <buffer> <LocalLeader>i :terminal iex -S mix<CR>

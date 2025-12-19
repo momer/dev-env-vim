@@ -37,6 +37,7 @@ make deps SKIP="ruby go"
 │   │       ├── indent-blankline.lua
 │   │       └── nvim-tree.lua
 │   └── ftplugin/
+│       ├── elixir.vim
 │       ├── go.vim
 │       ├── javascript.vim
 │       ├── ruby.vim
@@ -294,12 +295,16 @@ Press `,` and wait ~500ms to see a popup of all available leader mappings with d
 
 ### Language-Specific (LocalLeader: `,,`)
 
-| Mapping | Go | Ruby | JS/TS | Rust |
-|---------|-----|------|-------|------|
-| `,,r` | go run | ruby | node/ts-node | cargo run |
-| `,,t` | go test | rspec | npm test | cargo test |
-| `,,b` | go build | - | - | cargo build |
-| `,,c` | - | - | - | cargo check |
+| Mapping | Go | Ruby | JS/TS | Rust | Elixir |
+|---------|-----|------|-------|------|--------|
+| `,,r` | go run | ruby | node/ts-node | cargo run | mix run |
+| `,,t` | go test | rspec | npm test | cargo test | mix test |
+| `,,b` | go build | - | - | cargo build | mix compile |
+| `,,c` | - | - | - | cargo check | - |
+| `,,f` | - | - | - | - | mix format |
+| `,,i` | - | - | - | - | iex -S mix |
+
+**Note:** `,,i` opens an interactive Elixir REPL in a terminal buffer. To exit terminal mode and return to normal vim navigation, press `<C-\><C-n>` (Ctrl+\ then Ctrl+n).
 
 ## Language Settings
 
@@ -310,6 +315,7 @@ Press `,` and wait ~500ms to see a popup of all available leader mappings with d
 | JavaScript | 2 spaces | 100 |
 | TypeScript | 2 spaces | 100 |
 | Rust | 4 spaces | 100 |
+| Elixir | 2 spaces | 98 |
 
 ## Troubleshooting
 

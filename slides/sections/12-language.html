@@ -15,13 +15,19 @@
       <p>Build (Go/Rust)</p>
     </div>
   </div>
+  <div style="margin-top: 1rem;">
+      <h4 style="color: #e0af68;"><code>,,i</code></h4>
+      <p>REPL (Elixir)</p>
+    </div>
   <div style="margin-top: 1.5rem; font-size: 0.8em; color: #888;">
-    Same keys work across Go, Ruby, JS/TS, Rust
+    Same keys work across Go, Ruby, JS/TS, Rust, Elixir
   </div>
   <aside class="notes">
     Each language uses the same keybindings but different commands.
     ,,r runs the current file, ,,t runs tests, ,,b builds.
     For Rust, ,,c runs cargo check which is faster than build.
+    For Elixir, ,,i opens iex in a terminal buffer.
+    To exit terminal mode: Ctrl+\ then Ctrl+n.
   </aside>
 </section>
 
@@ -30,7 +36,7 @@
   <p class="appendix-note">Appendix</p>
   <div style="font-size: 0.85em; margin-top: 1rem;">
     <p><strong style="color: #9ece6a;">Go:</strong> 4 spaces (tabs) · <strong style="color: #f7768e;">Rust:</strong> 4 spaces</p>
-    <p style="margin-top: 0.5rem;"><strong style="color: #7aa2f7;">Ruby/JS/TS:</strong> 2 spaces</p>
+    <p style="margin-top: 0.5rem;"><strong style="color: #7aa2f7;">Ruby/JS/TS:</strong> 2 spaces · <strong style="color: #e0af68;">Elixir:</strong> 2 spaces</p>
   </div>
   <div class="tip" style="margin-top: 1.5rem;">
     Set automatically when you open a file
@@ -38,7 +44,27 @@
   <aside class="notes">
     Indentation is configured per-language in ftplugin files.
     Go uses tabs as per its conventions.
+    Elixir uses 2 spaces per Elixir conventions.
     You don't need to remember these - they're automatic.
+  </aside>
+</section>
+
+<section>
+  <h2>Terminal Mode Tip</h2>
+  <p style="font-size: 0.9em; color: #888; margin-bottom: 1.5rem;">For interactive commands like <code>,,i</code> (Elixir REPL)</p>
+  <div style="text-align: center; margin-top: 2rem;">
+    <p style="font-size: 1.1em;">Exit terminal mode:</p>
+    <div style="margin-top: 1rem;">
+      <span class="key">Ctrl</span> + <span class="key">\</span> then <span class="key">Ctrl</span> + <span class="key">n</span>
+    </div>
+  </div>
+  <div class="tip" style="margin-top: 2rem;">
+    Then use normal vim navigation to switch panes/buffers
+  </div>
+  <aside class="notes">
+    Terminal mode captures all keys including Escape.
+    Ctrl+\ Ctrl+n returns you to normal mode.
+    From there you can switch windows, close the terminal, etc.
   </aside>
 </section>
 
@@ -66,6 +92,7 @@
       <li>Use <span class="key">,</span><span class="key">,</span><span class="key">r</span> to run it</li>
       <li>Use <span class="key">,</span><span class="key">,</span><span class="key">t</span> to run tests</li>
       <li>For Go/Rust: try <span class="key">,</span><span class="key">,</span><span class="key">b</span> to build</li>
+      <li>For Elixir: try <span class="key">,</span><span class="key">,</span><span class="key">i</span> for iex, then <span class="key">Ctrl+\</span> <span class="key">Ctrl+n</span> to exit</li>
       <li>Open a Markdown file</li>
       <li>Try <span class="key">,mp</span> for live preview</li>
     </ol>
@@ -73,5 +100,6 @@
   <aside class="notes">
     This exercise shows how the same keybindings work across languages.
     Participants should test with their preferred language.
+    For Elixir, ,,i opens iex in a terminal buffer - remind them about Ctrl+\ Ctrl+n.
   </aside>
 </section>
