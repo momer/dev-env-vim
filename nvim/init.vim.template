@@ -86,6 +86,7 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " Load Lua Plugin Configurations
 " -----------------------------------------------------------------------------
+lua require('plugins.devicons')
 lua require('plugins.lualine')
 lua require('plugins.gitsigns')
 lua require('plugins.which-key')
