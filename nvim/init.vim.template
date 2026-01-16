@@ -206,6 +206,11 @@ vnoremap > >gv
 " Markdown preview
 nnoremap <Leader>mp :MarkdownPreviewToggle<CR>
 
+" Terminal
+nnoremap <Leader>tt :belowright split \| terminal<CR>
+nnoremap <Leader>tv :belowright vsplit \| terminal<CR>
+tnoremap <Esc> <C-\><C-n>
+
 " -----------------------------------------------------------------------------
 " ALE Configuration (linting only - LSP handled by coc.nvim)
 " -----------------------------------------------------------------------------

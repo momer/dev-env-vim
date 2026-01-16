@@ -65,4 +65,17 @@ wk.add({
   { "<leader>E", desc = "Toggle file tree" },
   -- markdown
   { "<leader>mp", desc = "Markdown preview" },
+  -- terminal
+  { "<leader>t", group = "Terminal" },
+  { "<leader>tt", desc = "Open terminal (horizontal)" },
+  { "<leader>tv", desc = "Open terminal (vertical)" },
+  -- window relocation (built-in)
+  { "<C-w>H", desc = "Move window to far left" },
+  { "<C-w>J", desc = "Move window to bottom" },
+  { "<C-w>K", desc = "Move window to top" },
+  { "<C-w>L", desc = "Move window to far right" },
+  { "<C-w>r", desc = "Rotate windows down/right" },
+  { "<C-w>R", desc = "Rotate windows up/left" },
+  { "<C-w>x", desc = "Exchange with next window" },
+  { "<C-w>T", desc = "Move window to new tab" },
 })

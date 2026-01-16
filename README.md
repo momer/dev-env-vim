@@ -231,8 +231,24 @@ Press `,` and wait ~500ms to see a popup of all available leader mappings with d
 | `,ef` | Find file in nvim-tree |
 | `,n` / `,p` | Next/previous buffer |
 | `,bd` | Delete buffer |
+| `,tt` | Open terminal (horizontal split) |
+| `,tv` | Open terminal (vertical split) |
+| `<Esc>` | Exit terminal mode |
 | `Ctrl-h/j/k/l` | Window navigation |
 | `Ctrl-d` / `Ctrl-u` | Half-page scroll (centered) |
+
+### Window Management
+
+| Mapping | Action |
+|---------|--------|
+| `Ctrl-w H` | Move window to far left |
+| `Ctrl-w J` | Move window to bottom |
+| `Ctrl-w K` | Move window to top |
+| `Ctrl-w L` | Move window to far right |
+| `Ctrl-w r` | Rotate windows down/right |
+| `Ctrl-w R` | Rotate windows up/left |
+| `Ctrl-w x` | Exchange with next window |
+| `Ctrl-w T` | Move window to new tab |
 
 ### fzf (Fuzzy Finding)
 
@@ -373,8 +389,21 @@ make status
 ```
 
 After installing, configure your terminal to use the Nerd Font:
+- **Windows Terminal**: Settings > Profile > Appearance > Font face
 - **iTerm2**: Preferences > Profiles > Text > Font
 - **Terminal.app**: Preferences > Profiles > Font > Change
 - **Alacritty**: `~/.config/alacritty/alacritty.yml` (font.normal.family)
 - **Kitty**: `~/.config/kitty/kitty.conf` (font_family)
 - **VS Code**: Settings > Terminal > Font Family
+
+### Windows/WSL
+
+**Recommended: Use Windows Terminal** for WSL environments. CMDER/ConEmu has rendering issues with unicode characters (powerline symbols, Nerd Font icons) that cause visual artifacts like offset lines and missing glyphs.
+
+Windows Terminal (built into Windows 10/11) has proper unicode support and works seamlessly with WSL, tmux, and Nerd Fonts.
+
+When running `make deps-fonts` on WSL, fonts are downloaded to your Windows Downloads folder. Install them by:
+1. Opening the Downloads folder in Windows Explorer
+2. Extracting the zip file
+3. Selecting all .ttf files → Right-click → Install
+4. Configuring Windows Terminal to use the font (Settings > Profile > Appearance > Font face)
