@@ -2,6 +2,11 @@ local ok, nvim_tree = pcall(require, 'nvim-tree')
 if not ok then return end
 
 nvim_tree.setup({
+  sync_root_with_cwd = true,
+  update_focused_file = {
+    enable = true,
+    update_root = true,
+  },
   view = {
     width = 35,
     side = 'left',
