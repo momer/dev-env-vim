@@ -37,5 +37,6 @@ nvim_tree.setup({
   },
 })
 
+vim.keymap.set('n', '<leader>ee', ':NvimTreeToggle<CR>', { silent = true })
 vim.keymap.set('n', '<leader>E', ':NvimTreeToggle<CR>', { silent = true })
 vim.keymap.set('n', '<leader>ef', ':NvimTreeFindFile<CR>', { silent = true })

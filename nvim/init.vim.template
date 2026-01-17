@@ -188,8 +188,7 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" File explorer (netrw - nvim-tree mapped in lua)
-nnoremap <Leader>e :Explore<CR>
+" File explorer (nvim-tree mapped in lua)
 
 " Center screen on navigation
 nnoremap <C-d> <C-d>zz
@@ -247,16 +246,16 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 nmap <silent> [e <Plug>(ale_previous_wrap)
 nmap <silent> ]e <Plug>(ale_next_wrap)
 
-" Lint menu (<leader>L)
-nmap <silent> <Leader>Ld :call CocAction('diagnosticInfo')<CR>
-nmap <silent> <Leader>LD <Plug>(ale_detail)
-nnoremap <silent> <Leader>LL :ALEPopulateLocList<CR>:lopen<CR>
-nnoremap <silent> <Leader>Lt :call ToggleALEVirtualText()<CR>
-nmap <silent> <Leader>Ln <Plug>(coc-diagnostic-next)
-nmap <silent> <Leader>Lp <Plug>(coc-diagnostic-prev)
-nmap <silent> <Leader>Lf <Plug>(coc-fix-current)
-nmap <silent> <Leader>La <Plug>(coc-codeaction-cursor)
-nnoremap <silent> <Leader>Ll :if &buftype == 'quickfix' \| wincmd p \| endif \| CocDiagnostics<CR>
+" Lint menu (<leader>l)
+nmap <silent> <Leader>ld :call CocAction('diagnosticInfo')<CR>
+nmap <silent> <Leader>lD <Plug>(ale_detail)
+nnoremap <silent> <Leader>lL :ALEPopulateLocList<CR>:lopen<CR>
+nnoremap <silent> <Leader>lt :call ToggleALEVirtualText()<CR>
+nmap <silent> <Leader>ln <Plug>(coc-diagnostic-next)
+nmap <silent> <Leader>lp <Plug>(coc-diagnostic-prev)
+nmap <silent> <Leader>lf <Plug>(coc-fix-current)
+nmap <silent> <Leader>la <Plug>(coc-codeaction-cursor)
+nnoremap <silent> <Leader>ll :if &buftype == 'quickfix' \| wincmd p \| endif \| CocDiagnostics<CR>
 
 " Toggle ALE inline virtual text
 function! ToggleALEVirtualText()
@@ -399,16 +398,17 @@ endif
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
-" Key mappings
-nnoremap <Leader>f :Files<CR>
-nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>/ :Rg<CR>
-nnoremap <Leader>l :Lines<CR>
-nnoremap <Leader>h :History<CR>
-nnoremap <Leader>: :History:<CR>
-nnoremap <Leader>? :History/<CR>
-nnoremap <Leader>c :Commands<CR>
-nnoremap <Leader>* :Rg <C-R><C-W><CR>
+" Key mappings - Find group
+nnoremap <Leader>ff :Files<CR>
+nnoremap <Leader>fb :Buffers<CR>
+nnoremap <Leader>fg :Rg<CR>
+nnoremap <Leader>fl :Lines<CR>
+nnoremap <Leader>fh :History<CR>
+nnoremap <Leader>f: :History:<CR>
+nnoremap <Leader>f? :History/<CR>
+nnoremap <Leader>fc :Commands<CR>
+nnoremap <Leader>fw :Rg <C-R><C-W><CR>
+" Key mappings - Git group
 nnoremap <Leader>gf :GFiles<CR>
 nnoremap <Leader>gs :GFiles?<CR>
 
@@ -465,11 +465,11 @@ inoremap <silent><expr> <c-space> coc#refresh()
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" GoTo code navigation
-nmap <silent> <Leader>gd <Plug>(coc-definition)
-nmap <silent> <Leader>gt <Plug>(coc-type-definition)
-nmap <silent> <Leader>gi <Plug>(coc-implementation)
-nmap <silent> <Leader>gr <Plug>(coc-references)
+" GoTo code navigation - Code group
+nmap <silent> <Leader>cd <Plug>(coc-definition)
+nmap <silent> <Leader>ct <Plug>(coc-type-definition)
+nmap <silent> <Leader>ci <Plug>(coc-implementation)
+nmap <silent> <Leader>cr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call ShowDocumentation()<CR>
@@ -485,21 +485,21 @@ endfunction
 " Highlight the symbol and its references when holding the cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Symbol renaming
-nmap <Leader>rn <Plug>(coc-rename)
+" Symbol renaming - Code group
+nmap <Leader>cn <Plug>(coc-rename)
 
 " Formatting
 nmap <Leader>cf <Plug>(coc-format)
 xmap <Leader>cf <Plug>(coc-format-selected)
 
-" Code actions
+" Code actions - Code group
 nmap <Leader>ca <Plug>(coc-codeaction-cursor)
 xmap <Leader>ca <Plug>(coc-codeaction-selected)
-nmap <Leader>qf <Plug>(coc-fix-current)
+nmap <Leader>cq <Plug>(coc-fix-current)
 
-" Remap keys for applying refactor code actions
-nmap <silent> <Leader>re <Plug>(coc-codeaction-refactor)
-xmap <silent> <Leader>re <Plug>(coc-codeaction-refactor-selected)
+" Refactor - Code group
+nmap <silent> <Leader>cx <Plug>(coc-codeaction-refactor)
+xmap <silent> <Leader>cx <Plug>(coc-codeaction-refactor-selected)
 
 " Run the Code Lens action on the current line
 nmap <Leader>cl <Plug>(coc-codelens-action)

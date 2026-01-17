@@ -27,8 +27,8 @@ gitsigns.setup({
       vim.schedule(function() gs.prev_hunk() end)
       return '<Ignore>'
     end, {expr=true})
-    -- Actions
-    map('n', '<leader>hp', gs.preview_hunk)
-    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    -- Actions - Git group
+    map('n', '<leader>gp', gs.preview_hunk)
+    map('n', '<leader>gb', function() gs.blame_line{full=true} end)
   end
 })
