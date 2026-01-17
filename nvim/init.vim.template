@@ -25,6 +25,7 @@ Plug 'rebelot/kanagawa.nvim'
 " UI (nvim-native)
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'folke/which-key.nvim'
+Plug 'folke/persistence.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
@@ -92,6 +93,7 @@ lua require('plugins.gitsigns')
 lua require('plugins.which-key')
 lua require('plugins.indent-blankline')
 lua require('plugins.nvim-tree')
+lua require('plugins.persistence')
 
 " -----------------------------------------------------------------------------
 " General Settings

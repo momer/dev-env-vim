@@ -78,4 +78,17 @@ wk.add({
   { "<C-w>R", desc = "Rotate windows up/left" },
   { "<C-w>x", desc = "Exchange with next window" },
   { "<C-w>T", desc = "Move window to new tab" },
+  -- session (persistence.nvim)
+  { "<leader>S", group = "Session" },
+  { "<leader>Ss", function() require("persistence").load() end, desc = "Restore session (cwd)" },
+  { "<leader>Sl", function() require("persistence").load({ last = true }) end, desc = "Restore last session" },
+  { "<leader>Sd", function() require("persistence").stop() end, desc = "Stop saving session" },
+  -- window resize (built-in)
+  { "<C-w>+", desc = "Increase height" },
+  { "<C-w>-", desc = "Decrease height" },
+  { "<C-w>>", desc = "Increase width" },
+  { "<C-w><", desc = "Decrease width" },
+  { "<C-w>=", desc = "Equal size all windows" },
+  { "<C-w>_", desc = "Maximize height" },
+  { "<C-w>|", desc = "Maximize width" },
 })
