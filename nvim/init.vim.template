@@ -211,6 +211,7 @@ nnoremap <Leader>mp :MarkdownPreviewToggle<CR>
 nnoremap <Leader>tt :belowright split \| terminal<CR>
 nnoremap <Leader>tv :belowright vsplit \| terminal<CR>
 tnoremap <Esc> <C-\><C-n>
+tnoremap <Esc><Esc> <Esc>
 
 " -----------------------------------------------------------------------------
 " ALE Configuration (linting only - LSP handled by coc.nvim)
