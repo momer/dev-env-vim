@@ -29,6 +29,7 @@ Plug 'folke/persistence.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
+Plug 'yorickpeterse/nvim-window'
 
 " Fuzzy Finding
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -93,6 +94,7 @@ lua require('plugins.gitsigns')
 lua require('plugins.which-key')
 lua require('plugins.indent-blankline')
 lua require('plugins.nvim-tree')
+lua require('plugins.nvim-window')
 lua require('plugins.persistence')
 
 " -----------------------------------------------------------------------------

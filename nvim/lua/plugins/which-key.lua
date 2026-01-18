@@ -86,6 +86,8 @@ wk.add({
   { "<leader>v", group = "Vim" },
   -- Windows sub-group
   { "<leader>vw", group = "Windows" },
+  { "<leader>vww", function() require('nvim-window').pick() end, desc = "Pick window" },
+  { "<leader>vwf", function() _G.nvim_window_utils.flash_current_window() end, desc = "Flash current window" },
   { "<leader>vwh", "<C-w>H", desc = "Move window to far left" },
   { "<leader>vwj", "<C-w>J", desc = "Move window to bottom" },
   { "<leader>vwk", "<C-w>K", desc = "Move window to top" },
