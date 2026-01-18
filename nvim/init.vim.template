@@ -88,6 +88,7 @@ call plug#end()
 " -----------------------------------------------------------------------------
 " Load Lua Plugin Configurations
 " -----------------------------------------------------------------------------
+lua require('plugins.clipboard')
 lua require('plugins.devicons')
 lua require('plugins.lualine')
 lua require('plugins.gitsigns')
