@@ -49,7 +49,7 @@ generate_init_vim() {
 
     # Build sed script to remove skipped language blocks
     local sed_script=""
-    for lang in go ruby node rust ocaml elixir; do
+    for lang in go ruby node rust ocaml elixir python; do
         if should_skip "$lang"; then
             info "  Excluding $lang configuration"
             # Delete lines between @BEGIN:lang and @END:lang (inclusive)
@@ -307,7 +307,7 @@ usage() {
     echo "  --symlink          Use symlinks instead of copying files"
     echo "  --no-plugins       Skip plugin installation"
     echo "  --no-prompt        Skip shell alias prompt"
-    echo "  --skip=<lang>      Skip language config (go, ruby, node, rust, ocaml, elixir)"
+    echo "  --skip=<lang>      Skip language config (go, ruby, node, rust, ocaml, elixir, python)"
     echo "                     Can be specified multiple times"
     echo "  --help             Show this help message"
     echo ""

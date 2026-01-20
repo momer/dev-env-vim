@@ -297,6 +297,9 @@ let g:ale_linters = {
 " @BEGIN:elixir
 \   'elixir': ['credo'],
 " @END:elixir
+" @BEGIN:python
+\   'python': ['ruff'],
+" @END:python
 \}
 
 " Fixers
@@ -328,6 +331,9 @@ let g:ale_fixers = {
 " @BEGIN:elixir
 \   'elixir': ['mix_format'],
 " @END:elixir
+" @BEGIN:python
+\   'python': ['ruff', 'black'],
+" @END:python
 \}
 
 " @BEGIN:go
@@ -443,6 +449,9 @@ let g:coc_global_extensions = [
 " @BEGIN:rust
 \   'coc-rust-analyzer',
 " @END:rust
+" @BEGIN:python
+\   'coc-pyright',
+" @END:python
 \]
 
 " Use tab for trigger completion with characters ahead and navigate

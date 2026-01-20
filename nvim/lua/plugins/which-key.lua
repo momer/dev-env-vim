@@ -1,6 +1,115 @@
 local ok, wk = pcall(require, 'which-key')
 if not ok then return end
 
+-- Helper: check if Python files exist in project
+local function has_python_files()
+  local result = vim.fn.glob('**/*.py', false, true)
+  return #result > 0
+end
+
+-- Helper: insert ruff config into pyproject.toml
+local function insert_ruff_config()
+  local pyproject = vim.fn.getcwd() .. '/pyproject.toml'
+  local ruff_config = [[
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I", "UP", "S"]
+ignore = ["S101"]  # Allow assert in tests
+]]
+
+  local file_exists = vim.fn.filereadable(pyproject) == 1
+  if file_exists then
+    -- Check if ruff config already exists
+    local content = table.concat(vim.fn.readfile(pyproject), '\n')
+    if content:match('%[tool%.ruff') then
+      vim.notify('Ruff config already exists in pyproject.toml', vim.log.levels.WARN)
+      return
+    end
+    -- Append to existing file
+    local f = io.open(pyproject, 'a')
+    if f then
+      f:write('\n' .. ruff_config)
+      f:close()
+      vim.notify('Added ruff config to pyproject.toml', vim.log.levels.INFO)
+    end
+  else
+    -- Create new file
+    local f = io.open(pyproject, 'w')
+    if f then
+      f:write(ruff_config)
+      f:close()
+      vim.notify('Created pyproject.toml with ruff config', vim.log.levels.INFO)
+    end
+  end
+end
+
+-- Helper: check if JS/TS files exist in project
+local function has_js_files()
+  for _, pattern in ipairs({ '**/*.js', '**/*.ts', '**/*.jsx', '**/*.tsx' }) do
+    if #vim.fn.glob(pattern, false, true) > 0 then
+      return true
+    end
+  end
+  return false
+end
+
+-- Helper: insert ESLint flat config
+local function insert_eslint_config()
+  local cwd = vim.fn.getcwd()
+  local eslint_config = cwd .. '/eslint.config.js'
+  local eslint_config_mjs = cwd .. '/eslint.config.mjs'
+
+  -- Check for existing configs
+  local existing_configs = { 'eslint.config.js', 'eslint.config.mjs', '.eslintrc.js', '.eslintrc.json', '.eslintrc' }
+  for _, cfg in ipairs(existing_configs) do
+    if vim.fn.filereadable(cwd .. '/' .. cfg) == 1 then
+      vim.notify('ESLint config already exists: ' .. cfg, vim.log.levels.WARN)
+      return
+    end
+  end
+
+  -- Detect TypeScript
+  local has_ts = #vim.fn.glob('**/*.ts', false, true) > 0 or #vim.fn.glob('**/*.tsx', false, true) > 0
+  local config
+
+  if has_ts then
+    config = [[import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    },
+  }
+);
+]]
+  else
+    config = [[import eslint from '@eslint/js';
+
+export default [
+  eslint.configs.recommended,
+  {
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    },
+  },
+];
+]]
+  end
+
+  local f = io.open(eslint_config_mjs, 'w')
+  if f then
+    f:write(config)
+    f:close()
+    vim.notify('Created eslint.config.mjs' .. (has_ts and ' (with TypeScript)' or ''), vim.log.levels.INFO)
+  end
+end
+
 wk.setup({
   plugins = {
     marks = true,
@@ -73,6 +182,8 @@ wk.add({
   { "<leader>lp", desc = "Previous diagnostic" },
   { "<leader>lf", desc = "Quick fix" },
   { "<leader>la", desc = "Code actions" },
+  { "<leader>lr", insert_ruff_config, desc = "Add ruff config", cond = has_python_files },
+  { "<leader>le", insert_eslint_config, desc = "Add ESLint config", cond = has_js_files },
 
   -- Markdown
   { "<leader>m", group = "Markdown" },
