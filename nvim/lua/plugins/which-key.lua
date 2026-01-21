@@ -1,12 +1,6 @@
 local ok, wk = pcall(require, 'which-key')
 if not ok then return end
 
--- Helper: check if Python files exist in project
-local function has_python_files()
-  local result = vim.fn.glob('**/*.py', false, true)
-  return #result > 0
-end
-
 -- Helper: insert ruff config into pyproject.toml
 local function insert_ruff_config()
   local pyproject = vim.fn.getcwd() .. '/pyproject.toml'
@@ -43,16 +37,6 @@ ignore = ["S101"]  # Allow assert in tests
       vim.notify('Created pyproject.toml with ruff config', vim.log.levels.INFO)
     end
   end
-end
-
--- Helper: check if JS/TS files exist in project
-local function has_js_files()
-  for _, pattern in ipairs({ '**/*.js', '**/*.ts', '**/*.jsx', '**/*.tsx' }) do
-    if #vim.fn.glob(pattern, false, true) > 0 then
-      return true
-    end
-  end
-  return false
 end
 
 -- Helper: insert ESLint flat config
@@ -182,8 +166,8 @@ wk.add({
   { "<leader>lp", desc = "Previous diagnostic" },
   { "<leader>lf", desc = "Quick fix" },
   { "<leader>la", desc = "Code actions" },
-  { "<leader>lr", insert_ruff_config, desc = "Add ruff config", cond = has_python_files },
-  { "<leader>le", insert_eslint_config, desc = "Add ESLint config", cond = has_js_files },
+  { "<leader>lr", insert_ruff_config, desc = "Add ruff config" },
+  { "<leader>le", insert_eslint_config, desc = "Add ESLint config" },
 
   -- Markdown
   { "<leader>m", group = "Markdown" },
