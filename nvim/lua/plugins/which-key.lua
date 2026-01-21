@@ -140,6 +140,38 @@ wk.add({
   { "<leader>gp", desc = "Preview hunk" },
   { "<leader>gb", desc = "Blame line" },
 
+  -- Diff
+  { "<leader>d", group = "Diff" },
+  { "<leader>d?", function()
+      vim.notify([[
+Diff Usage:
+  nvim -d file1 file2    Compare two files
+  :Gvdiffsplit!          Fugitive 3-way merge (,dg)
+
+Fugitive 3-way layout:
+  LEFT   = target branch (//2) - use ,d2
+  CENTER = working copy (edit this)
+  RIGHT  = merge branch (//3) - use ,d3
+]], vim.log.levels.INFO)
+    end, desc = "Help" },
+  { "<leader>dj", desc = "Next change" },
+  { "<leader>dk", desc = "Previous change" },
+  { "<leader>do", desc = "Obtain (get from other)" },
+  { "<leader>dp", desc = "Put (send to other)" },
+  { "<leader>du", desc = "Update diff" },
+  { "<leader>dt", desc = "Toggle diff mode" },
+  { "<leader>dq", desc = "Quit diff (all windows)" },
+  { "<leader>dR", desc = "Expand all folds" },
+  { "<leader>dM", desc = "Collapse all folds" },
+  { "<leader>dg", desc = "Fugitive 3-way diff" },
+  { "<leader>d2", desc = "Get from target (//2)" },
+  { "<leader>d3", desc = "Get from merge (//3)" },
+  { "<leader>dw", desc = "Save and stage (Gwrite)" },
+  { "<leader>dc", desc = "Next conflict marker" },
+  { "<leader>dC", desc = "Prev conflict marker" },
+  { "<leader>df", desc = "List unmerged files" },
+  { "<leader>dF", desc = "Check remaining conflicts" },
+
   -- Code (LSP)
   { "<leader>c", group = "Code" },
   { "<leader>cd", desc = "Go to definition" },

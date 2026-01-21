@@ -548,6 +548,63 @@ nnoremap <silent><nowait> <Leader>cs :<C-u>CocList -I symbols<CR>
 command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument
 
 " -----------------------------------------------------------------------------
+" Diff Mode Configuration
+" -----------------------------------------------------------------------------
+
+" Better diff algorithm
+set diffopt+=algorithm:histogram
+set diffopt+=indent-heuristic
+
+" Vertical splits for diff
+set diffopt+=vertical
+
+" Show filler lines for sync
+set diffopt+=filler
+
+" Context lines around changes
+set diffopt+=context:3
+
+" Diff navigation
+nnoremap <Leader>dj ]c
+nnoremap <Leader>dk [c
+
+" Diff operations
+nnoremap <Leader>do :diffget<CR>
+nnoremap <Leader>dp :diffput<CR>
+
+" Update diff after changes
+nnoremap <Leader>du :diffupdate<CR>
+
+" Toggle diff mode for current window
+nnoremap <Leader>dt :if &diff \| diffoff \| else \| diffthis \| endif<CR>
+
+" Turn off diff in all windows
+nnoremap <Leader>dq :diffoff!<CR>
+
+" Expand/collapse all folds
+nnoremap <Leader>dR zR
+nnoremap <Leader>dM zM
+
+" Fugitive 3-way merge: get from target (//2) or merge (//3)
+" In :Gvdiffsplit! layout: LEFT=target (//2), CENTER=working, RIGHT=merge (//3)
+nnoremap <Leader>d2 :diffget //2<CR>
+nnoremap <Leader>d3 :diffget //3<CR>
+
+" Start fugitive 3-way merge diff
+nnoremap <Leader>dg :Gvdiffsplit!<CR>
+
+" Save and stage resolved file
+nnoremap <Leader>dw :Gwrite<CR>
+
+" Navigate conflict markers
+nnoremap <Leader>dc /^<<<<<<<CR>
+nnoremap <Leader>dC ?^<<<<<<<CR>
+
+" List unmerged files / check for remaining conflicts
+nnoremap <Leader>df :Git diff --name-only --diff-filter=U<CR>
+nnoremap <Leader>dF :Git diff --check<CR>
+
+" -----------------------------------------------------------------------------
 " which-key timeout
 " -----------------------------------------------------------------------------
 set timeoutlen=500
