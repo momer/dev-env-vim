@@ -120,6 +120,12 @@ wk.add({
   { "<leader>ee", desc = "Toggle file tree" },
   { "<leader>E", desc = "Toggle file tree" },
   { "<leader>ef", desc = "Find current file in tree" },
+  { "<leader>eh", function()
+      local api = require('nvim-tree.api')
+      api.tree.toggle_hidden_filter()
+      api.tree.toggle_gitignore_filter()
+      api.tree.toggle_custom_filter()
+    end, desc = "Toggle hidden files" },
 
   -- Find (FZF)
   { "<leader>f", group = "Find" },
