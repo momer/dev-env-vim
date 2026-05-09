@@ -208,6 +208,8 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Markdown preview
+let g:mkdp_auto_close = 0       " Keep preview open when switching buffers
+let g:mkdp_combine_preview = 0  " Each markdown file gets its own preview window
 nnoremap <Leader>mp :MarkdownPreviewToggle<CR>
 
 " Terminal
